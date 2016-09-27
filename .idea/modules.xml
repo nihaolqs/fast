@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/samples/comparison/comparison.iml" filepath="$PROJECT_DIR$/samples/comparison/comparison.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fast.iml" filepath="$PROJECT_DIR$/fast.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fast_framework/fast_framework.iml" filepath="$PROJECT_DIR$/fast_framework/fast_framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />
+    </modules>
+  </component>
+</project>
