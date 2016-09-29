@@ -1,1 +1,1 @@
-include ':fast_framework', ':myapplication', ':samples:comparison'
+include ':fast_framework', ':myapplication', ':samples:comparison', ':gamestore'

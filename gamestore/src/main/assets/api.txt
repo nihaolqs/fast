@@ -1,0 +1,9 @@
+开服列表
+https://market.x7sy.com/game/gamekf_day?day=1&os_type=2&sign=178db7c55d0354db5b179706b1ab7fda
+
+精选列表
+https://market.x7sy.com/game/index_selected?page=1&os_type=2&sign=2267c9070c5ab7d178b32d31eb2ec6b0
+
+搜索列表
+https://market.x7sy.com/game/split_search?page=1&os_type=2&searchkey=%E6%88%91%E5%8F%ABMT3-YW&sign=a3186399568133a56c565883e409b818
+

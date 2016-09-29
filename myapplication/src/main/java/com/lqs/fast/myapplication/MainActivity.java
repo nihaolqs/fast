@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.lqs.fast.fast.utils.HttpUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
+import com.lqs.fast.fast.utils.LogUtil;
 import com.lqs.fast.fast.utils.SpUtil;
 
 import java.io.Serializable;
@@ -54,5 +55,8 @@ public class MainActivity extends AppCompatActivity {
         SpUtil.editSp(this,map,"name");
 
         int name = (int) SpUtil.readSp(this, "name", "123");
+
+        LogUtil.d();
+
     }
 }

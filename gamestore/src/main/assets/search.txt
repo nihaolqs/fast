@@ -1,0 +1,20 @@
+{
+    "errorno": 0,
+    "errormsg": "",
+    "selected_list": [
+        {
+            "guid": "364",
+            "game_logo": "http://res.x7sy.com/uploads/devloper_img/20160926/47554436361656931.png",
+            "game_name": "我叫MT3-YW",
+            "show_name": "我叫MT3-YW",
+            "gamesize": "400.16",
+            "typename": "角色",
+            "one_game_info": "魔幻经典回合制手游",
+            "gamediscount": "5.0",
+            "download_url": "https://down.x7sy.com/game/android/115/364_1_1-4-1_20160926103520_1570.apk",
+            "package_name": "com.locojoy.wojmt3.ewan.x7sy",
+            "return_rate": "0",
+            "discount_type": "1"
+        }
+    ]
+}
