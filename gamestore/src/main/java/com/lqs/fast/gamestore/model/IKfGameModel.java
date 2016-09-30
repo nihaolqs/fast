@@ -6,6 +6,6 @@ import java.util.List;
  * Created by dell on 2016/9/29.
  */
 
-public interface IKfGameModel {
+public interface IKfGameModel extends IAsynReplaceData{
     List<KfGame.KfListBean> getKfGameList();
 }

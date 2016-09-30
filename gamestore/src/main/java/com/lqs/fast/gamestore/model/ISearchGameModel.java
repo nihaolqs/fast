@@ -8,6 +8,6 @@ import java.util.List;
  * Created by dell on 2016/9/29.
  */
 
-public interface ISearchGameModel {
+public interface ISearchGameModel extends IAsynReplaceData{
     List<GameInfoBean> getSearchGameList();
 }

@@ -8,6 +8,6 @@ import java.util.List;
  * Created by dell on 2016/9/29.
  */
 
-public interface  IAdGameModel {
+public interface  IAdGameModel extends IAsynReplaceData{
     List<GameInfoBean> getAdGameList();
 }
