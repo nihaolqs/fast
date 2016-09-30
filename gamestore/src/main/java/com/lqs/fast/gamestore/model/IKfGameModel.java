@@ -1,5 +1,7 @@
 package com.lqs.fast.gamestore.model;
 
+import com.lqs.fast.gamestore.bean.KfGame;
+
 import java.util.List;
 
 /**

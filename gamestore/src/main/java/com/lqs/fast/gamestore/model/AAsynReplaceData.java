@@ -8,13 +8,12 @@ import com.lqs.fast.gamestore.app.Constants;
  * Created by dell on 2016/9/30.
  */
 
-public abstract class AAsynReplaceData<T> implements IAsynReplaceData{
+public abstract class AAsynReplaceData<T> implements IAsynReplaceData {
 
     private ReplaceDataListener mReplaceDataListener;
     protected T mData;
 
-    public AAsynReplaceData(ReplaceDataListener listener)
-    {
+    public AAsynReplaceData(ReplaceDataListener listener) {
         mReplaceDataListener = listener;
     }
 
@@ -24,8 +23,10 @@ public abstract class AAsynReplaceData<T> implements IAsynReplaceData{
     }
 
     @Override
-    public void ReplaceData() {    //更新数据的方法
-        String urlStr = Constants.ApiClient.SELECTED_GAME;
+    public void ReplaceData(String url) {    //更新数据的方法
+
+// 地址应该传参
+//        String urlStr = Constants.ApiClient.SELECTED_GAME;
 
         GsonUtil.DownLoadedJsonListener<T> listener = new GsonUtil.DownLoadedJsonListener<T>() {
             @Override
@@ -33,18 +34,19 @@ public abstract class AAsynReplaceData<T> implements IAsynReplaceData{
                 mData = t;
                 ReplaceDataListener replaceDataListener = getReplaceDataListener();
 
-                if(checkData(t))  //验证是否下载数据成功
+                if (checkData(t))  //验证是否下载数据成功
                 {
                     replaceDataListener.replacedData();  // 成功则通知presenter处理成功分支
-                }else
-                {
+                } else {
                     replaceDataListener.replaceDataError();  //失败分支
                 }
             }
         };
 
-        TypeToken<T> typeToken = new TypeToken<T>(){};
-        GsonUtil.downLoadJson(urlStr,typeToken,listener);
+        TypeToken<T> typeToken = new TypeToken<T>() {
+        };
+        GsonUtil.downLoadJson(url, typeToken, listener);
     }
+
     protected abstract boolean checkData(T t);
 }

@@ -6,5 +6,5 @@ package com.lqs.fast.gamestore.model;
 
 public interface IAsynReplaceData {
     ReplaceDataListener getReplaceDataListener();
-    void ReplaceData();
+    void ReplaceData(String url);  //TODO 订正应该传入网址
 }

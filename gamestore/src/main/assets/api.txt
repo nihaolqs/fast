@@ -7,3 +7,7 @@ https://market.x7sy.com/game/index_selected?page=1&os_type=2&sign=2267c9070c5ab7
 搜索列表
 https://market.x7sy.com/game/split_search?page=1&os_type=2&searchkey=%E6%88%91%E5%8F%ABMT3-YW&sign=a3186399568133a56c565883e409b818
 
+开服搜索
+
+https://market.x7sy.com/game/gamekf_search?os_type=2&gname=%E4%BB%99&sign=b7e6aaa64d23ed02fc2df183bfcfe329
+

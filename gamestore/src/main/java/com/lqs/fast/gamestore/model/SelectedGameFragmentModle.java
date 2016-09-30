@@ -1,8 +1,8 @@
 package com.lqs.fast.gamestore.model;
 
-import com.lqs.fast.fast.utils.GsonUtil;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SelectedGame;
 
 import java.util.List;
 

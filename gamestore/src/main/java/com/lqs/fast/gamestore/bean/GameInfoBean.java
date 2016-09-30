@@ -1,5 +1,7 @@
 package com.lqs.fast.gamestore.bean;
 
+import java.util.List;
+
 /**
  * Created by dell on 2016/9/29.
  */
@@ -25,14 +27,15 @@ public class GameInfoBean {
     private String game_logo;
     private String game_name;
     private String show_name;
-    private String gamesize;
-    private String typename;
     private String one_game_info;
     private String package_name;
     private String gamediscount;
     private String return_rate;
     private String discount_type;
+    private String gamesize;
+    private String typename;
     private String download_url;
+    private List<String> time_list;
 
     public String getGuid() {
         return guid;
@@ -64,22 +67,6 @@ public class GameInfoBean {
 
     public void setShow_name(String show_name) {
         this.show_name = show_name;
-    }
-
-    public String getGamesize() {
-        return gamesize;
-    }
-
-    public void setGamesize(String gamesize) {
-        this.gamesize = gamesize;
-    }
-
-    public String getTypename() {
-        return typename;
-    }
-
-    public void setTypename(String typename) {
-        this.typename = typename;
     }
 
     public String getOne_game_info() {
@@ -122,11 +109,35 @@ public class GameInfoBean {
         this.discount_type = discount_type;
     }
 
+    public String getGamesize() {
+        return gamesize;
+    }
+
+    public void setGamesize(String gamesize) {
+        this.gamesize = gamesize;
+    }
+
+    public String getTypename() {
+        return typename;
+    }
+
+    public void setTypename(String typename) {
+        this.typename = typename;
+    }
+
     public String getDownload_url() {
         return download_url;
     }
 
     public void setDownload_url(String download_url) {
         this.download_url = download_url;
+    }
+
+    public List<String> getTime_list() {
+        return time_list;
+    }
+
+    public void setTime_list(List<String> time_list) {
+        this.time_list = time_list;
     }
 }

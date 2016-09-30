@@ -1,4 +1,4 @@
-package com.lqs.fast.gamestore.model;
+package com.lqs.fast.gamestore.bean;
 
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 
