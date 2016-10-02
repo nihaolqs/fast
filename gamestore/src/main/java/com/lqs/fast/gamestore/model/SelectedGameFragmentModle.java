@@ -11,7 +11,7 @@ import java.util.List;
  * Created by dell on 2016/9/30.
  */
 
-public class SelectedGameFragmentModle extends AAsynReplaceData<SelectedGame> implements IAdGameModel,ISelectedGameModel{
+public class SelectedGameFragmentModle extends AAsynReplaceDataModel<SelectedGame> implements IAdGameModel,ISelectedGameModel{
 
 //    private SelectedGame mSelectedGame;  //数据类
 //    private ReplaceDataListener mListener;  //更新数据回调

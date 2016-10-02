@@ -10,7 +10,7 @@ import java.util.List;
  * Created by dell on 2016/9/30.
  */
 
-public class KfGameSearchModel extends AAsynReplaceData<KfGameSearch> implements IKfGameSearchModle{
+public class KfGameSearchModel extends AAsynReplaceDataModel<KfGameSearch> implements IKfGameSearchModle{
     public KfGameSearchModel(ReplaceDataListener listener) {
         super(listener);
     }

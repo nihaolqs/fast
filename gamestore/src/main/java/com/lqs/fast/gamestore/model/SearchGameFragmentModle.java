@@ -10,7 +10,7 @@ import java.util.List;
  * Created by dell on 2016/9/30.
  */
 
-public class SearchGameFragmentModle extends AAsynReplaceData<SearchGame> implements ISearchGameModel {
+public class SearchGameFragmentModle extends AAsynReplaceDataModel<SearchGame> implements ISearchGameModel {
     public SearchGameFragmentModle(ReplaceDataListener listener) {
         super(listener);
     }

@@ -3,17 +3,29 @@ package com.lqs.fast.gamestore.model;
 import com.google.gson.reflect.TypeToken;
 import com.lqs.fast.fast.utils.GsonUtil;
 import com.lqs.fast.gamestore.app.Constants;
+import com.lqs.fast.gamestore.presenter.ABasePresenter;
+
+import java.util.HashMap;
 
 /**
  * Created by dell on 2016/9/30.
  */
 
-public abstract class AAsynReplaceData<T> implements IAsynReplaceData {
-
+public abstract class AAsynReplaceDataModel<T> implements IAsynReplaceData {
+    public static final String TAG = null;  //标签Modle  设置为空的主要目的是使得子类必须设置标签，否则做存取的时候抛异常
+    protected HashMap<String,ABasePresenter> mPresenterMap = new HashMap<>();  //使用静态容器虽然可以保证容器的唯一性，但是会造成垃圾回收时可能会有问题<未验证>
     private ReplaceDataListener mReplaceDataListener;
     protected T mData;
 
-    public AAsynReplaceData(ReplaceDataListener listener) {
+    public<T extends  ABasePresenter> T getPresenter(Class<T> clzz){   //从Modle中获取Presenter
+        T presenter = (T) mPresenterMap.get(T.TAG);
+        return presenter;
+    }
+    public void setPresenter(ABasePresenter presenter)  //保存Presenter到
+    {
+        mPresenterMap.put(presenter.TAG,presenter);
+    }
+    public AAsynReplaceDataModel(ReplaceDataListener listener) {
         mReplaceDataListener = listener;
     }
 

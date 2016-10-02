@@ -9,7 +9,7 @@ import java.util.List;
  * Created by dell on 2016/9/30.
  */
 
-public class KfGameFragmentModel extends AAsynReplaceData<KfGame> implements IKfGameModel{
+public class KfGameFragmentModel extends AAsynReplaceDataModel<KfGame> implements IKfGameModel{
 
     public KfGameFragmentModel(ReplaceDataListener listener) {
         super(listener);
