@@ -1,4 +1,4 @@
-package com.lqs.fast.gamestore.model;
+package com.lqs.fast.fast.base.model;
 
 /**
  * Created by dell on 2016/9/30.

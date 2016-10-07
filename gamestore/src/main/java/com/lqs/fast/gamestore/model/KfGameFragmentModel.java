@@ -1,5 +1,6 @@
 package com.lqs.fast.gamestore.model;
 
+import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.KfGame;
 
