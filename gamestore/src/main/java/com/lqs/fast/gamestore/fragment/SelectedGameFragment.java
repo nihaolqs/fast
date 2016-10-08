@@ -97,7 +97,9 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
 
     @Override
     public void showSelectedGameList(List<GameInfoBean> list) {
-
+        mSelectedGames.clear();
+        mSelectedGames.addAll(list);
+        mMySelectedGameListAdatpter.notifyDataSetChanged();
     }
 
     @Override
