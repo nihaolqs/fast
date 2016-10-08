@@ -1,4 +1,4 @@
-package com.lqs.fast.gamestore.adatpter;
+package com.lqs.fast.fast.base.adatpter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,12 +16,12 @@ import java.util.List;
  * @param <T> 行布局数据类型
  * @param <H> ViewHolder类型
  */
-public abstract class ABaseAdapter<T, H> extends BaseAdapter {
+public abstract class ABaseAdatpter<T, H> extends BaseAdapter {
     private final LayoutInflater mInflater;
     private Context mContext;
     private List<T> mDataList;
 
-    public ABaseAdapter(List<T> tList, Context context) {
+    public ABaseAdatpter(List<T> tList, Context context) {
         mDataList = tList;
         this.mContext = context;
         mInflater = LayoutInflater.from(mContext);
