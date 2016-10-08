@@ -10,26 +10,28 @@ import java.util.Map;
  * Created by dell on 2016/9/30.
  */
 
-public class ABasePresenter<M extends ABaseModel,V extends ABaseView> {
+public abstract class ABasePresenter {
 
     public static final String TAG = null;
     protected Map<String,ABaseModel> mModelMap = new HashMap<>();
     protected Map<String,ABaseView> mViewMap = new HashMap<>();
-    public void addModel(M m) {
-        mModelMap.put(m.TAG,m);
+    public void addModel(ABaseModel m) {
+        mModelMap.put(m.getModelTag(),m);
     }
 
-    public void addView(V v) {
-        mViewMap.put(v.TAG,v);
+    public void addView(ABaseView v) {
+        mViewMap.put(v.getViewTag(),v);
     }
 
-    public M getModel(String tag) {
-        M m = (M) mModelMap.get(tag);
+    public ABaseModel getModel(String tag) {
+        ABaseModel m =  mModelMap.get(tag);
         return m;
     }
 
-    public V getView(String tag) {
-        V v  = (V) mViewMap.get(tag);
+    public ABaseView getView(String tag) {
+        ABaseView v  =  mViewMap.get(tag);
         return v;
     }
+
+    public abstract String getPresenterTag();
 }

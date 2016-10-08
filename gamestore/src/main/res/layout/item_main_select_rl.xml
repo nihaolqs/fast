@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="105.0dip">
+
+    <ImageView
+        android:id="@+id/item_select_iv_gameicon"
+        android:layout_width="55.0dip"
+        android:layout_height="55.0dip"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="10.0dip"
+        android:layout_marginTop="20.0dip"
+        android:background="@mipmap/default_gameicon" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60.0dip"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/item_select_tv_state"
+        android:layout_toRightOf="@+id/item_select_iv_gameicon"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="2.0dip"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/item_select_tv_gamediscount"
+                style="@style/item_10"
+                android:layout_width="35.0dip"
+                android:layout_height="15.0dip"
+                android:layout_marginLeft="10.0dip"
+                android:layout_marginTop="2.0dip"
+                android:layout_toRightOf="@+id/item_select_tv_gamename"
+                android:background="@mipmap/game_discount"
+                android:gravity="center_vertical"
+                android:paddingLeft="7.0dip"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/item_select_tv_gamename"
+                android:layout_width="wrap_content"
+                android:layout_height="20.0dip"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxEms="10"
+                android:singleLine="true"
+                android:text="关门放吕布"
+                android:textColor="@color/black_0"
+                android:textSize="13.0sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5.0dip"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_select_tv_gamesize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20MB"
+                android:textColor="@color/text_light_gray"
+                android:textSize="11.0sp" />
+
+            <View
+                android:layout_width="1.0dip"
+                android:layout_height="12.0dip"
+                android:layout_gravity="center"
+                android:layout_marginLeft="7.0dip"
+                android:layout_marginRight="7.0dip"
+                android:background="@color/line_shen" />
+
+            <TextView
+                android:id="@+id/item_select_tv_gametype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="角色扮演"
+                android:textColor="@color/text_light_gray"
+                android:textSize="11.0sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_select_tv_game_describe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1.0dip"
+            android:ellipsize="end"
+            android:maxEms="32"
+            android:singleLine="true"
+            android:text="经典角色扮演类游戏"
+            android:textColor="@color/text_light_gray"
+            android:textSize="11.0sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_select_tv_state"
+        style="@style/item_12"
+        android:layout_width="40.0dip"
+        android:layout_height="40.0dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5.0dip"
+        android:layout_marginRight="10.0dip"
+        android:background="@mipmap/quan_lan"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="下载"
+        android:textColor="@color/download_lan" />
+</RelativeLayout>

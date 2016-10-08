@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffffff</color>
+    <color name="black_0">#ff000000</color>
+    <color name="text_light_gray">#ff666666</color>
+    <color name="line_shen">#22000000</color>
+    <color name="download_lan">#ff04d7fd</color>
 </resources>

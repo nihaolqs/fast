@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @param <P> presenter的子类
+ *
  * @param <T> 数据POJO类的类型
  */
-public abstract class ABaseModel<P extends ABasePresenter, T> implements IAsynReplaceDataModel {
+public abstract class ABaseModel<T> implements IAsynReplaceDataModel {
     public static final String TAG = null;
 
     //presenter数据保存map
@@ -41,14 +41,16 @@ public abstract class ABaseModel<P extends ABasePresenter, T> implements IAsynRe
         GsonUtil.downLoadJson(url, typetoken, l);
     }
 
-    public P getPresenter(String tag) { //返回presenter 的方法
-        P presenter = (P) presenterMap.get(tag);
+    public ABasePresenter getPresenter(String tag) { //返回presenter 的方法
+        ABasePresenter presenter =  presenterMap.get(tag);
         return presenter;
     }
 
-    public void addPresenter(P p) {  //保存Presenter的方法
-        presenterMap.put(p.TAG, p);
+    public void addPresenter(ABasePresenter p) {  //保存Presenter的方法
+        presenterMap.put(p.getPresenterTag(), p);
     }
 
     protected abstract boolean checkData(T t);  //检查数据下载是否成功的方法
+
+    public abstract String getModelTag();
 }

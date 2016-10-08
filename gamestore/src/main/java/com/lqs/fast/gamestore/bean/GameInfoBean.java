@@ -1,12 +1,13 @@
 package com.lqs.fast.gamestore.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by dell on 2016/9/29.
  */
 
-public class GameInfoBean {
+public class GameInfoBean implements Serializable {
 
     /**
      * guid : 391
@@ -36,6 +37,15 @@ public class GameInfoBean {
     private String typename;
     private String download_url;
     private List<String> time_list;
+    private String ad_img;
+
+    public String getAd_img() {
+        return ad_img;
+    }
+
+    public void setAd_img(String ad_img) {
+        this.ad_img = ad_img;
+    }
 
     public String getGuid() {
         return guid;

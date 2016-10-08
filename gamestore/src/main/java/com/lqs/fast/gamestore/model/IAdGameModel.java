@@ -10,6 +10,8 @@ import java.util.List;
  * Created by dell on 2016/9/29.
  */
 
-public interface  IAdGameModel extends IAsynReplaceDataModel,IBaseModel<IAdGamePresenter>{  //TODO
+public interface  IAdGameModel extends IAsynReplaceDataModel{  //TODO
     List<GameInfoBean> getAdGameList();
+    IAdGamePresenter getAdGamePresenter();
+    void setAdGamePresenter(IAdGamePresenter adGamePresenter);
 }

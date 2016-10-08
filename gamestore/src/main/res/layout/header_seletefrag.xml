@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmain_selete_rl"
+    android:layout_width="fill_parent"
+    android:layout_height="140.0dip"
+    android:background="@mipmap/default_ad">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragmain_selete_vp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <LinearLayout
+        android:id="@+id/fragmain_selete_pointGroup_ll"
+        android:layout_width="fill_parent"
+        android:layout_height="25.0dip"
+        android:layout_alignParentBottom="true"
+        android:background="#330000ff"
+        android:gravity="center"
+        android:orientation="horizontal" />
+</RelativeLayout>

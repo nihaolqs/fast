@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/gamestore/src/main/assets/api.txt" charset="GBK" />
     <file url="file://$PROJECT_DIR$/gamestore/src/main/assets/gamekf.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/gamestore/src/main/assets/selected.txt" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

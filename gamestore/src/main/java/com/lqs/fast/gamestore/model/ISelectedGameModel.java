@@ -10,6 +10,8 @@ import java.util.List;
  * Created by dell on 2016/9/29.
  */
 
-public interface ISelectedGameModel extends IAsynReplaceDataModel,IBaseModel<ISelectedGamePresenter>{
+public interface ISelectedGameModel extends IAsynReplaceDataModel{
     List<GameInfoBean> getSelectedGameList();
+    ISelectedGamePresenter getSelectedGamePresenter();
+    void setAdGamePresenter(ISelectedGamePresenter selectedGamePresenter);
 }

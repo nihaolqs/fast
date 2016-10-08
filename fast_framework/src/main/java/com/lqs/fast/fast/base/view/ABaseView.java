@@ -12,20 +12,21 @@ import java.util.HashMap;
 
 /**
  *
- * @param <P> presenter的子类
- * @param <T> 数据类的类型
+ * @param <> 数据类的类型
  */
-public abstract class ABaseView<P extends ABasePresenter,T> extends Fragment{
+public abstract class ABaseView extends Fragment{
     public static final String TAG = null;
 
     protected HashMap<String,ABasePresenter> mPresenterMap = new HashMap<>();
 
-    public P getPresenter(String tag) {
-        P presenter = (P) mPresenterMap.get(tag);
+    public ABasePresenter getPresenter(String tag) {
+        ABasePresenter presenter =  mPresenterMap.get(tag);
         return presenter;
     }
 
-    public void addPresenter(P p) {
-        mPresenterMap.put(p.TAG,p);
+    public void addPresenter(ABasePresenter p) {
+        mPresenterMap.put(p.getPresenterTag(),p);
     }
+
+    public abstract String getViewTag();
 }

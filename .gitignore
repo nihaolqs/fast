@@ -44,3 +44,6 @@ fast_framework/src/main/res/drawable/
 myapplication/libs/
 myapplication/src/main/res/drawable/
 samples/
+gamestore/libs/
+gamestore/src/main/java/com/lqs/fast/gamestore/activity/
+gamestore/src/main/res/drawable/
