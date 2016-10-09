@@ -2,6 +2,7 @@ package com.lqs.fast.fast.utils;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,11 +50,9 @@ public class SingleFileDownLoadUtils {
         downLoadTask.setListener(listener);
     }
 
-    public int getDownLoadState(String url)
-    {
+    public int getDownLoadState(String url) {
         Integer integer = mDownLoadStateMap.get(url);
-        if(integer == null)
-        {
+        if (integer == null) {
             return 0;
         }
         return integer;
@@ -68,8 +67,11 @@ public class SingleFileDownLoadUtils {
 
     public interface IDownLoadListener {
         void wail();
+
         void progress(int progre);
+
         void completed();
+
         void fail();
     }
 
@@ -91,67 +93,65 @@ public class SingleFileDownLoadUtils {
         public DownLoadTask(String url, IDownLoadListener listener) {
             this.mListener = listener;
             this.mFileUrl = url;
-            mDownLoadStateMap.put(url,WAIT);
-            mDawnLoadTaskMap.put(url,this);
+            mDownLoadStateMap.put(url, WAIT);
+            mDawnLoadTaskMap.put(url, this);
             mListener.wail();
         }
 
-        public void setListener(IDownLoadListener listener)
-        {
+        public void setListener(IDownLoadListener listener) {
             this.mListener = listener;
         }
 
         @Override
         public void run() {
-            InputStream is= null;
+            InputStream is = null;
             OutputStream os = null;
             String fileName = getFileName(mFileUrl);
             String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
             String filePath = absolutePath + "/" + fileName;
             File file = new File(filePath);
             try {
-                mDownLoadStateMap.put(mFileUrl,PROGRESS);
+                mDownLoadStateMap.put(mFileUrl, PROGRESS);
+                mListener.progress(0);
                 URL url = new URL(mFileUrl);
                 URLConnection cc = url.openConnection();
-                int length = cc.getContentLength();
+                long length = cc.getContentLength();
                 is = url.openStream();
 
 
                 os = new FileOutputStream(filePath);
                 byte[] bs = new byte[1024];
                 int len = -1;
-                int sum = 0;
+                long sum = 0;
                 int point = 0;
-                while(-1 != (len = is.read(bs)))
-                {
+                while (-1 != (len = is.read(bs))) {
                     os.write(bs, 0, len);
                     sum += len;
-                    if(sum*100/length > point)
-                    {
-                        point+=5;
-                        int i = (sum * 100) / length;
-                        mListener.progress(i);
-                    }
+//                    if (sum * 100 / length > point) {
+////                        point += 5;
+                    Log.d("run",sum + "/" + length);
+                        point = (int)((sum * 100) / length);
+                        mListener.progress(point);
+//                        point ++;
+//                    }
                 }
+                mListener.progress(100);
                 mListener.completed();
-                mDownLoadStateMap.put(mFileUrl,COMPLETED);
+                mDownLoadStateMap.put(mFileUrl, COMPLETED);
 
             } catch (MalformedURLException e) {
                 mListener.fail();
-                mDownLoadStateMap.put(mFileUrl,FAIL);
+                mDownLoadStateMap.put(mFileUrl, FAIL);
                 file.delete();
                 e.printStackTrace();
             } catch (IOException e) {
                 mListener.fail();
-                mDownLoadStateMap.put(mFileUrl,FAIL);
+                mDownLoadStateMap.put(mFileUrl, FAIL);
                 file.delete();
                 e.printStackTrace();
-            }
-            finally
-            {
+            } finally {
                 mDawnLoadTaskMap.remove(mFileUrl);
-                if(is != null)
-                {
+                if (is != null) {
                     try {
                         is.close();
                     } catch (IOException e) {
@@ -159,8 +159,7 @@ public class SingleFileDownLoadUtils {
                         e.printStackTrace();
                     }
                 }
-                if(os != null)
-                {
+                if (os != null) {
                     try {
                         os.flush();
                         os.close();

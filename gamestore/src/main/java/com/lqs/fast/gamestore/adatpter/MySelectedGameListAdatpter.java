@@ -1,6 +1,9 @@
 package com.lqs.fast.gamestore.adatpter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +31,7 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean,MySel
     }
 
     @Override
-    protected void initItemUi(final ViewHolder holder, GameInfoBean gameInfoBean) {
+    protected void initItemUi(final ViewHolder holder, final GameInfoBean gameInfoBean) {
         String typename = gameInfoBean.getTypename();
         holder.tvGameType.setText(typename);
         String game_logo = gameInfoBean.getGame_logo();
@@ -90,7 +93,8 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean,MySel
             }
         };
         final String download_url = gameInfoBean.getDownload_url();
-        final int state = singleFileDownLoadUtils.getDownLoadState(download_url);
+
+        int state = singleFileDownLoadUtils.getDownLoadState(download_url);
         switch (state){
             case 1: iDownLoadListener.wail();
                 break;
@@ -104,12 +108,21 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean,MySel
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(state == 0 || state == 4)
+                int downLoadState = singleFileDownLoadUtils.getDownLoadState(download_url);
+                if(downLoadState == 0 || downLoadState == 4)
                 {
                     singleFileDownLoadUtils.addDownLoadTask(download_url, iDownLoadListener);
-                }else if(state == 3)
+                }else if(downLoadState == 3)
                 {
                     //TODO 安装
+                    String fileName = SingleFileDownLoadUtils.getFileName(gameInfoBean.getDownload_url());
+                    String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                    String filePath = absolutePath + "/" + fileName;
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
+                    mContext.startActivity(i);
+                    android.os.Process.killProcess(android.os.Process.myPid());
                 }
             }
         };
