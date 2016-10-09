@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Created by lin on 2016/10/5.
  */
 
-public abstract class ABaseFragment<T extends ABaseFragment,S extends Serializable> extends ABaseView{
+public abstract class ABaseFragment<T extends ABaseFragment, S extends Serializable> extends ABaseView {
 
     protected LayoutInflater mLayoutInflater;
     protected View mFragmentLauout;
@@ -27,15 +27,20 @@ public abstract class ABaseFragment<T extends ABaseFragment,S extends Serializab
         initBundleData();
         mLayoutInflater = inflater;
         mFragmentLauout = mLayoutInflater.inflate(getLayoutResId(), container, false);
+        initMvp();
         initUI();
         initData();
         return mFragmentLauout;
     }
 
-    protected  void initBundleData(){
+    protected abstract void initMvp();
+
+    protected void initBundleData() {
         Bundle bundle = getArguments();
-        S s = (S) bundle.getSerializable(T.TAG);
-        mData = s;
+        if (bundle != null) {
+            S s = (S) bundle.getSerializable(T.TAG);
+            mData = s;
+        }
     }
 
     protected abstract void initUI();
@@ -44,12 +49,12 @@ public abstract class ABaseFragment<T extends ABaseFragment,S extends Serializab
 
     protected abstract int getLayoutResId();
 
-    public static<T extends ABaseFragment,S extends Serializable> T getInstance(Class<T> tClass, S s){
+    public static <T extends ABaseFragment, S extends Serializable> T getInstance(Class<T> tClass, S s) {
         T t = null;
         try {
             t = tClass.newInstance();
             Bundle bundle = new Bundle();
-            bundle.putSerializable(T.TAG,s);
+            bundle.putSerializable(T.TAG, s);
             t.setArguments(bundle);
         } catch (java.lang.InstantiationException e) {
             e.printStackTrace();

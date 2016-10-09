@@ -32,6 +32,12 @@ public final class GsonUtil {
         return t;
     }
 
+    public static <T> T parseJsonString(String json,Type type){
+        Gson gson = new Gson();
+        T t = gson.fromJson(json, type);
+        return t;
+    }
+
     public static<T> void downLoadJson(String url, final TypeToken<T> tTypeToken, final DownLoadedJsonListener<T> listener){
         HttpUtil.getString(url, new HttpUtil.HttpListener<String>() {
             @Override
@@ -47,6 +53,20 @@ public final class GsonUtil {
         });
     }
 
+    public static<T> void downLoadJson(String url, final Type type, final DownLoadedJsonListener<T> listener){
+        HttpUtil.getString(url, new HttpUtil.HttpListener<String>() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("Json错误","Json下载失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                T t = parseJsonString(s, type);
+                listener.downLoaded(t);
+            }
+        });
+    }
     public static<T> void downLoadJson(String url, final Class<T> clazz, final DownLoadedJsonListener<T> listener){
         HttpUtil.getString(url, new HttpUtil.HttpListener<String>() {
             @Override

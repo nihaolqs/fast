@@ -1,20 +1,18 @@
 package com.lqs.fast.gamestore.model;
 
+import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.KfGame;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
  * Created by dell on 2016/9/30.
  */
 
-public class KfGameFragmentModel extends AAsynReplaceDataModel<KfGame> implements IKfGameModel{
-
-    public KfGameFragmentModel(ReplaceDataListener listener) {
-        super(listener);
-    }
+public class KfGameFragmentModel extends ABaseModel<KfGame> implements IKfGameModel{
 
     @Override
     protected boolean checkData(KfGame kfGame) {
@@ -24,7 +22,18 @@ public class KfGameFragmentModel extends AAsynReplaceDataModel<KfGame> implement
     }
 
     @Override
+    public String getModelTag() {
+        return null;
+    }
+
+    @Override
+    public Type getTType() {
+        return null;
+    }
+
+
+    @Override
     public List<KfGame.KfListBean> getKfGameList() {
-        return mData.getKf_list();
+        return null;
     }
 }

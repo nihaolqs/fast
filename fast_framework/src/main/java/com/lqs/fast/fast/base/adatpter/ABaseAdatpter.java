@@ -1,6 +1,7 @@
 package com.lqs.fast.fast.base.adatpter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,9 @@ import java.util.List;
  * @param <H> ViewHolder类型
  */
 public abstract class ABaseAdatpter<T, H> extends BaseAdapter {
-    private final LayoutInflater mInflater;
-    private Context mContext;
-    private List<T> mDataList;
+    protected final LayoutInflater mInflater;
+    protected Context mContext;
+    protected List<T> mDataList;
 
     public ABaseAdatpter(List<T> tList, Context context) {
         mDataList = tList;
@@ -48,9 +49,12 @@ public abstract class ABaseAdatpter<T, H> extends BaseAdapter {
         if (convertView == null) {
             int[] itemResId = getItemResId();
             int resId = itemResId[itemViewType];
+//            Log.i("convertView",""+convertView);
             convertView = mInflater.inflate(resId, null);
+//            Log.i("convertView",""+convertView);
             H holder = getViewHolder();
             bindViewHolder(convertView, holder);
+            convertView.setTag(holder);
         }
         H tag = (H) convertView.getTag();
         T t = mDataList.get(position);

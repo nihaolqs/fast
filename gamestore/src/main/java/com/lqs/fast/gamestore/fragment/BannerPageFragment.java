@@ -18,6 +18,11 @@ public class BannerPageFragment extends ABaseFragment<BannerPageFragment,GameInf
     public static final String TAG = "BannerPageFragment";
 
     @Override
+    protected void initMvp() {
+
+    }
+
+    @Override
     protected void initUI() {
         mAdImage = (ImageView) mFragmentLauout.findViewById(R.id.iv_frag_ad_banner);
     }

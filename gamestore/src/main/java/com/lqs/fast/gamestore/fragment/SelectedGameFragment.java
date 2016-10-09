@@ -12,6 +12,9 @@ import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.adatpter.MyBannerAdatpter;
 import com.lqs.fast.gamestore.adatpter.MySelectedGameListAdatpter;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.model.IAdGameModel;
+import com.lqs.fast.gamestore.model.ISelectedGameModel;
+import com.lqs.fast.gamestore.model.SelectedGameFragmentModle;
 import com.lqs.fast.gamestore.presenter.IAdGamePresenter;
 import com.lqs.fast.gamestore.presenter.ISelectedGamePresenter;
 import com.lqs.fast.gamestore.presenter.SelectedGameFragmentPresenter;
@@ -25,7 +28,7 @@ import java.util.List;
  * Created by lin on 2016/10/5.
  */
 
-public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragment implements IAdGameView,ISelectedGameView{
+public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragment implements IAdGameView, ISelectedGameView {
 
     public static final String TAG = "SelectedGameFragment";
     private View mHeaderView;
@@ -44,7 +47,7 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
 
     private void initListView() {
         mSelectedListView = (ListView) mFragmentLauout.findViewById(R.id.lv_frag_selected_gamelist);
-        mSelectedListView.addHeaderView(mHeaderView,null,false);
+        mSelectedListView.addHeaderView(mHeaderView, null, false);
         mMySelectedGameListAdatpter = new MySelectedGameListAdatpter(mSelectedGames, getContext());
         mSelectedListView.setAdapter(mMySelectedGameListAdatpter);
     }
@@ -61,9 +64,19 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     protected void initData() {
         IAdGamePresenter adGamePresenter = getAdGamePresenter();
         adGamePresenter.replaceData();
-        adGamePresenter.showAdGameList();
-        ISelectedGamePresenter selectedGamePresenter = getSelectedGamePresenter();
-        selectedGamePresenter.showSelectedGameList();
+//        adGamePresenter.showAdGameList();
+//        ISelectedGamePresenter selectedGamePresenter = getSelectedGamePresenter();
+//        selectedGamePresenter.showSelectedGameList();
+    }
+
+    @Override
+    protected void initMvp() {
+        SelectedGameFragmentModle selectedGameFragmentModle = new SelectedGameFragmentModle();
+        SelectedGameFragmentPresenter selectedGameFragmentPresenter = new SelectedGameFragmentPresenter();
+        selectedGameFragmentModle.setAdGamePresenter(selectedGameFragmentPresenter);
+        selectedGameFragmentPresenter.setAdGameModel(selectedGameFragmentModle);
+        selectedGameFragmentPresenter.setAdGameView(this);
+        this.setAdGamePresenter(selectedGameFragmentPresenter);
     }
 
     @Override

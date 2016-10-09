@@ -9,14 +9,16 @@ import com.lqs.fast.gamestore.view.ISelectedGameView;
  * Created by lin on 2016/10/5.
  */
 
-public interface ISelectedGamePresenter{
+public interface ISelectedGamePresenter {
     void showSelectedGameList();
+
     void replaceData();
+
     void showDeatil(GameInfoBean bean);
 
-    ISearchGameModel getSearchGameModel();
+    ISelectedGameModel getSelectedGameModel();
 
-    void setSearchGameModel(ISearchGameModel searchGameModel);
+    void setSelectedGameModel(ISelectedGameModel searchGameModel);
 
     ISelectedGameView getSelectedGameView();
 

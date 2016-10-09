@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.utils.GsonUtil;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,11 +27,14 @@ public abstract class ABaseModel<T> implements IAsynReplaceDataModel {
     @Override
     public void ReplaceData(String url, final ReplaceDataListener listener) { //更新数据
 
-        TypeToken<T> typetoken = new TypeToken<T>() {
-        };
+//        TypeToken typetoken = new TypeToken<T>() {  //TODO
+//        };
+//        Type type = typetoken.getType();
+        Type type = getTType();
         GsonUtil.DownLoadedJsonListener<T> l = new GsonUtil.DownLoadedJsonListener<T>() {
             @Override
             public void downLoaded(T t) {
+                mData = t;
                 if (checkData(t)) {
                     listener.replacedData();
                 } else {
@@ -38,7 +42,7 @@ public abstract class ABaseModel<T> implements IAsynReplaceDataModel {
                 }
             }
         };
-        GsonUtil.downLoadJson(url, typetoken, l);
+        GsonUtil.downLoadJson(url, type, l);
     }
 
     public ABasePresenter getPresenter(String tag) { //返回presenter 的方法
@@ -53,4 +57,6 @@ public abstract class ABaseModel<T> implements IAsynReplaceDataModel {
     protected abstract boolean checkData(T t);  //检查数据下载是否成功的方法
 
     public abstract String getModelTag();
+
+    public abstract Type getTType();
 }

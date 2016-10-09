@@ -8,9 +8,11 @@ import com.lqs.fast.fast.utils.LogUtil;
 import com.lqs.fast.fast.utils.ToastUtils;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SelectedGame;
 import com.lqs.fast.gamestore.fragment.SelectedGameFragment;
 import com.lqs.fast.gamestore.model.IAdGameModel;
 import com.lqs.fast.gamestore.model.ISearchGameModel;
+import com.lqs.fast.gamestore.model.ISelectedGameModel;
 import com.lqs.fast.gamestore.model.SelectedGameFragmentModle;
 import com.lqs.fast.gamestore.view.IAdGameView;
 import com.lqs.fast.gamestore.view.ISelectedGameView;
@@ -40,8 +42,8 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
 
     @Override
     public void showSelectedGameList() {
-        ISearchGameModel searchGameModel = getSearchGameModel();
-        List<GameInfoBean> searchGameList = searchGameModel.getSearchGameList();
+        ISelectedGameModel selectedGameModel = getSelectedGameModel();
+        List<GameInfoBean> searchGameList = selectedGameModel.getSelectedGameList();
         ISelectedGameView selectedGameView = getSelectedGameView();
         selectedGameView.showSelectedGameList(searchGameList);
     }
@@ -60,7 +62,8 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
                 LogUtil.d(TAG,"数据更新错误");
             }
         };
-        getSearchGameModel().ReplaceData(Constants.ApiClient.SELECTED_GAME,listener);
+        ABaseModel<SelectedGame> selectedGameModel = (ABaseModel) getSelectedGameModel();
+        selectedGameModel.ReplaceData(Constants.ApiClient.SELECTED_GAME,listener);
     }
 
     @Override
@@ -69,13 +72,13 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
     }
 
     @Override
-    public ISearchGameModel getSearchGameModel() {
-        ISearchGameModel model = (ISearchGameModel) getModel(SelectedGameFragmentModle.TAG);
+    public ISelectedGameModel getSelectedGameModel() {
+        ISelectedGameModel model = (ISelectedGameModel) getModel(SelectedGameFragmentModle.TAG);
         return model;
     }
 
     @Override
-    public void setSearchGameModel(ISearchGameModel searchGameModel) {
+    public void setSelectedGameModel(ISelectedGameModel searchGameModel) {
         ABaseModel model = (ABaseModel) searchGameModel;
         addModel(model);
     }

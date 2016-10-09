@@ -1,5 +1,8 @@
 package com.lqs.fast.gamestore.model;
 
+import android.util.Log;
+
+import com.google.gson.reflect.TypeToken;
 import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.gamestore.app.Constants;
@@ -9,6 +12,7 @@ import com.lqs.fast.gamestore.presenter.IAdGamePresenter;
 import com.lqs.fast.gamestore.presenter.ISelectedGamePresenter;
 import com.lqs.fast.gamestore.presenter.SelectedGameFragmentPresenter;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -33,7 +37,15 @@ public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implemen
     }
 
     @Override
+    public Type getTType() {
+        Type type = new TypeToken<SelectedGame>() {
+        }.getType();
+        return type;
+    }
+
+    @Override
     public List<GameInfoBean> getAdGameList() {
+//        Log.i("mData",mData+"");
         return mData.getAd_list();
     }
 
@@ -61,7 +73,7 @@ public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implemen
     }
 
     @Override
-    public void setAdGamePresenter(ISelectedGamePresenter selectedGamePresenter) {
+    public void setSelectedGamePresenter(ISelectedGamePresenter selectedGamePresenter) {
         ABasePresenter presenter = (ABasePresenter) selectedGamePresenter;
         addPresenter(presenter);
     }
