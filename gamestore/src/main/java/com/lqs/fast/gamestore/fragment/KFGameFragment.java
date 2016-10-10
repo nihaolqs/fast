@@ -31,7 +31,8 @@ public class KFGameFragment extends ABaseFragment<KFGameFragment,KfGame>{
     @Override
     protected void initUI() {
         mTabs = (PagerSlidingTabStrip) mFragmentLauout.findViewById(R.id.fragmain_selete1_kaifu_indecator);
-        mTabs.setTextColor(0xff12cdb0);
+        int color = getResources().getColor(R.color.text_green);
+        mTabs.setTextColor(color);
         mViewPage = (ViewPager) mFragmentLauout.findViewById(R.id.fragmain_selete1_kaifu_vp);
         MyKfGameVPAdatpter myKfGameVPAdatpter = new MyKfGameVPAdatpter(getChildFragmentManager());
         mViewPage.setAdapter(myKfGameVPAdatpter);
