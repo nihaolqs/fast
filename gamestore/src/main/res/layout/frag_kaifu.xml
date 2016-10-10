@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:it="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <com.astuetz.PagerSlidingTabStrip
+            android:id="@+id/fragmain_selete1_kaifu_indecator"
+            android:layout_width="wrap_content"
+            android:layout_height="36.0dip"
+            android:layout_centerInParent="true"
+            it:pstsDividerColor="#00000000"
+            it:pstsIndicatorColor="@color/text_green"
+            it:pstsIndicatorHeight="1.0dip"
+            it:pstsTabPaddingLeftRight="30.0dip"
+            it:pstsUnderlineHeight="2.0dip" />
+
+        <ImageView
+            android:id="@+id/fragmain_selete1_search_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15.0dip"
+            android:src="@mipmap/kaifu_search" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:background="@color/line_light" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragmain_selete1_kaifu_vp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/background_gray" />
+</LinearLayout>

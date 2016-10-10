@@ -4,6 +4,7 @@ import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.KfGame;
+import com.lqs.fast.gamestore.presenter.IKfGamePresenter;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -35,5 +36,15 @@ public class KfGameFragmentModel extends ABaseModel<KfGame> implements IKfGameMo
     @Override
     public List<KfGame.KfListBean> getKfGameList() {
         return null;
+    }
+
+    @Override
+    public IKfGamePresenter getKfGamePresenter() {
+        return null;
+    }
+
+    @Override
+    public void setKfGamePresenter(IKfGamePresenter kfGamePresenter) {
+
     }
 }

@@ -2,13 +2,14 @@ package com.lqs.fast.gamestore.bean;
 
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by dell on 2016/9/29.
  */
 
-public class KfGame {
+public class KfGame implements Serializable{
 
     /**
      * errorno : 0

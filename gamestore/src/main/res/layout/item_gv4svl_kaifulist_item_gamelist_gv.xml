@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/item_kaifulist_ll"
+        android:layout_width="match_parent"
+
+        android:layout_height="70.0dip"
+        android:background="@color/white"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingLeft="15.0dip">
+
+        <RelativeLayout
+            android:id="@+id/item_kaifulist_rl_left"
+            android:layout_width="match_parent"
+            android:layout_height="60.0dip"
+            android:layout_gravity="center_vertical"
+
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:paddingRight="15.0dip">
+
+            <ImageView
+                android:id="@+id/item_kaifulist_icon_iv_left"
+                android:layout_width="50.0dip"
+                android:layout_height="50.0dip"
+                android:background="@mipmap/default_gameicon" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40.0dip"
+                android:layout_marginLeft="5.0dip"
+                android:layout_marginTop="5.0dip"
+                android:layout_toRightOf="@+id/item_kaifulist_icon_iv_left">
+
+                <TextView
+                    android:id="@+id/item_kaifulist_gamename_tv_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxEms="6"
+                    android:singleLine="true"
+                    android:text="武林乱挂"
+                    android:textColor="@color/black_3"
+                    android:textSize="13.0sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/item_kaifulist_gamename_tv_left"
+                    android:layout_marginTop="5.0dip"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="35.0dip"
+                        android:layout_height="15.0dip"
+                        android:gravity="center_vertical"
+                        android:text="新服"
+                        android:textColor="@color/black_3"
+                        android:textSize="11.0sp" />
+
+                    <TextView
+                        android:id="@+id/item_kaifulist_gamediscount_tv_left"
+                        style="@style/item_10"
+                        android:layout_width="35.0dip"
+                        android:layout_height="15.0dip"
+                        android:background="@mipmap/game_discount"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="7.0dip"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>
