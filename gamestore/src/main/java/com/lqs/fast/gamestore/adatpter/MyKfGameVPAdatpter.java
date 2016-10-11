@@ -24,7 +24,7 @@ public class MyKfGameVPAdatpter extends FragmentPagerAdapter {
             pageFragment = KFGamePageFragment.getInstance(KFGamePageFragment.class, Constants.ApiClient.KF_GAME);
             return pageFragment;
         } else if (position == 1) {
-             pageFragment = KFGamePageFragment.getInstance(KFGamePageFragment.class, Constants.ApiClient.KF_GAME);
+             pageFragment = KFGamePageFragment.getInstance(KFGamePageFragment.class, Constants.ApiClient.KF_GAME_DAY2);
         }
         return pageFragment;
     }

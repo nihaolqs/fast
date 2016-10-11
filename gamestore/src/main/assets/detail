@@ -1,0 +1,31 @@
+{
+    "errorno": 0,
+    "errormsg": "",
+    "game_info": {
+        "game_name": "青云志",
+        "show_name": "青云志",
+        "game_logo": "http://res.x7sy.com/uploads/devloper_img/20160909/41498776222090366_thumb.png",
+        "requirement": "Android 2.3.1",
+        "gamesize": "651.72",
+        "version": "1.0.2",
+        "os_type": "2",
+        "typename": "动作游戏",
+        "language": "1",
+        "online_time": "2016-09-14",
+        "game_info": "青云志》手游是电视剧《青云志》唯一正版同名手游，电视剧拍摄地实地取景，完美世界资深美术团队制作，首次引入Inferno 3D终极交互式高清视觉设计系统，打造超凡画质，完美复刻电视剧场景。音乐采用了《青云志》电视剧原声，为玩家带来360度的全3D全景沉浸式游戏体验！",
+        "download_url": "https://down.x7sy.com/game/android/115/321_1_1-0-2_20160913195053_7606.apk",
+        "atlas_img": [
+            "http://res.x7sy.com/uploads/game_img/20160909/36368727993562731790384_thumb.jpg",
+            "http://res.x7sy.com/uploads/game_img/20160909/47864599431912491890389_thumb.jpg",
+            "http://res.x7sy.com/uploads/game_img/20160909/46909345870090051990392_thumb.jpg",
+            "http://res.x7sy.com/uploads/game_img/20160909/15614221036932549690400_thumb.jpg",
+            "http://res.x7sy.com/uploads/game_img/20160909/54206898703679627790403_thumb.jpg"
+        ],
+        "gamediscount": "5.0",
+        "return_rate": "0",
+        "discount_type": "1",
+        "package_name": "com.wanmei.qyz.android.ewan.x7sy",
+        "one_game_info": "全民修真 唯爱青云",
+        "game_online": 1
+    }
+}

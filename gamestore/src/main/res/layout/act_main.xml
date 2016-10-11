@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_gray"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/main_title_rl"
+        layout="@layout/item_main_title_rl" />
+
+    <com.smwl.x7market.myview.NoHorizonScollViewpager
+        android:id="@+id/mPager"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="1.0" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:background="@color/line_shen" />
+
+    <RadioGroup
+        android:id="@+id/main_rg"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3.0dip"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/main_selete"
+            style="@style/radio_button_style"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:checked="true"
+            android:drawableTop="@drawable/main_radiobutton_selector_bg"
+            android:gravity="center_horizontal"
+            android:text="精选" />
+
+        <RadioButton
+            android:id="@+id/main_search"
+            style="@style/radio_button_style"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:drawableTop="@drawable/main_radiobutton_search_bg"
+            android:gravity="center_horizontal"
+            android:text="搜索" />
+
+        <RadioButton
+            android:id="@+id/main_manager"
+            style="@style/radio_button_style"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:drawableTop="@drawable/main_radiobutton_manage_bg"
+            android:gravity="center_horizontal"
+            android:text="管理" />
+
+        <RadioButton
+            android:id="@+id/main_help"
+            style="@style/radio_button_style"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:drawableTop="@drawable/main_radiobutton_help_bg"
+            android:gravity="center_horizontal"
+            android:text="帮助" />
+    </RadioGroup>
+</LinearLayout>

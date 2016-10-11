@@ -12,4 +12,6 @@
     <color name="background_gray">#fff2f2f2</color>
     <color name="text_green">#ff12cdb0</color>
     <color name="black_3">#ff333333</color>
+    <color name="background_green">#ff12cdb0</color>
+    <color name="gray_c">#ffcccccc</color>
 </resources>

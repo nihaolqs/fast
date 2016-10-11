@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:flowlayout="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40.0dip"
+            android:background="@color/text_green"
+            android:paddingLeft="15.0dip">
+
+            <ImageView
+                android:id="@+id/searchFrag_search"
+                android:layout_width="wrap_content"
+                android:layout_height="25.0dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:paddingBottom="2.0dip"
+                android:paddingTop="2.0dip"
+                android:src="@mipmap/fragsearch_title_search" />
+
+            <EditText
+                android:id="@+id/search_content"
+                style="@style/item_12"
+                android:layout_width="fill_parent"
+                android:layout_height="25.0dip"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/searchFrag_search"
+                android:background="@drawable/white_search_yuanjiao_bj"
+                android:cursorVisible="true"
+                android:ellipsize="end"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:hint="搜索游戏"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColor="@color/black_0"
+                android:textCursorDrawable="@drawable/edittext_color_cursor" />
+
+            <TextView
+                android:id="@+id/searchFrag_tv_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="搜索游戏"
+                android:textColor="#ff666666"
+                android:textSize="12.0sp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/searchFrag_et_clear"
+                style="@style/width_wrap_cont"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/searchFrag_search"
+                android:clickable="true"
+                android:paddingLeft="20.0dip"
+                android:paddingRight="10.0dip"
+                android:src="@mipmap/et_delete"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/searFrag_moren_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="20.0dip"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/searFrag_nothing_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="200.0dip"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@mipmap/do_fail"
+                android:drawablePadding="10.0dip"
+                android:gravity="center"
+                android:text="啥都没找到，换个词试试呗！"
+                android:textColor="@color/gray_c"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15.0dip"
+                android:layout_marginRight="15.0dip"
+                android:layout_marginTop="8.0dip"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10.0dip"
+                    android:text="大家都在搜"
+                    android:textColor="@color/text_light_gray"
+                    android:textSize="12.0sp" />
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginLeft="5.0dip"-->
+                    <!--android:layout_marginRight="5.0dip"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="0.0dip"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="1.0"-->
+                        <!--android:gravity="center">-->
+
+                        <!--<com.smwl.x7market.myview.GameAndGameNam-->
+                            <!--android:id="@+id/search_fragment_first_hotsearch"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:clickable="true" />-->
+                    <!--</RelativeLayout>-->
+
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="0.0dip"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="1.0"-->
+                        <!--android:gravity="center">-->
+
+                        <!--<com.smwl.x7market.myview.GameAndGameNam-->
+                            <!--android:id="@+id/search_fragment_second_hotsearch"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:clickable="true" />-->
+                    <!--</RelativeLayout>-->
+
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="0.0dip"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="1.0"-->
+                        <!--android:gravity="center">-->
+
+                        <!--<com.smwl.x7market.myview.GameAndGameNam-->
+                            <!--android:id="@+id/search_fragment_third_hotsearch"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:clickable="true" />-->
+                    <!--</RelativeLayout>-->
+
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="0.0dip"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="1.0"-->
+                        <!--android:gravity="center">-->
+
+                        <!--<com.smwl.x7market.myview.GameAndGameNam-->
+                            <!--android:id="@+id/search_fragment_fourth_hotsearch"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:clickable="true" />-->
+                    <!--</RelativeLayout>-->
+                <!--</LinearLayout>-->
+            </LinearLayout>
+
+            <!--<RelativeLayout-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="15.0dip"-->
+                <!--android:layout_marginRight="15.0dip">-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:text="我的搜索记录"-->
+                    <!--android:textColor="@color/text_light_gray"-->
+                    <!--android:textSize="12.0sp" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/searFrag_clear_tv"-->
+                    <!--style="@style/all_wrap_cont"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:drawableLeft="@mipmap/lajitong"-->
+                    <!--android:drawablePadding="5.0dip"-->
+                    <!--android:padding="20.0dip"-->
+                    <!--android:text="清除"-->
+                    <!--android:textColor="@color/text_light_gray"-->
+                    <!--android:textSize="12.0sp" />-->
+            <!--</RelativeLayout>-->
+
+            <!--<com.smwl.x7market.myview.FlowLayout-->
+                <!--android:id="@+id/flow_layout"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="15.0dip"-->
+                <!--android:layout_marginRight="15.0dip"-->
+                <!--flowlayout:horizontal_spacing="10.0dip"-->
+                <!--flowlayout:vertical_spacing="10.0dip" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/searFrag_success_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/frag_search_lv"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
