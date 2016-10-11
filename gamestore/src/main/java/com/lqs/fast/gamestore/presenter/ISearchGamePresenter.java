@@ -17,6 +17,8 @@ public interface ISearchGamePresenter {
 
     void showSearchedGameList();
 
+    void showSearchGameError();
+
     void showSearchHistory();
 
     void searchGame(String keyWord);

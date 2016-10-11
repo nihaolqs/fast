@@ -97,6 +97,8 @@
                 android:layout_marginTop="8.0dip"
                 android:orientation="vertical">
 
+
+
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -170,6 +172,12 @@
                             <!--android:clickable="true" />-->
                     <!--</RelativeLayout>-->
                 <!--</LinearLayout>-->
+                <GridView
+                    android:id="@+id/gv_frag_search_hotsearch"
+                    android:numColumns="4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
             <!--<RelativeLayout-->

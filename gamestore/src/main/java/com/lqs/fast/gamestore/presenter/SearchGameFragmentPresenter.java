@@ -2,11 +2,14 @@ package com.lqs.fast.gamestore.presenter;
 
 import android.content.Context;
 
+import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
+import com.lqs.fast.fast.base.view.ABaseView;
 import com.lqs.fast.fast.utils.ToastUtils;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.fragment.SearchGameFragment;
 import com.lqs.fast.gamestore.model.ISearchGameModel;
 import com.lqs.fast.gamestore.model.SearchGameFragmentModle;
 import com.lqs.fast.gamestore.view.ISearchGameView;
@@ -71,6 +74,12 @@ public class SearchGameFragmentPresenter extends ABasePresenter<SearchGameFragme
     }
 
     @Override
+    public void showSearchGameError() {
+        ISearchGameView searchGameView = getSearchGameView();
+        searchGameView.showSearchedError();
+    }
+
+    @Override
     public void showSearchHistory() {
         ISearchGameModel searchGameModel = getSearchGameModel();
         ISearchGameView searchGameView = getSearchGameView();
@@ -80,26 +89,44 @@ public class SearchGameFragmentPresenter extends ABasePresenter<SearchGameFragme
 
     @Override
     public void searchGame(String keyWord) {
+        ISearchGameView searchGameView = getSearchGameView();
+        ISearchGameModel searchGameModel = getSearchGameModel();
+        String searchType = searchGameView.getSearchType();
+        ReplaceDataListener listener = new ReplaceDataListener() {
+            @Override
+            public void replacedData() {
+                showSearchedGameList();
+            }
 
+            @Override
+            public void replaceDataError() {
+                showSearchGameError();
+            }
+        };
+        searchGameModel.searchGame(keyWord,listener,searchType);
     }
 
     @Override
     public void setSearchGameModel(ISearchGameModel searchGameModel) {
-
+        ABaseModel model = (ABaseModel) searchGameModel;
+        addModel(model);
     }
 
     @Override
     public ISearchGameModel getSearchGameModel() {
-        return null;
+        ISearchGameModel model = (ISearchGameModel) getModel(SearchGameFragmentModle.TAG);
+        return model;
     }
 
     @Override
     public void setSerachGameView(ISearchGameView serachGameView) {
-
+        ABaseView view = (ABaseView) serachGameView;
+        addView(view);
     }
 
     @Override
     public ISearchGameView getSearchGameView() {
-        return null;
+        ISearchGameView view = (ISearchGameView) getView(SearchGameFragment.TAG);
+        return view;
     }
 }
