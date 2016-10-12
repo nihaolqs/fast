@@ -8,7 +8,7 @@ import java.util.List;
  * Created by dell on 2016/9/29.
  */
 
-public class SearchGame {
+public class SearchGame implements ISearch{
 
     /**
      * errorno : 0
@@ -45,6 +45,11 @@ public class SearchGame {
 
     public String getErrormsg() {
         return errormsg;
+    }
+
+    @Override
+    public List<GameInfoBean> getSearched() {
+        return selected_list;
     }
 
     public void setErrormsg(String errormsg) {

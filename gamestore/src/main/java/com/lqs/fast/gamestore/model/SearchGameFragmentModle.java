@@ -8,6 +8,8 @@ import com.lqs.fast.fast.utils.GsonUtil;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.HotSearch;
+import com.lqs.fast.gamestore.bean.ISearch;
+import com.lqs.fast.gamestore.bean.KfGameSearch;
 import com.lqs.fast.gamestore.bean.SearchGame;
 import com.lqs.fast.gamestore.presenter.ISearchGamePresenter;
 import com.lqs.fast.gamestore.presenter.SearchGameFragmentPresenter;
@@ -20,11 +22,11 @@ import java.util.List;
  * Created by dell on 2016/9/30.
  */
 
-public class SearchGameFragmentModle extends ABaseModel<HotSearch> implements ISearchGameModel {
+public class SearchGameFragmentModle<T extends ISearch> extends ABaseModel<HotSearch> implements ISearchGameModel {
 
     public static final String TAG = "SearchGameFragmentModle";
 
-    private SearchGame mSearchGameData;
+    private T mSearchGameData;
 
     @Override
     protected boolean checkData(HotSearch searchGame) {
@@ -40,7 +42,7 @@ public class SearchGameFragmentModle extends ABaseModel<HotSearch> implements IS
 
     @Override
     public Type getTType() {
-        TypeToken<SearchGame> typeToken = new TypeToken<SearchGame>() {
+        TypeToken<HotSearch> typeToken = new TypeToken<HotSearch>() {
         };
         Type type = typeToken.getType();
         return type;
@@ -49,7 +51,7 @@ public class SearchGameFragmentModle extends ABaseModel<HotSearch> implements IS
 
     @Override
     public List<GameInfoBean> getSearchGameList() {
-        List<GameInfoBean> selected_list = mSearchGameData.getSelected_list();
+        List<GameInfoBean> selected_list = mSearchGameData.getSearched();
         return selected_list;
     }
 
@@ -79,16 +81,16 @@ public class SearchGameFragmentModle extends ABaseModel<HotSearch> implements IS
     @Override
     public void searchGame(String keyWord, final ReplaceDataListener listener, String searchType) {
         String searchUrl = null;
-        if(searchType == Constants.Type.SEARCH_GAME){
+        if(searchType.equals(Constants.Type.SEARCH_GAME)){
             searchUrl = Constants.ApiClient.SEARCH_GAME;
-        }else if(searchType == Constants.Type.SEARCH_KF){
+        }else if(searchType.equals(Constants.Type.SEARCH_KF)){
             searchUrl = Constants.ApiClient.SEARCH_KF;
         }
         if(searchUrl != null){
 
-            GsonUtil.DownLoadedJsonListener<SearchGame> l = new GsonUtil.DownLoadedJsonListener<SearchGame>() {
+            GsonUtil.DownLoadedJsonListener<T> l = new GsonUtil.DownLoadedJsonListener<T>() {
                 @Override
-                public void downLoaded(SearchGame searchGame) {
+                public void downLoaded(T searchGame) {
                     mSearchGameData = searchGame;
                     boolean b = checkSearchGameData(searchGame);
                     if(b){
@@ -98,14 +100,24 @@ public class SearchGameFragmentModle extends ABaseModel<HotSearch> implements IS
                     }
                 }
             };
-            GsonUtil.downLoadJson(searchUrl,SearchGame.class,l);
+            Class searchClass = getSearchClass(searchType);
+            GsonUtil.downLoadJson(searchUrl,searchClass,l);
         }
     }
 
-    private boolean checkSearchGameData(SearchGame searchGame)
+    private boolean checkSearchGameData(T searchGame)
     {
         int errorno = searchGame.getErrorno();
         int successful = Constants.ApiClient.SUCCESSFUL;
         return errorno == successful;
+    }
+
+    private Class getSearchClass(String searchType)
+    {
+        if(searchType.equals(Constants.Type.SEARCH_GAME)){
+            return SearchGame.class;
+        }else {
+            return KfGameSearch.class;
+        }
     }
 }

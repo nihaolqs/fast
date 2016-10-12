@@ -8,7 +8,7 @@ import java.util.List;
  * Created by dell on 2016/9/30.
  */
 
-public class KfGameSearch {
+public class KfGameSearch implements ISearch{
 
     /**
      * errorno : 0
@@ -46,6 +46,11 @@ public class KfGameSearch {
 
     public String getErrormsg() {
         return errormsg;
+    }
+
+    @Override
+    public List<GameInfoBean> getSearched() {
+        return kf_list;
     }
 
     public void setErrormsg(String errormsg) {

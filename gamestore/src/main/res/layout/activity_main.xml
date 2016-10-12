@@ -10,5 +10,14 @@
         android:layout_height="match_parent"
         android:id="@+id/container">
 
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:textColor="#000000"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:id="@+id/textView"
+            android:padding="5dp"
+            android:background="@drawable/green_deep_hollow_round_bg"/>
     </FrameLayout>
 </RelativeLayout>
