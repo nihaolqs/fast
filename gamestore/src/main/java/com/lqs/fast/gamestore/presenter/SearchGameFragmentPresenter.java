@@ -88,10 +88,11 @@ public class SearchGameFragmentPresenter extends ABasePresenter<SearchGameFragme
     }
 
     @Override
-    public void searchGame(String keyWord) {
+    public void searchGame() {
         ISearchGameView searchGameView = getSearchGameView();
         ISearchGameModel searchGameModel = getSearchGameModel();
         String searchType = searchGameView.getSearchType();
+        String keyWord = searchGameView.getSearchContent();
         ReplaceDataListener listener = new ReplaceDataListener() {
             @Override
             public void replacedData() {

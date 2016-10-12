@@ -24,4 +24,6 @@ public interface ISearchGameView {
     ISearchGamePresenter getSearchGamePresenter();
 
     String getSearchType();
+
+    String getSearchContent();
 }

@@ -21,7 +21,7 @@ public interface ISearchGamePresenter {
 
     void showSearchHistory();
 
-    void searchGame(String keyWord);
+    void searchGame();
 
     void setSearchGameModel(ISearchGameModel searchGameModel);
 

@@ -1,6 +1,10 @@
 package com.lqs.fast.gamestore.fragment;
 
+import android.text.InputType;
+import android.text.method.CharacterPickerDialog;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +44,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     private LinearLayout mLlsearFragMoren;
     private TextView mTvSearFragNothing;
     private ImageView mIvSearchFragSearch;
+    private EditText mEtSearchContent;
 
     @Override
     protected void initMvp() {
@@ -76,7 +81,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
             @Override
             public void onClick(View v) {
                 ISearchGamePresenter presenter = getSearchGamePresenter();
-                presenter.searchGame("青云志");
+                presenter.searchGame();
             }
         });
     }
@@ -86,6 +91,20 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         mTvSearFragNothing = (TextView) mFragmentLauout.findViewById(R.id.searFrag_nothing_tv);
 
         mIvSearchFragSearch = (ImageView) mFragmentLauout.findViewById(R.id.searchFrag_search);
+
+        mEtSearchContent = (EditText) mFragmentLauout.findViewById(R.id.search_content);
+
+        mEtSearchContent.setInputType(InputType.TYPE_NULL);
+
+        mEtSearchContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEtSearchContent.setInputType(InputType.TYPE_CLASS_TEXT);
+                mEtSearchContent.requestFocus();
+            }
+        });
+
+
     }
 
     private void initLvSearched() {
@@ -98,6 +117,16 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         mGvHotSearch = (GridView) mFragmentLauout.findViewById(R.id.gv_frag_search_hotsearch);
         mMyHotSearchAdatpter = new MyHotSearchAdatpter(mHotCearchGame, getContext());
         mGvHotSearch.setAdapter(mMyHotSearchAdatpter);
+        mGvHotSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GameInfoBean gameInfoBean = mHotCearchGame.get(position);
+                String game_name = gameInfoBean.getGame_name();
+                mEtSearchContent.setText(game_name);
+                ISearchGamePresenter presenter = getSearchGamePresenter();
+                presenter.searchGame();
+            }
+        });
     }
 
 
@@ -158,5 +187,10 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     @Override
     public String getSearchType() {
         return mData;
+    }
+
+    @Override
+    public String getSearchContent() {
+        return mEtSearchContent.getText().toString();
     }
 }
