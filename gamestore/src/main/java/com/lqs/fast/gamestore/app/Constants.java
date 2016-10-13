@@ -28,5 +28,7 @@ public final class Constants {
         public static final String KF_GAME_DAY2 ="https://market.x7sy.com/game/gamekf_day?day=2&os_type=2&sign=154c62d07017cea38aabb20bad2886a5";
 
         public static final String HOT_SEARCH = "https://market.x7sy.com/game/hot_search?stime=1476170233603&os_type=2&sign=7e92209760986866f1eb37bbc561709b";
+
+        public static final String GAME_DETAIL = "https://market.x7sy.com/game/get_game_info?gid=321&sign=e556d2057cb2a1fdd39ab7f821f253a4";
     }
 }

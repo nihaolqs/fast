@@ -141,39 +141,46 @@
                     android:paddingBottom="10.0dip"
                     android:paddingTop="10.0dip">
 
-                    <ImageView
-                        android:id="@+id/gameinfo_iv_1"
-                        android:layout_width="135.0dip"
-                        android:layout_height="240.0dip"
-                        android:background="@mipmap/defalut_img" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/gameinfo_iv_1"-->
+                        <!--android:layout_width="135.0dip"-->
+                        <!--android:layout_height="240.0dip"-->
+                        <!--android:background="@mipmap/defalut_img" />-->
 
-                    <ImageView
-                        android:id="@+id/gameinfo_iv_2"
-                        android:layout_width="135.0dip"
-                        android:layout_height="240.0dip"
-                        android:layout_marginLeft="10.0dip"
-                        android:background="@mipmap/defalut_img" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/gameinfo_iv_2"-->
+                        <!--android:layout_width="135.0dip"-->
+                        <!--android:layout_height="240.0dip"-->
+                        <!--android:layout_marginLeft="10.0dip"-->
+                        <!--android:background="@mipmap/defalut_img" />-->
 
-                    <ImageView
-                        android:id="@+id/gameinfo_iv_3"
-                        android:layout_width="135.0dip"
-                        android:layout_height="240.0dip"
-                        android:layout_marginLeft="10.0dip"
-                        android:background="@mipmap/defalut_img" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/gameinfo_iv_3"-->
+                        <!--android:layout_width="135.0dip"-->
+                        <!--android:layout_height="240.0dip"-->
+                        <!--android:layout_marginLeft="10.0dip"-->
+                        <!--android:background="@mipmap/defalut_img" />-->
 
-                    <ImageView
-                        android:id="@+id/gameinfo_iv_4"
-                        android:layout_width="135.0dip"
-                        android:layout_height="240.0dip"
-                        android:layout_marginLeft="10.0dip"
-                        android:background="@mipmap/defalut_img" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/gameinfo_iv_4"-->
+                        <!--android:layout_width="135.0dip"-->
+                        <!--android:layout_height="240.0dip"-->
+                        <!--android:layout_marginLeft="10.0dip"-->
+                        <!--android:background="@mipmap/defalut_img" />-->
 
-                    <ImageView
-                        android:id="@+id/gameinfo_iv_5"
-                        android:layout_width="135.0dip"
-                        android:layout_height="240.0dip"
-                        android:layout_marginLeft="10.0dip"
-                        android:background="@mipmap/defalut_img" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/gameinfo_iv_5"-->
+                        <!--android:layout_width="135.0dip"-->
+                        <!--android:layout_height="240.0dip"-->
+                        <!--android:layout_marginLeft="10.0dip"-->
+                        <!--android:background="@mipmap/defalut_img" />-->
+                    <android.support.v7.widget.RecyclerView
+
+                        android:id="@+id/rv_gameinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    </android.support.v7.widget.RecyclerView>
                 </LinearLayout>
             </HorizontalScrollView>
 
