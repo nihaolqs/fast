@@ -10,7 +10,7 @@
         android:id="@+id/main_title_rl"
         layout="@layout/item_main_title_rl" />
 
-    <com.smwl.x7market.myview.NoHorizonScollViewpager
+    <android.support.v4.view.ViewPager
         android:id="@+id/mPager"
         android:layout_width="fill_parent"
         android:layout_height="0.0dip"

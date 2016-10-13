@@ -150,6 +150,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     public void showHotSearchGameList(List<GameInfoBean> gameList) {
         mLlsearFragMoren.setVisibility(View.VISIBLE);
         mTvSearFragNothing.setVisibility(View.GONE);
+        mHotCearchGame.clear();
         mHotCearchGame.addAll(gameList);
         mMyHotSearchAdatpter.notifyDataSetChanged();
     }
@@ -157,6 +158,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     @Override
     public void showSearchedGameList(List<GameInfoBean> gameList) {
         mLlsearFragMoren.setVisibility(View.GONE);
+        mSearchedGame.clear();
         mSearchedGame.addAll(gameList);
         mMyLvSearchedAdatpter.notifyDataSetChanged();
     }
