@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="90.0dip">
+
+    <RelativeLayout
+        android:id="@+id/item_download_left"
+        android:layout_width="100.0dip"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/item_download_iv_gameicon"
+            android:layout_width="70.0dip"
+            android:layout_height="70.0dip"
+            android:layout_centerVertical="true"
+            android:layout_margin="15.0dip"
+            android:src="@mipmap/default_gameicon" />
+
+        <ImageView
+            android:id="@+id/item_download_iv_delete"
+            android:layout_width="20.0dip"
+            android:layout_height="20.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10.0dip"
+            android:clickable="true"
+            android:src="@mipmap/download_delete"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/item_download_left"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_download_tv_gamename"
+            style="@style/item_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5.0dip"
+            android:text="关门放吕布"
+            android:textColor="@color/black_0" />
+
+        <RelativeLayout
+            android:id="@+id/item_download_rl_center_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7.0dip">
+
+            <TextView
+                android:id="@+id/item_download_tv_internetspeed"
+                style="@style/item_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="213KB/S"
+                android:textColor="@color/text_green" />
+
+            <TextView
+                android:id="@+id/item_download_tv_download_state"
+                style="@style/item_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下载完成"
+                android:textColor="@color/text_green"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/item_download_rl_center_buttom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3.0dip">
+
+            <TextView
+                android:id="@+id/item_download_tv_downloadding"
+                style="@style/item_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0MB/88MB"
+                android:textColor="@color/text_green" />
+
+            <TextView
+                android:id="@+id/item_download_tv_install_state"
+                style="@style/item_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正在安装。。。"
+                android:textColor="@color/text_green"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_download_iv_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15.0dip"
+        android:padding="20.0dip"
+        android:src="@mipmap/download_begin"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_download_tv_state"
+        android:layout_width="50.0dip"
+        android:layout_height="50.0dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5.0dip"
+        android:layout_marginRight="10.0dip"
+        android:background="@mipmap/quan"
+        android:clickable="true"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/text_green" />
+
+    <ImageView
+        android:id="@+id/item_download_iv_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15.0dip"
+        android:padding="20.0dip"
+        android:src="@mipmap/download_pause"
+        android:visibility="gone" />
+</RelativeLayout>
