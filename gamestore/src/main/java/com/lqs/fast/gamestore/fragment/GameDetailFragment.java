@@ -1,7 +1,10 @@
 package com.lqs.fast.gamestore.fragment;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
@@ -20,6 +23,20 @@ import com.lqs.fast.gamestore.view.IGameDetailView;
 
 public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String> implements IGameDetailView {
     public static final String TAG = "GameDetailFragment";
+    private ImageView mIvGameIcon;
+    private RelativeLayout mTvDiscount;
+    private RecyclerView mRvGameImage;
+    private TextView mTvGameShowName;
+    private TextView mTvOneWord;
+    private TextView mTvDiscount2;
+    private TextView mTvSendMoney;
+    private TextView mTvIntroduction;
+    private TextView mTvGameSize;
+    private TextView mTvGameVersion;
+    private TextView mTvAndroidSystem;
+    private TextView mTvGameType;
+    private TextView mTvGameLanguage;
+    private TextView mTvOnlineTime;
 
     @Override
     protected void initMvp() {
@@ -34,31 +51,36 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
     @Override
     protected void initUI() {
         initFindView();
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        mRvGameImage.setAdapter();
     }
 
     private void initFindView() {
-        ImageView mIvGameIcon = (ImageView) mFragmentLauout.findViewById(R.id.gameinfo_iv_gameicon);
-        mFragmentLauout.findViewById(R.id.gameinfo_tv_gamename)
-        mFragmentLauout.findViewById(R.id.gameinfo_tv_oneword)
-        mFragmentLauout.findViewById(R.id.gameinfo_tv_discount)
-        mFragmentLauout.findViewById(R.id.gameinfo_tv_discount2)
-        mFragmentLauout.findViewById(R.id.gameinfo_tv_send_money)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
-        mFragmentLauout.findViewById(R.id.)
+        mIvGameIcon = (ImageView) mFragmentLauout.findViewById(R.id.gameinfo_iv_gameicon);
+        mTvDiscount = (RelativeLayout) mFragmentLauout.findViewById(R.id.gameinfo_tv_discount);
+        mRvGameImage = (RecyclerView) mFragmentLauout.findViewById(R.id.rv_gameimage);
+        mTvGameShowName = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_gamename);
+        mTvOneWord = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_oneword);
+        mTvDiscount2 = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_discount2);
+        mTvSendMoney = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_send_money);
+        mTvIntroduction = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_introduction);
+//      TextViewragmentLauout.findViewById(R.id.gameinfo_tv_introduction);
+        mTvGameSize = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_gamesize);
+        mTvGameVersion = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_gameversion);
+        mTvAndroidSystem = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_androidsystem);
+        mTvGameType = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_gametype);
+        mTvGameLanguage = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_gamelanguage);
+        mTvOnlineTime = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_online_time);
+
     }
 
     @Override
     protected void initData() {
-
+        IGameDetailPresenter presenter = getGameDetailPresenter();
+        presenter.replaceData();
     }
 
     @Override

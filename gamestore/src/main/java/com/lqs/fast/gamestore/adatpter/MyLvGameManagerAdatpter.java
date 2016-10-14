@@ -30,7 +30,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<GameInfoBean,MyLvGame
 
     @Override
     protected int[] getItemResId() {
-        return new int[0];
+        return new int[]{1,2};
     }
 
     @Override
