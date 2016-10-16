@@ -29,19 +29,12 @@ public class MyRvGameImageAdatpter extends ABaseRecyclerViewAdapter<MyRvGameImag
     @Override
     protected int getDataType(GameInfoBean bean) {
 
-        //todo 错误
-//        String download_url = bean.getDownload_url();
-//        SingleFileDownLoadUtils singleFileDownLoadUtils = SingleFileDownLoadUtils.getInstance(mContext, 2);
-//        int downLoadState = singleFileDownLoadUtils.getDownLoadState(download_url);
-//        if (downLoadState == SingleFileDownLoadUtils.PROGRESS) {
-//            return 1;
-//        }
-        return 0;
+
     }
 
     @Override
     protected int[] getItemLayoutResID() {
-        return new int[]{R.layout.item_manager_installed_rl, R.layout.item_manager_download_rl};
+
     }
 
     @Override

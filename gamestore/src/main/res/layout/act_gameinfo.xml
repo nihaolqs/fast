@@ -342,9 +342,11 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
-        android:layout_alignParentBottom="true"
         android:background="@color/background_gray"
-        android:paddingBottom="5.0dip">
+        android:paddingBottom="5.0dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <!--<com.smwl.x7market.myview.ProgressButton-->
             <!--android:id="@+id/gameinfo_btn_pb"-->
