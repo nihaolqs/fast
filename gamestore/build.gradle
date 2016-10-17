@@ -22,6 +22,12 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -31,4 +37,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':fast_framework')
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }

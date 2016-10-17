@@ -28,7 +28,7 @@ public abstract class ABaseRecyclerViewAdapter<VH extends RecyclerView.ViewHolde
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] resIDs = getItemLayoutResID();
         int resID = resIDs[viewType];
-        View itemLayout = mLayoutInflater.inflate(resID, parent);
+        View itemLayout = mLayoutInflater.inflate(resID, null);
         VH viewHolder = getViewHolderInstance(itemLayout);
         return viewHolder;
     }

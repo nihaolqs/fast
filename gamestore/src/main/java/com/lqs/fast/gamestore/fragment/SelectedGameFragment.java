@@ -4,6 +4,7 @@ package com.lqs.fast.gamestore.fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
@@ -50,6 +51,13 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         mSelectedListView.addHeaderView(mHeaderView, null, false);
         mMySelectedGameListAdatpter = new MySelectedGameListAdatpter(mSelectedGames, getContext());
         mSelectedListView.setAdapter(mMySelectedGameListAdatpter);
+        mSelectedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GameInfoBean gameInfoBean = mSelectedGames.get(position);
+                getSelectedGamePresenter().showDeatil(gameInfoBean);
+            }
+        });
     }
 
     private void initHeaderView() {
@@ -72,7 +80,7 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     @Override
     protected void initMvp() {
         SelectedGameFragmentModle selectedGameFragmentModle = new SelectedGameFragmentModle();
-        SelectedGameFragmentPresenter selectedGameFragmentPresenter = new SelectedGameFragmentPresenter();
+        SelectedGameFragmentPresenter selectedGameFragmentPresenter = new SelectedGameFragmentPresenter(getContext());
         selectedGameFragmentModle.setAdGamePresenter(selectedGameFragmentPresenter);
         selectedGameFragmentPresenter.setAdGameModel(selectedGameFragmentModle);
         selectedGameFragmentPresenter.setAdGameView(this);

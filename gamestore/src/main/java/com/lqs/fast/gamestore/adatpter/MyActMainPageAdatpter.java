@@ -5,8 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.lqs.fast.gamestore.app.Constants;
+import com.lqs.fast.gamestore.bean.GameDetail;
 import com.lqs.fast.gamestore.bean.SearchGame;
 import com.lqs.fast.gamestore.fragment.FreaturedGameFragment;
+import com.lqs.fast.gamestore.fragment.GameDetailFragment;
 import com.lqs.fast.gamestore.fragment.SearchGameFragment;
 
 /**
@@ -31,7 +33,8 @@ public class MyActMainPageAdatpter extends FragmentPagerAdapter{
             }
             break;
             case 2:{
-                fragment = FreaturedGameFragment.getInstance(FreaturedGameFragment.class, "");
+                fragment = GameDetailFragment.getInstance(GameDetailFragment.class, "391");
+//                fragment = FreaturedGameFragment.getInstance(FreaturedGameFragment.class, "");
             }
             break;
             case 3:{

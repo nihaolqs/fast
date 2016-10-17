@@ -1,13 +1,17 @@
 package com.lqs.fast.gamestore.bean;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by dell on 2016/9/29.
  */
-
-public class GameInfoBean implements Serializable {
+@Table(name = "download_game")
+public class GameInfoBean extends Model implements Serializable {
 
     /**
      * guid : 391
@@ -24,17 +28,26 @@ public class GameInfoBean implements Serializable {
      * download_url : https://down.x7sy.com/game/android/74/391_1_1-6_20160926190329_7369.apk
      */
 
+    @Column
     private String guid;
+    @Column
     private String game_logo;
+    @Column
     private String game_name;
+
     private String show_name;
+    @Column
     private String one_game_info;
+    @Column
     private String package_name;
     private String gamediscount;
     private String return_rate;
     private String discount_type;
+    @Column
     private String gamesize;
+    @Column
     private String typename;
+    @Column
     private String download_url;
     private List<String> time_list;
     private String ad_img;

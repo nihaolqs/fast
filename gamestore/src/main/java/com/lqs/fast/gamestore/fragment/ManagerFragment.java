@@ -41,7 +41,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment,String> imple
     }
 
     private void initListView() {
-        mLvGameManager.setAdapter();
+        mLvGameManager.setAdapter(null);
     }
 
     private void initFindView() {

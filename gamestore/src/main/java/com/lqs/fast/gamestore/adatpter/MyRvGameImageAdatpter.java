@@ -3,15 +3,11 @@ package com.lqs.fast.gamestore.adatpter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.lqs.fast.fast.base.adatpter.ABaseRecyclerViewAdapter;
-import com.lqs.fast.fast.utils.SingleFileDownLoadUtils;
+import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.gamestore.R;
-import com.lqs.fast.gamestore.bean.GameInfoBean;
 
 import java.util.List;
 
@@ -19,22 +15,23 @@ import java.util.List;
  * Created by dell on 2016/10/14.
  */
 
-public class MyRvGameImageAdatpter extends ABaseRecyclerViewAdapter<MyRvGameImageAdatpter.MyViewHolder, GameInfoBean> {
+public class MyRvGameImageAdatpter extends ABaseRecyclerViewAdapter<MyRvGameImageAdatpter.MyViewHolder, String> {
 
+    private ItemOnClickListener mOnclickListener;
 
-    public MyRvGameImageAdatpter(Context context, List<GameInfoBean> list) {
+    public MyRvGameImageAdatpter(Context context, List<String> list) {
         super(context, list);
     }
 
     @Override
-    protected int getDataType(GameInfoBean bean) {
-
-
+    protected int getDataType(String bean) {
+        return 0;
     }
 
     @Override
     protected int[] getItemLayoutResID() {
 
+        return new int[]{R.layout.item_rv_gameimage};
     }
 
     @Override
@@ -44,63 +41,37 @@ public class MyRvGameImageAdatpter extends ABaseRecyclerViewAdapter<MyRvGameImag
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        int itemViewType = getItemViewType(position);
-        if (itemViewType == 0) {
-
-        } else {
-
-        }
+        String url = mDataList.get(position);
+        ImageUtils.LoadImage(holder.mGameImage, url);
+        holder.position = position;
     }
 
-    protected class MyViewHolder extends RecyclerView.ViewHolder {
+    public void setItemOnclickListener(ItemOnClickListener itemOnclickListener){
+        this.mOnclickListener = itemOnclickListener;
+    }
 
-        ImageView mIvGameIcon;
-        TextView mTvGameName;
-        TextView mTvGameSize;
-        TextView mTvGameType;
-        TextView mTvGameDescribe;
-        TextView mIvState;
-        LinearLayout mLlMoreoption;
-        TextView mTvOpen;
-        TextView mTvUnload;
 
-        //        ImageView mIvGameIcon;
-        ImageView mIvDelete;
-        //        TextView mTvGameName;
-        TextView mTvSpeed;
-        TextView mTvDownloadState;
-        TextView mTvDownloadding;
-        TextView mTvInstallState;
-        ImageView mIvBegin;
-        TextView mTvState;
-        ImageView mIvPause;
+    protected class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+
+        ImageView mGameImage;
+        int position;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            //type 0
-            mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_installed_iv_gameicon);
-            mTvGameName = (TextView) itemView.findViewById(R.id.item_installed_tv_gamename);
-            mTvGameSize = (TextView) itemView.findViewById(R.id.item_installed_tv_gamesize);
-            mTvGameType = (TextView) itemView.findViewById(R.id.item_installed_tv_gametype);
-            mTvGameDescribe = (TextView) itemView.findViewById(R.id.item_installed_tv_game_describe);
-            mIvState = (TextView) itemView.findViewById(R.id.item_installed_iv_state);
-            mLlMoreoption = (LinearLayout) itemView.findViewById(R.id.item_installed_ll_moreoption);
-            mTvOpen = (TextView) itemView.findViewById(R.id.item_installed_tv_open);
-            mTvUnload = (TextView) itemView.findViewById(R.id.item_installed_tv_unload);
-
-            //type 1
-
-            mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_download_iv_gameicon);
-            mIvDelete = (ImageView) itemView.findViewById(R.id.item_download_iv_delete);
-            mTvGameName = (TextView) itemView.findViewById(R.id.item_download_tv_gamename);
-            mTvSpeed = (TextView) itemView.findViewById(R.id.item_download_tv_internetspeed);
-            mTvDownloadState = (TextView) itemView.findViewById(R.id.item_download_tv_download_state);
-            mTvDownloadding = (TextView) itemView.findViewById(R.id.item_download_tv_downloadding);
-            mTvInstallState = (TextView) itemView.findViewById(R.id.item_download_tv_install_state);
-            mIvBegin = (ImageView) itemView.findViewById(R.id.item_download_iv_begin);
-            mTvState = (TextView) itemView.findViewById(R.id.item_download_tv_state);
-            mIvPause = (ImageView) itemView.findViewById(R.id.item_download_iv_pause);
+            mGameImage = (ImageView) itemView.findViewById(R.id.gameinfo_iv);
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            if(mOnclickListener != null){
+                mOnclickListener.itemOnclick(itemView,position);
+            }
+        }
+    }
+
+    public interface ItemOnClickListener{
+        void itemOnclick(View view,int position);
     }
 }

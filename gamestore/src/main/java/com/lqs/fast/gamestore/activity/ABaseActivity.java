@@ -1,4 +1,4 @@
-package com.lqs.fast.fast.base_ui;
+package com.lqs.fast.gamestore.activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -13,8 +13,6 @@ public abstract class ABaseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
         setContentView(getLayoutResID());
-//        initUI();
-//        initData();
     }
 
     protected abstract void initData();

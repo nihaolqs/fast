@@ -1,11 +1,17 @@
 package com.lqs.fast.gamestore.presenter;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base.view.ABaseView;
 import com.lqs.fast.fast.utils.LogUtil;
 import com.lqs.fast.fast.utils.ToastUtils;
+import com.lqs.fast.gamestore.MainActivity;
+import com.lqs.fast.gamestore.activity.GameDetailActivity;
+import com.lqs.fast.gamestore.activity.MainAct;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.SelectedGame;
@@ -26,7 +32,12 @@ import java.util.List;
 public class SelectedGameFragmentPresenter extends ABasePresenter implements IAdGamePresenter,ISelectedGamePresenter{
 
     public static final String TAG ="SelectedGameFragmentPresenter";
+    private Context mContext;
 
+    public SelectedGameFragmentPresenter(Context context)
+    {
+        this.mContext = context;
+    }
     @Override
     public String getPresenterTag() {
         return SelectedGameFragmentPresenter.TAG;
@@ -69,6 +80,9 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
     @Override
     public void showDeatil(GameInfoBean bean) {
 
+        Intent intent = new Intent(mContext, GameDetailActivity.class);
+        intent.putExtra(GameDetailActivity.GUID_KEY,bean.getGuid());
+        mContext.startActivity(intent);
     }
 
     @Override
