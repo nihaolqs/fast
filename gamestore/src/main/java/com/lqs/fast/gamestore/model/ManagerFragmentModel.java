@@ -1,11 +1,14 @@
 package com.lqs.fast.gamestore.model;
 
+import com.activeandroid.Model;
+import com.activeandroid.query.Select;
 import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IManagerPresenter;
+import com.lqs.fast.gamestore.presenter.ManagerFragmentPresenter;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -23,7 +26,7 @@ public class ManagerFragmentModel extends ABaseModel<List<SaveGameInfoBean>>  im
 
     @Override
     public String getModelTag() {
-        return null;
+        return TAG;
     }
 
     @Override
@@ -43,7 +46,8 @@ public class ManagerFragmentModel extends ABaseModel<List<SaveGameInfoBean>>  im
 
     @Override
     public List<SaveGameInfoBean> getDownloadedGame() {
-        return null;
+        List<SaveGameInfoBean> execute = new Select().from(SaveGameInfoBean.class).execute();
+        return execute;
     }
 
     @Override
@@ -63,11 +67,12 @@ public class ManagerFragmentModel extends ABaseModel<List<SaveGameInfoBean>>  im
 
     @Override
     public IManagerPresenter getManagerPresenter() {
-        return null;
+        ABasePresenter presenter = getPresenter(ManagerFragmentPresenter.TAG);
+        return (IManagerPresenter) presenter;
     }
 
     @Override
     public void serManagerPresenter(IManagerPresenter managerPresenter) {
-
+        addPresenter((ABasePresenter) managerPresenter);
     }
 }

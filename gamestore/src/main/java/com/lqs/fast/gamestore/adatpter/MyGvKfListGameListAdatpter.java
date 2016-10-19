@@ -33,7 +33,7 @@ public class MyGvKfListGameListAdatpter extends ABaseAdatpter<GameInfoBean,MyGvK
     }
 
     @Override
-    protected void bindViewHolder(View convertView, MyViewHolder holder) {
+    protected void bindViewHolder(View convertView, MyViewHolder holder, int position) {
         holder.ivGameIcon = (ImageView) convertView.findViewById(R.id.item_kaifulist_icon_iv_left);
         holder.tvGameShowName = (TextView) convertView.findViewById(R.id.item_kaifulist_gamename_tv_left);
         holder.tvGameDiscount = (TextView) convertView.findViewById(R.id.item_kaifulist_gamediscount_tv_left);

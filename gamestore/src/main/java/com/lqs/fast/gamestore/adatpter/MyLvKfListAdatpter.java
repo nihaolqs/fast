@@ -32,7 +32,7 @@ public class MyLvKfListAdatpter extends ABaseAdatpter<KfGame.KfListBean,MyLvKfLi
     }
 
     @Override
-    protected void bindViewHolder(View convertView, MyViewHolder holder) {
+    protected void bindViewHolder(View convertView, MyViewHolder holder, int position) {
         holder.mTvKfListTime = (TextView) convertView.findViewById(R.id.item_kaifulist_time_tv);
         holder.mGvKfListGameList = (GridView4ScrollView_line) convertView.findViewById(R.id.gv4svl_kaifulist_item_gamelis_gv);
     }

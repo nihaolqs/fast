@@ -8,15 +8,19 @@ import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.fast.utils.MvpUtils;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.adatpter.MyLvGameManagerAdatpter;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.model.ManagerFragmentModel;
+import com.lqs.fast.gamestore.presenter.DownLoadPresenter;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.presenter.IManagerPresenter;
 import com.lqs.fast.gamestore.presenter.ManagerFragmentPresenter;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
 import com.lqs.fast.gamestore.view.IDownLoadView;
 import com.lqs.fast.gamestore.view.IManagerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +34,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment,String> imple
     private TextView mTvAlready;
     private TextView mTvAvailable;
 
-
+    private ArrayList<SaveGameInfoBean> mGameInfoBeenList = new ArrayList<>();
     @Override
     protected void initMvp() {
         ManagerFragmentModel managerFragmentModel = new ManagerFragmentModel();
@@ -45,6 +49,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment,String> imple
     }
 
     private void initListView() {
+        MyLvGameManagerAdatpter myLvGameManagerAdatpter = new MyLvGameManagerAdatpter(mGameInfoBeenList,getContext(),getDownLoadPresenter());
         mLvGameManager.setAdapter(null);
     }
 
@@ -118,16 +123,47 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment,String> imple
 
     @Override
     public void setDownLoadListener() {
+        getDownLoadPresenter().setDownLoadListener(new MyDownLoadService.IDownLoadListener() {
+            @Override
+            public void wail(String url) {
 
+            }
+
+            @Override
+            public void progress(String url, int progre) {
+
+            }
+
+            @Override
+            public void completed(String url) {
+
+            }
+
+            @Override
+            public void fail(String url) {
+
+            }
+
+            @Override
+            public void speed(String url, long speed) {
+
+            }
+
+            @Override
+            public void downloadedSize(String url, long size) {
+
+            }
+        });
     }
 
     @Override
     public void setDownLoadPresenter(IDownloadPresenter downLoadPresenter) {
-
+        addPresenter((ABasePresenter) downLoadPresenter);
     }
 
     @Override
     public IDownloadPresenter getDownLoadPresenter() {
-        return null;
+        ABasePresenter presenter = getPresenter(DownLoadPresenter.TAG);
+        return (IDownloadPresenter) presenter;
     }
 }

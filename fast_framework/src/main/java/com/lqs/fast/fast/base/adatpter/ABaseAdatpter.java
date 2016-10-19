@@ -53,7 +53,7 @@ public abstract class ABaseAdatpter<T, H> extends BaseAdapter {
             convertView = mInflater.inflate(resId, null);
 //            Log.i("convertView",""+convertView);
             H holder = getViewHolder();
-            bindViewHolder(convertView, holder);
+            bindViewHolder(convertView, holder,position);
             convertView.setTag(holder);
         }
         H tag = (H) convertView.getTag();
@@ -64,7 +64,7 @@ public abstract class ABaseAdatpter<T, H> extends BaseAdapter {
 
     protected abstract void initItemUi(H tag, T t, int position);
 
-    protected abstract void bindViewHolder(View convertView,H holder);
+    protected abstract void bindViewHolder(View convertView, H holder, int position);
 
     protected abstract int[] getItemResId();
 

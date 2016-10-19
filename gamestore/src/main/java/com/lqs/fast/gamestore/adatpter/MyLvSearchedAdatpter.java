@@ -74,7 +74,7 @@ public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearche
     }
 
     @Override
-    protected void bindViewHolder(View convertView, MyViewHolder holder) {
+    protected void bindViewHolder(View convertView, MyViewHolder holder, int position) {
         holder.mIvGameIcon = (ImageView) convertView.findViewById(R.id.item_select_iv_gameicon);
         holder.mTvGameShowName = (TextView) convertView.findViewById(R.id.item_select_tv_gamename);
         holder.mTvGameSize = (TextView) convertView.findViewById(R.id.item_select_tv_gamesize);

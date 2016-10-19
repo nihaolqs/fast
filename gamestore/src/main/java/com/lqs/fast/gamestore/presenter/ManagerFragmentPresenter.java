@@ -1,11 +1,13 @@
 package com.lqs.fast.gamestore.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base.view.ABaseView;
+import com.lqs.fast.gamestore.activity.GameDetailActivity;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.fragment.ManagerFragment;
@@ -36,13 +38,15 @@ public class ManagerFragmentPresenter extends ABasePresenter<ManagerFragmentMode
     public void showDownLoadedGame() {
         IManagerModel model = getManagerModel();
         IManagerView view = getManagerView();
-        List<GameInfoBean> list = model.getDownloadedGame();
+        List<SaveGameInfoBean> list = model.getDownloadedGame();
         view.showDownLoadedGame(list);
     }
 
     @Override
     public void showDetail(SaveGameInfoBean bean) {
-
+        Intent intent = new Intent(mContext, GameDetailActivity.class);
+        intent.putExtra(GameDetailActivity.GUID_KEY,bean.getGuid());
+        mContext.startActivity(intent);
     }
 
     @Override
@@ -59,19 +63,8 @@ public class ManagerFragmentPresenter extends ABasePresenter<ManagerFragmentMode
 
     @Override
     public void replaceData() {
-        IManagerModel model = getManagerModel();
-        model.ReplaceData(new ReplaceDataListener() {
-            @Override
-            public void replacedData() {
-                showDownLoadedGame();
-                showManageInfo();
-            }
-
-            @Override
-            public void replaceDataError() {
-
-            }
-        });
+        showDownLoadedGame();
+        showManageInfo();
     }
 
     @Override

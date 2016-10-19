@@ -11,6 +11,8 @@ import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
+import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
 
 import java.util.List;
 
@@ -20,8 +22,11 @@ import java.util.List;
 
 public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyLvGameManagerAdatpter.MyViewHolder> {
 
-    public MyLvGameManagerAdatpter(List<SaveGameInfoBean> list, Context context) {
+    private final IDownloadPresenter mDownloadPresenter;
+
+    public MyLvGameManagerAdatpter(List<SaveGameInfoBean> list, Context context, IDownloadPresenter downloadPresenter) {
         super(list, context);
+        mDownloadPresenter = downloadPresenter;
     }
 
     @Override
@@ -58,37 +63,81 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
             case 1: {
                 ImageUtils.LoadImage(tag.mIvGameIcon, bean.getGame_logo());
                 tag.mTvGameName.setText(bean.getGame_name());
+                String download_url = bean.getDownload_url();
+                int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
+                switch (downLoadState){
+                    case MyDownLoadService.WAIT:{
+                        tag.mTvDownloadState.setVisibility(View.VISIBLE);
+                        tag.mTvSpeed.setVisibility(View.GONE);
+                        tag.mTvDownloadState.setText("等待");
+                        tag.mTvDownloadding.setVisibility(View.VISIBLE);
+                        tag.mTvInstallState.setVisibility(View.GONE);
+                        tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
+                    }
+                    break;
+                    case MyDownLoadService.PROGRESS:{
+                        tag.mTvDownloadState.setVisibility(View.GONE);
+                        tag.mTvSpeed.setVisibility(View.VISIBLE);
+                        tag.mTvSpeed.setText("0KB/S");
+                        tag.mTvDownloadding.setVisibility(View.VISIBLE);
+                        tag.mTvInstallState.setVisibility(View.GONE);
+                        tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
+                    }
+                    break;
+                    case MyDownLoadService.COMPLETED:{
+                        tag.mTvDownloadState.setVisibility(View.VISIBLE);
+                        tag.mTvSpeed.setVisibility(View.GONE);
+                        tag.mTvDownloadState.setText("下载完成");
+                        tag.mTvDownloadding.setVisibility(View.GONE);
+                        tag.mTvInstallState.setVisibility(View.VISIBLE);
+                        tag.mTvInstallState.setText("等待安装");
+                    }
+                    break;
+                    case MyDownLoadService.FAIL:{
+                        tag.mTvDownloadState.setVisibility(View.VISIBLE);
+                        tag.mTvSpeed.setVisibility(View.GONE);
+                        tag.mTvDownloadState.setText("下载失败");
+                        tag.mTvDownloadding.setVisibility(View.VISIBLE);
+                        tag.mTvInstallState.setVisibility(View.GONE);
+                        tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
+                    }
+                    break;
+                }
             }
             break;
         }
     }
 
     @Override
-    protected void bindViewHolder(View itemView, MyViewHolder holder) {
-        //type 0
+    protected void bindViewHolder(View itemView, MyViewHolder holder, int position) {
 
-        holder.mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_installed_iv_gameicon);
-        holder.mTvGameName = (TextView) itemView.findViewById(R.id.item_installed_tv_gamename);
-        holder.mTvGameSize = (TextView) itemView.findViewById(R.id.item_installed_tv_gamesize);
-        holder.mTvGameType = (TextView) itemView.findViewById(R.id.item_installed_tv_gametype);
-        holder.mTvGameDescribe = (TextView) itemView.findViewById(R.id.item_installed_tv_game_describe);
-        holder.mIvState = (TextView) itemView.findViewById(R.id.item_installed_iv_state);
-        holder.mLlMoreoption = (LinearLayout) itemView.findViewById(R.id.item_installed_ll_moreoption);
-        holder.mTvOpen = (TextView) itemView.findViewById(R.id.item_installed_tv_open);
-        holder.mTvUnload = (TextView) itemView.findViewById(R.id.item_installed_tv_unload);
+        int itemViewType = getItemViewType(position);
 
-        //type 1
+        if (itemViewType == 0) {
+            //type 0
+            holder.mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_installed_iv_gameicon);
+            holder.mTvGameName = (TextView) itemView.findViewById(R.id.item_installed_tv_gamename);
+            holder.mTvGameSize = (TextView) itemView.findViewById(R.id.item_installed_tv_gamesize);
+            holder.mTvGameType = (TextView) itemView.findViewById(R.id.item_installed_tv_gametype);
+            holder.mTvGameDescribe = (TextView) itemView.findViewById(R.id.item_installed_tv_game_describe);
+            holder.mIvState = (TextView) itemView.findViewById(R.id.item_installed_iv_state);
+            holder.mLlMoreoption = (LinearLayout) itemView.findViewById(R.id.item_installed_ll_moreoption);
+            holder.mTvOpen = (TextView) itemView.findViewById(R.id.item_installed_tv_open);
+            holder.mTvUnload = (TextView) itemView.findViewById(R.id.item_installed_tv_unload);
+        } else {
+            //type 1
 
-        holder.mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_download_iv_gameicon);
-        holder.mIvDelete = (ImageView) itemView.findViewById(R.id.item_download_iv_delete);
-        holder.mTvGameName = (TextView) itemView.findViewById(R.id.item_download_tv_gamename);
-        holder.mTvSpeed = (TextView) itemView.findViewById(R.id.item_download_tv_internetspeed);
-        holder.mTvDownloadState = (TextView) itemView.findViewById(R.id.item_download_tv_download_state);
-        holder.mTvDownloadding = (TextView) itemView.findViewById(R.id.item_download_tv_downloadding);
-        holder.mTvInstallState = (TextView) itemView.findViewById(R.id.item_download_tv_install_state);
-        holder.mIvBegin = (ImageView) itemView.findViewById(R.id.item_download_iv_begin);
-        holder.mTvState = (TextView) itemView.findViewById(R.id.item_download_tv_state);
-        holder.mIvPause = (ImageView) itemView.findViewById(R.id.item_download_iv_pause);
+            holder.mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_download_iv_gameicon);
+            holder.mIvDelete = (ImageView) itemView.findViewById(R.id.item_download_iv_delete);
+            holder.mTvGameName = (TextView) itemView.findViewById(R.id.item_download_tv_gamename);
+            holder.mTvSpeed = (TextView) itemView.findViewById(R.id.item_download_tv_internetspeed);
+            holder.mTvDownloadState = (TextView) itemView.findViewById(R.id.item_download_tv_download_state);
+            holder.mTvDownloadding = (TextView) itemView.findViewById(R.id.item_download_tv_downloadding);
+            holder.mTvInstallState = (TextView) itemView.findViewById(R.id.item_download_tv_install_state);
+            holder.mIvBegin = (ImageView) itemView.findViewById(R.id.item_download_iv_begin);
+            holder.mTvState = (TextView) itemView.findViewById(R.id.item_download_tv_state);
+            holder.mIvPause = (ImageView) itemView.findViewById(R.id.item_download_iv_pause);
+        }
     }
 
     @Override

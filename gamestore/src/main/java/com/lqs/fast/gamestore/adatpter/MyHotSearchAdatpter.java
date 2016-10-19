@@ -33,7 +33,7 @@ public class MyHotSearchAdatpter extends ABaseAdatpter<GameInfoBean,MyHotSearchA
     }
 
     @Override
-    protected void bindViewHolder(View convertView, ViewHolder holder) {
+    protected void bindViewHolder(View convertView, ViewHolder holder, int position) {
         holder.mIvGameIco = (ImageView) convertView.findViewById(R.id.iv_itemhotsearchgame_gameico);
         holder.mTvShowGameName = (TextView) convertView.findViewById(R.id.tv_itemhotsearch_showgamename);
     }

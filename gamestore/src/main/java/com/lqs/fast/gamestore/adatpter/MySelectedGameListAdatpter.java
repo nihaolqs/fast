@@ -161,7 +161,7 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
 
 
     @Override
-    protected void bindViewHolder(View convertView, ViewHolder holder) {
+    protected void bindViewHolder(View convertView, ViewHolder holder, int position) {
         holder.ivGameIco = (ImageView) convertView.findViewById(R.id.item_select_iv_gameicon);
         holder.tvGameDiscount = (TextView) convertView.findViewById(R.id.item_select_tv_gamediscount);
         holder.tvGameName = (TextView) convertView.findViewById(R.id.item_select_tv_gamename);
