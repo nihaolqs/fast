@@ -11,7 +11,7 @@ import java.util.List;
  * Created by dell on 2016/9/29.
  */
 @Table(name = "download_game")
-public class GameInfoBean extends Model implements Serializable {
+public class GameInfoBean  implements Serializable {
 
     /**
      * guid : 391

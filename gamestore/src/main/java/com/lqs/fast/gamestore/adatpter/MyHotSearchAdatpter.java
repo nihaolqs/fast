@@ -23,7 +23,7 @@ public class MyHotSearchAdatpter extends ABaseAdatpter<GameInfoBean,MyHotSearchA
     }
 
     @Override
-    protected void initItemUi(ViewHolder tag, GameInfoBean bean) {
+    protected void initItemUi(ViewHolder tag, GameInfoBean bean, int position) {
         String game_logo = bean.getGame_logo();
         String show_name = bean.getShow_name();
         ImageView mIvGameIco = tag.mIvGameIco;

@@ -58,11 +58,11 @@ public abstract class ABaseAdatpter<T, H> extends BaseAdapter {
         }
         H tag = (H) convertView.getTag();
         T t = mDataList.get(position);
-        initItemUi(tag,t);
+        initItemUi(tag,t,position);
         return convertView;
     }
 
-    protected abstract void initItemUi(H tag, T t);
+    protected abstract void initItemUi(H tag, T t, int position);
 
     protected abstract void bindViewHolder(View convertView,H holder);
 

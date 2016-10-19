@@ -4,13 +4,17 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.fast.utils.MvpUtils;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.model.ManagerFragmentModel;
+import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.presenter.IManagerPresenter;
 import com.lqs.fast.gamestore.presenter.ManagerFragmentPresenter;
+import com.lqs.fast.gamestore.view.IDownLoadView;
 import com.lqs.fast.gamestore.view.IManagerView;
 
 import java.util.List;
@@ -19,7 +23,7 @@ import java.util.List;
  * Created by dell on 2016/10/14.
  */
 
-public class ManagerFragment extends ABaseFragment<ManagerFragment,String> implements IManagerView{
+public class ManagerFragment extends ABaseFragment<ManagerFragment,String> implements IManagerView,IDownLoadView{
     public static final String TAG = "ManagerFragment";
     private ListView mLvGameManager;
     private TextView mTvPhoneMemory;
@@ -69,7 +73,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment,String> imple
     }
 
     @Override
-    public void showDownLoadedGame(List<GameInfoBean> list) {
+    public void showDownLoadedGame(List<SaveGameInfoBean> list) {
 
     }
 
@@ -96,5 +100,34 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment,String> imple
     @Override
     public void setManagerPresenter(IManagerPresenter managerPresenter) {
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
+        downLoadPresenter.onStart(getContext());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
+        downLoadPresenter.onStop(getContext());
+    }
+
+    @Override
+    public void setDownLoadListener() {
+
+    }
+
+    @Override
+    public void setDownLoadPresenter(IDownloadPresenter downLoadPresenter) {
+
+    }
+
+    @Override
+    public IDownloadPresenter getDownLoadPresenter() {
+        return null;
     }
 }

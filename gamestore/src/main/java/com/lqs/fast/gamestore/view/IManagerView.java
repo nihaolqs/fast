@@ -1,6 +1,7 @@
 package com.lqs.fast.gamestore.view;
 
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IManagerPresenter;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface IManagerView {
 
-    void showDownLoadedGame(List<GameInfoBean> list);
+    void showDownLoadedGame(List<SaveGameInfoBean> list);
 
     void showPhoneMemoryInfo(String phoneMemoryInfo);
 

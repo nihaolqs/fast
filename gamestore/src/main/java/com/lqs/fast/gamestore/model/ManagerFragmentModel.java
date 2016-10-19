@@ -4,6 +4,7 @@ import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IManagerPresenter;
 
 import java.lang.reflect.Type;
@@ -13,10 +14,10 @@ import java.util.List;
  * Created by dell on 2016/10/14.
  */
 
-public class ManagerFragmentModel extends ABaseModel<List<GameInfoBean>>  implements IManagerModel{
+public class ManagerFragmentModel extends ABaseModel<List<SaveGameInfoBean>>  implements IManagerModel{
     public static final String TAG = "ManagerFragmentModel";
     @Override
-    protected boolean checkData(List<GameInfoBean> list) {
+    protected boolean checkData(List<SaveGameInfoBean> list) {
         return false;
     }
 
@@ -41,7 +42,7 @@ public class ManagerFragmentModel extends ABaseModel<List<GameInfoBean>>  implem
     }
 
     @Override
-    public List<GameInfoBean> getDownloadedGame() {
+    public List<SaveGameInfoBean> getDownloadedGame() {
         return null;
     }
 

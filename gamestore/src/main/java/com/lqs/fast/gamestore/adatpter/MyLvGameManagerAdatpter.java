@@ -7,8 +7,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
+import com.lqs.fast.fast.utils.AppUtil;
+import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.gamestore.R;
-import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 
 import java.util.List;
 
@@ -16,21 +18,54 @@ import java.util.List;
  * Created by dell on 2016/10/14.
  */
 
-public class MyLvGameManagerAdatpter extends ABaseAdatpter<GameInfoBean,MyLvGameManagerAdatpter.MyViewHolder> {
+public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyLvGameManagerAdatpter.MyViewHolder> {
 
-    public MyLvGameManagerAdatpter(List<GameInfoBean> list, Context context) {
+    public MyLvGameManagerAdatpter(List<SaveGameInfoBean> list, Context context) {
         super(list, context);
     }
 
     @Override
-    protected void initItemUi(MyViewHolder tag, GameInfoBean bean) {
-
+    protected void initItemUi(final MyViewHolder tag, final SaveGameInfoBean bean, int position) {
+        int itemViewType = getItemViewType(position);
+        switch (itemViewType) {
+            case 0: {
+                ImageUtils.LoadImage(tag.mIvGameIcon, bean.getGame_logo());
+                tag.mTvGameName.setText(bean.getGame_name());
+                tag.mTvGameSize.setText(bean.getGamesize());
+                tag.mTvGameType.setText(bean.getTypename());
+                tag.mTvGameDescribe.setText(bean.getOne_game_info());
+                tag.mIvState.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tag.mLlMoreoption.setVisibility(View.VISIBLE);
+                    }
+                });
+//                tag.mLlMoreoption
+                tag.mTvOpen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AppUtil.startAPk(mContext, bean.getPackage_name());
+                    }
+                });
+                tag.mTvUnload.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AppUtil.unInstallApk(mContext, bean.getPackage_name());
+                    }
+                });
+            }
+            break;
+            case 1: {
+                ImageUtils.LoadImage(tag.mIvGameIcon, bean.getGame_logo());
+                tag.mTvGameName.setText(bean.getGame_name());
+            }
+            break;
+        }
     }
 
     @Override
     protected void bindViewHolder(View itemView, MyViewHolder holder) {
-        
-            //type 0
+        //type 0
 
         holder.mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_installed_iv_gameicon);
         holder.mTvGameName = (TextView) itemView.findViewById(R.id.item_installed_tv_gamename);
@@ -42,7 +77,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<GameInfoBean,MyLvGame
         holder.mTvOpen = (TextView) itemView.findViewById(R.id.item_installed_tv_open);
         holder.mTvUnload = (TextView) itemView.findViewById(R.id.item_installed_tv_unload);
 
-            //type 1
+        //type 1
 
         holder.mIvGameIcon = (ImageView) itemView.findViewById(R.id.item_download_iv_gameicon);
         holder.mIvDelete = (ImageView) itemView.findViewById(R.id.item_download_iv_delete);
@@ -69,17 +104,17 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<GameInfoBean,MyLvGame
 
     @Override
     public int getItemViewType(int position) {
-        //todo 错误
-//        String download_url = bean.getDownload_url();
-//        SingleFileDownLoadUtils singleFileDownLoadUtils = SingleFileDownLoadUtils.getInstance(mContext, 2);
-//        int downLoadState = singleFileDownLoadUtils.getDownLoadState(download_url);
-//        if (downLoadState == SingleFileDownLoadUtils.PROGRESS) {
-//            return 1;
-//        }
-        return 0;
+        SaveGameInfoBean bean = mDataList.get(position);
+        String package_name = bean.getPackage_name();
+        boolean b = AppUtil.checkApkInstalled(mContext, package_name);
+        if (b) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
-    protected class MyViewHolder{
+    protected class MyViewHolder {
         ImageView mIvGameIcon;
         TextView mTvGameName;
         TextView mTvGameSize;

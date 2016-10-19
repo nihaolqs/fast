@@ -23,7 +23,7 @@ public class MyLvKfListAdatpter extends ABaseAdatpter<KfGame.KfListBean,MyLvKfLi
     }
 
     @Override
-    protected void initItemUi(MyViewHolder holder, KfGame.KfListBean kfListBean) {
+    protected void initItemUi(MyViewHolder holder, KfGame.KfListBean kfListBean, int position) {
         String section_name = kfListBean.getSection_name();
         holder.mTvKfListTime.setText(section_name);
         List<GameInfoBean> section_list = kfListBean.getSection_list();

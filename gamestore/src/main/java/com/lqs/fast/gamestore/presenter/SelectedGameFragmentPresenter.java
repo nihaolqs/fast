@@ -1,7 +1,10 @@
 package com.lqs.fast.gamestore.presenter;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 
 import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
@@ -20,10 +23,13 @@ import com.lqs.fast.gamestore.model.IAdGameModel;
 import com.lqs.fast.gamestore.model.ISearchGameModel;
 import com.lqs.fast.gamestore.model.ISelectedGameModel;
 import com.lqs.fast.gamestore.model.SelectedGameFragmentModle;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
 import com.lqs.fast.gamestore.view.IAdGameView;
 import com.lqs.fast.gamestore.view.ISelectedGameView;
 
 import java.util.List;
+
+import static android.content.Context.BIND_AUTO_CREATE;
 
 /**
  * Created by lin on 2016/10/5.
@@ -131,5 +137,18 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
     public void setAdGameView(IAdGameView adGameView) {
         ABaseView view = (ABaseView) adGameView;
         addView(view);
+    }
+
+    @Override
+    public void onStart(Context context) {
+
+
+    }
+
+    @Override
+    public void onStop(Context context) {
+        super.onStop(context);
+
+
     }
 }

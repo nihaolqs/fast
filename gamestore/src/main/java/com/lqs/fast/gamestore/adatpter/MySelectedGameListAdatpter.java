@@ -4,19 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
-import com.lqs.fast.fast.base.adatpter.BaseListViewAdatpter;
 import com.lqs.fast.fast.utils.ImageUtils;
-import com.lqs.fast.fast.utils.SingleFileDownLoadUtils;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
 
 import java.util.List;
 
@@ -24,14 +21,17 @@ import java.util.List;
  * Created by dell on 2016/10/8.
  */
 
-public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean,MySelectedGameListAdatpter.ViewHolder> {
+public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySelectedGameListAdatpter.ViewHolder> {
 
-    public MySelectedGameListAdatpter(List<GameInfoBean> list, Context context) {
+    private final IDownloadPresenter mDownloadPresenter;
+
+    public MySelectedGameListAdatpter(List<GameInfoBean> list, Context context, IDownloadPresenter downloadPresenter) {
         super(list, context);
+        this.mDownloadPresenter = downloadPresenter;
     }
 
     @Override
-    protected void initItemUi(final ViewHolder holder, final GameInfoBean gameInfoBean) {
+    protected void initItemUi(final ViewHolder holder, final GameInfoBean gameInfoBean, int position) {
         String typename = gameInfoBean.getTypename();
         holder.tvGameType.setText(typename);
         String game_logo = gameInfoBean.getGame_logo();
@@ -44,78 +44,98 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean,MySel
         holder.tvGameSize.setText(gamesize);
         String one_game_info = gameInfoBean.getOne_game_info();
         holder.tvGameDescribe.setText(one_game_info);
+
+        int state = mDownloadPresenter.getDownLoadState(gameInfoBean.getDownload_url());
+
+        switch (state) {
+            case 0:
+                setState(holder, "下载");
+                break;
+            case 1:
+                setState(holder, "等待");
+                break;
+            case 2:
+                setState(holder, "0%");
+                break;
+            case 3:
+                setState(holder, "安装");
+                break;
+            case 4:
+                setState(holder, "重试");
+                break;
+        }
+
         holder.tvState.setText(R.string.download);
 
-        final SingleFileDownLoadUtils singleFileDownLoadUtils = SingleFileDownLoadUtils.getInstance(mContext, 2);
-        final SingleFileDownLoadUtils.IDownLoadListener iDownLoadListener = new SingleFileDownLoadUtils.IDownLoadListener() {
+//        final SingleFileDownLoadUtils singleFileDownLoadUtils = SingleFileDownLoadUtils.getInstance(mContext, 2);
+//        final SingleFileDownLoadUtils.IDownLoadListener iDownLoadListener = new SingleFileDownLoadUtils.IDownLoadListener() {
+//
+//            @Override
+//            public void wail() {
+//                holder.tvState.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        holder.tvState.setText("等待");
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void progress(final int progre) {
+//                holder.tvState.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        holder.tvState.setText(progre + "%");
+//                    }
+//                });
+//
+//            }
+//
+//            @Override
+//            public void completed() {
+//                holder.tvState.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        holder.tvState.setText("安装");
+//                    }
+//                });
+//
+//            }
+//
+//            @Override
+//            public void fail() {
+//                holder.tvState.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        holder.tvState.setText("重试");
+//                    }
+//                });
+//
+//            }
+//        };
 
-            @Override
-            public void wail() {
-                holder.tvState.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.tvState.setText("等待");
-                    }
-                });
-            }
 
-            @Override
-            public void progress(final int progre) {
-                holder.tvState.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.tvState.setText(progre + "%");
-                    }
-                });
-
-            }
-
-            @Override
-            public void completed() {
-                holder.tvState.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.tvState.setText("安装");
-                    }
-                });
-
-            }
-
-            @Override
-            public void fail() {
-                holder.tvState.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.tvState.setText("重试");
-                    }
-                });
-
-            }
-        };
-        final String download_url = gameInfoBean.getDownload_url();
-
-        int state = singleFileDownLoadUtils.getDownLoadState(download_url);
-        switch (state){
-            case 1: iDownLoadListener.wail();
-                break;
-            case 2: singleFileDownLoadUtils.setListener(download_url,iDownLoadListener);
-                break;
-            case 3:iDownLoadListener.completed();
-                break;
-            case 4:iDownLoadListener.fail();
-        }
+//        int state = singleFileDownLoadUtils.getDownLoadState(download_url);
+//        switch (state){
+//            case 1: iDownLoadListener.wail();
+//                break;
+//            case 2: singleFileDownLoadUtils.setListener(download_url,iDownLoadListener);
+//                break;
+//            case 3:iDownLoadListener.completed();
+//                break;
+//            case 4:iDownLoadListener.fail();
+//        }
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int downLoadState = singleFileDownLoadUtils.getDownLoadState(download_url);
-                if(downLoadState == 0 || downLoadState == 4)
-                {
-                    singleFileDownLoadUtils.addDownLoadTask(download_url, iDownLoadListener);
-                }else if(downLoadState == 3)
-                {
+                String download_url = gameInfoBean.getDownload_url();
+                int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
+                if (downLoadState == 0 || downLoadState == 4) {
+                    mDownloadPresenter.addDownLoadTask(download_url);
+                } else if (downLoadState == 3) {
                     //TODO 安装
-                    String fileName = SingleFileDownLoadUtils.getFileName(gameInfoBean.getDownload_url());
+                    String fileName = MyDownLoadService.getFileName(gameInfoBean.getDownload_url());
                     String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
                     String filePath = absolutePath + "/" + fileName;
                     Intent i = new Intent(Intent.ACTION_VIEW);
@@ -128,6 +148,15 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean,MySel
         };
         holder.tvState.setOnClickListener(listener);
 
+    }
+
+    private void setState(final ViewHolder holder, final String state) {
+        holder.tvState.post(new Runnable() {
+            @Override
+            public void run() {
+                holder.tvState.setText(state);
+            }
+        });
     }
 
 
@@ -151,6 +180,7 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean,MySel
     protected ViewHolder getViewHolder() {
         return new ViewHolder();
     }
+
 
     //    private final List<GameInfoBean> mList;
 //    private final Context mContext;

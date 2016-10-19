@@ -1,6 +1,7 @@
 package com.lqs.fast.gamestore.presenter;
 
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.model.IManagerModel;
 import com.lqs.fast.gamestore.view.IManagerView;
 
@@ -12,7 +13,7 @@ public interface IManagerPresenter {
 
     void showDownLoadedGame();
 
-    void showDetail(GameInfoBean bean);
+    void showDetail(SaveGameInfoBean bean);
 
     void showManageInfo();
 

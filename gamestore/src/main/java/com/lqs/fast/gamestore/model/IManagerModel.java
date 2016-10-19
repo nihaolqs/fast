@@ -3,6 +3,7 @@ package com.lqs.fast.gamestore.model;
 import com.lqs.fast.fast.base.model.IAsynReplaceDataModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IManagerPresenter;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 
 public interface IManagerModel extends IAsynReplaceDataModel {
-    List<GameInfoBean> getDownloadedGame();
+    List<SaveGameInfoBean> getDownloadedGame();
 
     String getPhoneMemoryInfo();
 

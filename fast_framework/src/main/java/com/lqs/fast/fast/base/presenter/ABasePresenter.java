@@ -1,5 +1,7 @@
 package com.lqs.fast.fast.base.presenter;
 
+import android.content.Context;
+
 import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.view.ABaseView;
 
@@ -32,6 +34,14 @@ public abstract class ABasePresenter<M extends ABaseModel> {
     public ABaseView getView(String tag) {
         ABaseView v = mViewMap.get(tag);
         return v;
+    }
+
+    public void onStart(Context context){
+
+    }
+
+    public void onStop(Context context){
+
     }
 
     public abstract String getPresenterTag();

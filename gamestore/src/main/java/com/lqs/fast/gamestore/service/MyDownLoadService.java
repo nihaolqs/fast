@@ -29,30 +29,30 @@ public class MyDownLoadService extends Service {
     public static final int PROGRESS = 2;  //下载进行中
     public static final int COMPLETED = 3;  //下载完成
     public static final int FAIL = 4;  //下载失败
-    private Context mContext;
+    public static final int MAXTHREAD = 2;
+
     private final ExecutorService mFixedThreadPool;
     private HashMap<String, Integer> mDownLoadStateMap = new HashMap<>();
     private HashMap<String, MyDownLoadService.DownLoadTask> mDawnLoadTaskMap = new HashMap<>();
 
-    public MyDownLoadService(Context context, int maxThread) {
-        this.mContext = context;
-        mFixedThreadPool = Executors.newFixedThreadPool(maxThread);
+    private MyDownLoadService.IDownLoadListener mListener;
+
+    public MyDownLoadService() {
+
+        mFixedThreadPool = Executors.newFixedThreadPool(MAXTHREAD);
     }
 
 
-    public void addDownLoadTask(String url, MyDownLoadService.IDownLoadListener listener) {
-        MyDownLoadService.DownLoadTask downLoadTask = new MyDownLoadService.DownLoadTask(url, listener);
+    private void addDownLoadTask(String url) {
+        MyDownLoadService.DownLoadTask downLoadTask = new MyDownLoadService.DownLoadTask(url);
         mFixedThreadPool.execute(downLoadTask);
-
-
     }
 
-    public void setListener(String url, MyDownLoadService.IDownLoadListener listener) {
-        MyDownLoadService.DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
-        downLoadTask.setListener(listener);
+    private void setListener(MyDownLoadService.IDownLoadListener listener) {
+        this.mListener = listener;
     }
 
-    public int getDownLoadState(String url) {
+    private int getDownLoadState(String url) {
         Integer integer = mDownLoadStateMap.get(url);
         if (integer == null) {
             return 0;
@@ -63,13 +63,17 @@ public class MyDownLoadService extends Service {
 
 
     public interface IDownLoadListener {
-        void wail();
+        void wail(String url);  //等待
 
-        void progress(int progre);
+        void progress(String url,int progre);  //下载中
 
-        void completed();
+        void completed(String url);  //完成
 
-        void fail();
+        void fail(String url);  //失败
+
+        void speed(String url,long speed);  //下载速度
+
+        void downloadedSize(String url,long size);  //已经下载大小
     }
 
     public static String getFileName(String pathandname) {
@@ -84,20 +88,33 @@ public class MyDownLoadService extends Service {
     }
 
     private class DownLoadTask implements Runnable {
-        private MyDownLoadService.IDownLoadListener mListener;
-        private String mFileUrl;
 
-        public DownLoadTask(String url, MyDownLoadService.IDownLoadListener listener) {
-            this.mListener = listener;
+        private String mFileUrl;
+        private boolean isCancel;
+
+        public DownLoadTask(String url) {
             this.mFileUrl = url;
             mDownLoadStateMap.put(url, WAIT);
             mDawnLoadTaskMap.put(url, this);
-            mListener.wail();
+            mListener.wail(url);
         }
 
-        public void setListener(MyDownLoadService.IDownLoadListener listener) {
-            this.mListener = listener;
+        public void threadPause(){
+            try {
+                Thread.currentThread().wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+        public void threadContinue(){
+            Thread.currentThread().notify();
+        }
+
+        public void threadCancel(){
+            this.isCancel = true;
+        }
+
 
         @Override
         public void run() {
@@ -109,7 +126,7 @@ public class MyDownLoadService extends Service {
             File file = new File(filePath);
             try {
                 mDownLoadStateMap.put(mFileUrl, PROGRESS);
-                mListener.progress(0);
+                mListener.progress(mFileUrl,0);
                 URL url = new URL(mFileUrl);
                 URLConnection cc = url.openConnection();
                 long length = cc.getContentLength();
@@ -121,28 +138,40 @@ public class MyDownLoadService extends Service {
                 int len = -1;
                 long sum = 0;
                 int point = 0;
+                long oldTime = 0;
                 while (-1 != (len = is.read(bs))) {
                     os.write(bs, 0, len);
                     sum += len;
-//                    if (sum * 100 / length > point) {
-////                        point += 5;
-                    Log.d("run",sum + "/" + length);
+
+                    if(isCancel){
+                        mListener.fail(mFileUrl);
+                        return;
+                    }
+
+                    long l = System.currentTimeMillis();
+
+                    long speed = len * 1000 / (l - oldTime);
+
+                    mListener.speed(mFileUrl,speed);
+
+                    mListener.downloadedSize(mFileUrl,sum);
+
+//                    Log.d("run",sum + "/" + length);
                     point = (int)((sum * 100) / length);
-                    mListener.progress(point);
-//                        point ++;
-//                    }
+                    mListener.progress(mFileUrl,point);
+
                 }
-                mListener.progress(100);
-                mListener.completed();
+                mListener.progress(mFileUrl,100);
+                mListener.completed(mFileUrl);
                 mDownLoadStateMap.put(mFileUrl, COMPLETED);
 
             } catch (MalformedURLException e) {
-                mListener.fail();
+                mListener.fail(mFileUrl);
                 mDownLoadStateMap.put(mFileUrl, FAIL);
                 file.delete();
                 e.printStackTrace();
             } catch (IOException e) {
-                mListener.fail();
+                mListener.fail(mFileUrl);
                 mDownLoadStateMap.put(mFileUrl, FAIL);
                 file.delete();
                 e.printStackTrace();
@@ -178,7 +207,33 @@ public class MyDownLoadService extends Service {
 
 
     public class MyBinder extends Binder {
+        public void setDownLoadListener(MyDownLoadService.IDownLoadListener listener){
+            MyDownLoadService.this.setListener(listener);
+        }
 
+        public void addDownLoadTask(String url){
+            MyDownLoadService.this.addDownLoadTask(url);
+        }
+
+        public void pauseDownLoadTask(String url){
+            DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
+            downLoadTask.threadPause();
+        }
+
+        public void continueDownLoadTast(String url){
+            DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
+            downLoadTask.threadContinue();
+        }
+
+        public void cancelDownLoadTask(String url){
+            DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
+            downLoadTask.threadCancel();
+        }
+
+        public int getDownLoadState(String url){
+            int state = MyDownLoadService.this.getDownLoadState(url);
+            return state;
+        }
     }
 
 }

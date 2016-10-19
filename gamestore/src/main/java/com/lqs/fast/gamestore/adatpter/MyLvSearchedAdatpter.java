@@ -1,7 +1,6 @@
 package com.lqs.fast.gamestore.adatpter;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +25,7 @@ public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearche
     }
 
     @Override
-    protected void initItemUi(final MyViewHolder tag, GameInfoBean bean) {
+    protected void initItemUi(final MyViewHolder tag, GameInfoBean bean, int position) {
         ImageUtils.LoadImage(tag.mIvGameIcon,bean.getGame_logo());
         tag.mTvGameShowName.setText(bean.getShow_name());
         tag.mTvGameSize.setText(bean.getGamesize());

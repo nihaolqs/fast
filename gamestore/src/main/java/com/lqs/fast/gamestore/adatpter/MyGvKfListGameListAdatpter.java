@@ -23,7 +23,7 @@ public class MyGvKfListGameListAdatpter extends ABaseAdatpter<GameInfoBean,MyGvK
     }
 
     @Override
-    protected void initItemUi(MyViewHolder tag, GameInfoBean bean) {
+    protected void initItemUi(MyViewHolder tag, GameInfoBean bean, int position) {
         String show_name = bean.getShow_name();
         tag.tvGameShowName.setText(show_name);
         String gamediscount = bean.getGamediscount();

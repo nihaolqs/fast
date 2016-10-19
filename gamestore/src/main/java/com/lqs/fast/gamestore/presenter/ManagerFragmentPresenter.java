@@ -7,6 +7,7 @@ import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base.view.ABaseView;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.fragment.ManagerFragment;
 import com.lqs.fast.gamestore.model.IManagerModel;
 import com.lqs.fast.gamestore.model.ManagerFragmentModel;
@@ -40,7 +41,7 @@ public class ManagerFragmentPresenter extends ABasePresenter<ManagerFragmentMode
     }
 
     @Override
-    public void showDetail(GameInfoBean bean) {
+    public void showDetail(SaveGameInfoBean bean) {
 
     }
 
