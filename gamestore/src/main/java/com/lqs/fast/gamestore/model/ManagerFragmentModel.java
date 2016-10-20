@@ -11,6 +11,7 @@ import com.lqs.fast.gamestore.presenter.IManagerPresenter;
 import com.lqs.fast.gamestore.presenter.ManagerFragmentPresenter;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,8 +47,12 @@ public class ManagerFragmentModel extends ABaseModel<List<SaveGameInfoBean>>  im
 
     @Override
     public List<SaveGameInfoBean> getDownloadedGame() {
-        List<SaveGameInfoBean> execute = new Select().from(SaveGameInfoBean.class).execute();
-        return execute;
+//        List<SaveGameInfoBean> execute = new Select().from(SaveGameInfoBean.class)
+//                .where("guid = ?" )
+//                .execute();
+        ArrayList<SaveGameInfoBean> list = new ArrayList<>();
+//        list.addAll(execute);
+        return list;
     }
 
     @Override

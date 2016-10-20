@@ -3,6 +3,7 @@ package com.lqs.fast.gamestore.app;
 import android.app.Application;
 import android.graphics.Bitmap;
 
+import com.activeandroid.ActiveAndroid;
 import com.android.volley.toolbox.Volley;
 import com.lqs.fast.fast.utils.HttpUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
@@ -19,7 +20,15 @@ public class MyApplication extends Application {
         HttpUtil.initVolley(Volley.newRequestQueue(this)); //初始化Volley
         ImageUtils.initUIL(this); //初始化UIL
         openUILCache();
+        ActiveAndroid.initialize(this);
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        ActiveAndroid.dispose();
+    }
+
 
     private void openUILCache() {
         DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder()

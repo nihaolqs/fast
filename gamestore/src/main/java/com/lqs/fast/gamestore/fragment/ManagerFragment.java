@@ -43,6 +43,8 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         ManagerFragmentModel managerFragmentModel = new ManagerFragmentModel();
         ManagerFragmentPresenter managerFragmentPresenter = new ManagerFragmentPresenter(getContext());
         MvpUtils.initMVP(managerFragmentModel, managerFragmentPresenter, this);
+        DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+        this.setDownLoadPresenter(downLoadPresenter);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
 
     private void initListView() {
         mMyLvGameManagerAdatpter = new MyLvGameManagerAdatpter(mGameInfoBeenList, getContext(), getDownLoadPresenter());
-        mLvGameManager.setAdapter(null);
+        mLvGameManager.setAdapter(mMyLvGameManagerAdatpter);
     }
 
     private void initFindView() {
@@ -82,32 +84,34 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
 
     @Override
     public void showDownLoadedGame(List<SaveGameInfoBean> list) {
-
+        mGameInfoBeenList.addAll(list);
+        mMyLvGameManagerAdatpter.notifyDataSetChanged();
     }
 
     @Override
     public void showPhoneMemoryInfo(String phoneMemoryInfo) {
-
+        mTvPhoneMemory.setText(phoneMemoryInfo);
     }
 
     @Override
     public void showDownloadAlready(String downloadAlreadyinfo) {
-
+        mTvAlready.setText(downloadAlreadyinfo);
     }
 
     @Override
     public void showDownloadAvailable(String downloadAvailableinfo) {
-
+        mTvAvailable.setText(downloadAvailableinfo);
     }
 
     @Override
     public IManagerPresenter getManagerPresenter() {
-        return null;
+        ABasePresenter presenter = getPresenter(ManagerFragmentPresenter.TAG);
+        return (IManagerPresenter) presenter;
     }
 
     @Override
     public void setManagerPresenter(IManagerPresenter managerPresenter) {
-
+        addPresenter((ABasePresenter) managerPresenter);
     }
 
     @Override
@@ -115,6 +119,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         super.onStart();
         ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
         downLoadPresenter.onStart(getContext());
+        setDownLoadListener();
     }
 
     @Override

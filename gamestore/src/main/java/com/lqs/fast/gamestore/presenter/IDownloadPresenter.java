@@ -1,6 +1,7 @@
 package com.lqs.fast.gamestore.presenter;
 
 
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 import com.lqs.fast.gamestore.view.IDownLoadView;
 
@@ -21,4 +22,6 @@ public interface IDownloadPresenter {
     void cancelDownLoadTask(String url);
 
     int getDownLoadState(String url);
+
+    void saveGameInfo(SaveGameInfoBean bean);
 }

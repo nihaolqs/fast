@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 import com.lqs.fast.gamestore.view.IDownLoadView;
 
@@ -70,6 +71,11 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
             return state;
         }
         return 0;
+    }
+
+    @Override
+    public void saveGameInfo(SaveGameInfoBean bean) {
+        bean.save();
     }
 
     @Override

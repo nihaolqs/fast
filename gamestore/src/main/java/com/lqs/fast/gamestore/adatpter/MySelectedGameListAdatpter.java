@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
 import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 
@@ -133,6 +135,9 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
                 int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
                 if (downLoadState == 0 || downLoadState == 4) {
                     mDownloadPresenter.addDownLoadTask(download_url);
+                    SaveGameInfoBean bean = SaveGameInfoBean.getInstance4GameInfoBean(gameInfoBean);
+
+                    mDownloadPresenter.saveGameInfo(bean);
                 } else if (downLoadState == 3) {
                     //TODO 安装
                     String fileName = MyDownLoadService.getFileName(gameInfoBean.getDownload_url());
@@ -149,6 +154,8 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
         holder.tvState.setOnClickListener(listener);
 
     }
+
+
 
     private void setState(final ViewHolder holder, final String state) {
         holder.tvState.post(new Runnable() {

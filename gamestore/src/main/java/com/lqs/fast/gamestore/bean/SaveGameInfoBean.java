@@ -1,5 +1,7 @@
 package com.lqs.fast.gamestore.bean;
 
+import android.support.annotation.NonNull;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -12,22 +14,38 @@ import java.util.List;
 
 @Table(name = "download_game")
 public class SaveGameInfoBean extends Model{
-    @Column
+    @Column(name = "GUID")
     private String guid;
-    @Column
+    @Column(name = "Logo")
     private String game_logo;
-    @Column
+    @Column(name = "Name")
     private String game_name;
-    @Column
+    @Column(name = "Info")
     private String one_game_info;
-    @Column
+    @Column(name = "PackgeName")
     private String package_name;
-    @Column
+    @Column(name = "Size")
     private String gamesize;
-    @Column
+    @Column(name = "Type")
     private String typename;
-    @Column
+    @Column(name = "Url")
     private String download_url;
+
+    public SaveGameInfoBean(){
+        super();
+    }
+
+    public SaveGameInfoBean(String guid, String game_logo, String game_name, String one_game_info, String package_name, String gamesize, String typename, String download_url) {
+        super();
+        this.guid = guid;
+        this.game_logo = game_logo;
+        this.game_name = game_name;
+        this.one_game_info = one_game_info;
+        this.package_name = package_name;
+        this.gamesize = gamesize;
+        this.typename = typename;
+        this.download_url = download_url;
+    }
 
     public String getGuid() {
         return guid;
@@ -91,5 +109,19 @@ public class SaveGameInfoBean extends Model{
 
     public void setDownload_url(String download_url) {
         this.download_url = download_url;
+    }
+
+    @NonNull
+    public static SaveGameInfoBean getInstance4GameInfoBean(GameInfoBean gameInfoBean) {
+        SaveGameInfoBean bean = new SaveGameInfoBean();
+        bean.setDownload_url(gameInfoBean.getDownload_url());
+        bean.setGame_logo(gameInfoBean.getGame_logo());
+        bean.setGame_name(gameInfoBean.getGame_name());
+        bean.setGuid(gameInfoBean.getGuid());
+        bean.setOne_game_info(gameInfoBean.getOne_game_info());
+        bean.setPackage_name(gameInfoBean.getPackage_name());
+        bean.setTypename(gameInfoBean.getTypename());
+        bean.setGamesize(gameInfoBean.getGamesize());
+        return bean;
     }
 }
