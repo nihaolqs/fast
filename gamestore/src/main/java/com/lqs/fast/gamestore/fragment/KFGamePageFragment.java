@@ -1,11 +1,15 @@
 package com.lqs.fast.gamestore.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.activity.GameDetailActivity;
 import com.lqs.fast.gamestore.adatpter.MyLvKfListAdatpter;
 import com.lqs.fast.gamestore.bean.KfGame;
 import com.lqs.fast.gamestore.model.KfGamePageFragmentModel;
@@ -41,7 +45,7 @@ public class KFGamePageFragment extends ABaseFragment<KFGamePageFragment,String>
         mLvKfList = (ListView) mFragmentLauout.findViewById(R.id.lv_frag_kaifu_page_kflist);
         mMyLvKfListAdatpter = new MyLvKfListAdatpter(mKfList, getContext());
         mLvKfList.setAdapter(mMyLvKfListAdatpter);
-    }
+       }
 
     @Override
     protected void initData() {

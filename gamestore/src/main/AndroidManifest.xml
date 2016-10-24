@@ -24,6 +24,7 @@
         <activity android:name=".TabActivity"></activity>
         <activity android:name=".activity.MainAct"></activity>
         <activity android:name=".activity.GameDetailActivity"></activity>
+        <activity android:name=".activity.SearchKfFragmentActivity"/>
 
         <service
             android:name=".service.MyDownLoadService"

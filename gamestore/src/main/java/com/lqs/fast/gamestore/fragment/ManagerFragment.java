@@ -34,6 +34,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     private TextView mTvPhoneMemory;
     private TextView mTvAlready;
     private TextView mTvAvailable;
+    private boolean isPause;
 
     private ArrayList<SaveGameInfoBean> mGameInfoBeenList = new ArrayList<>();
     private MyLvGameManagerAdatpter mMyLvGameManagerAdatpter;
@@ -84,6 +85,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
 
     @Override
     public void showDownLoadedGame(List<SaveGameInfoBean> list) {
+        mGameInfoBeenList.clear();
         mGameInfoBeenList.addAll(list);
         mMyLvGameManagerAdatpter.notifyDataSetChanged();
     }
@@ -139,33 +141,43 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
 
             @Override
             public void progress(String url, final int progre) {
-                setItemDownloadState(url, progre+"%");
+                if (!isPause) {
+                    setItemDownloadState(url, progre + "%");
+                }
             }
 
             @Override
             public void completed(String url) {
-                setItemDownloadState(url, "完成");
+                if (!isPause) {
+                    setItemDownloadState(url, "完成");
+                }
             }
 
             @Override
             public void fail(String url) {
-                setItemDownloadState(url, "重试");
+                if (!isPause) {
+                    setItemDownloadState(url, "重试");
+                }
             }
 
             @Override
             public void speed(String url, final long speed) {
-                setItemDownloadStateSpeed(url, speed);
+                if (!isPause) {
+                    setItemDownloadStateSpeed(url, speed);
+                }
             }
 
             @Override
             public void downloadedSize(String url, final long size) {
-                setItemDownloadStateSize(url, size);
+                {
+                    setItemDownloadStateSize(url, size);
+                }
             }
         });
     }
 
     private void setItemDownloadStateSpeed(String url, final long speed) {
-        Handler handler = new Handler();
+        Handler handler = new Handler(getContext().getMainLooper());
         for (int i = 0; i < mGameInfoBeenList.size(); i++) {
             int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
             final SaveGameInfoBean bean = mGameInfoBeenList.get(i);
@@ -189,7 +201,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     }
 
     private void setItemDownloadStateSize(String url, final long size) {
-        Handler handler = new Handler();
+        Handler handler = new Handler(getContext().getMainLooper());
         for (int i = 0; i < mGameInfoBeenList.size(); i++) {
             int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
             final SaveGameInfoBean bean = mGameInfoBeenList.get(i);
@@ -214,7 +226,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     }
 
     private void setItemDownloadState(String url, final String stateStr) {
-        Handler handler = new Handler();
+        Handler handler = new Handler(getContext().getMainLooper());
         for (int i = 0; i < mGameInfoBeenList.size(); i++) {
             int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
             final SaveGameInfoBean bean = mGameInfoBeenList.get(i);
@@ -235,7 +247,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     }
 
     private void setItemDownloadStateWail(String url) {
-        Handler handler = new Handler();
+        Handler handler = new Handler(getContext().getMainLooper());
         for (int i = 0; i < mGameInfoBeenList.size(); i++) {
             int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
             final SaveGameInfoBean bean = mGameInfoBeenList.get(i);

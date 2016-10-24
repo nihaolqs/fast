@@ -31,21 +31,21 @@ public class SaveGameInfoBean extends Model{
     @Column(name = "Url")
     private String download_url;
 
-    public SaveGameInfoBean(){
-        super();
-    }
-
-    public SaveGameInfoBean(String guid, String game_logo, String game_name, String one_game_info, String package_name, String gamesize, String typename, String download_url) {
-        super();
-        this.guid = guid;
-        this.game_logo = game_logo;
-        this.game_name = game_name;
-        this.one_game_info = one_game_info;
-        this.package_name = package_name;
-        this.gamesize = gamesize;
-        this.typename = typename;
-        this.download_url = download_url;
-    }
+//    public SaveGameInfoBean(){
+//        super();
+//    }
+//
+//    public SaveGameInfoBean(String guid, String game_logo, String game_name, String one_game_info, String package_name, String gamesize, String typename, String download_url) {
+//        super();
+//        this.guid = guid;
+//        this.game_logo = game_logo;
+//        this.game_name = game_name;
+//        this.one_game_info = one_game_info;
+//        this.package_name = package_name;
+//        this.gamesize = gamesize;
+//        this.typename = typename;
+//        this.download_url = download_url;
+//    }
 
     public String getGuid() {
         return guid;
@@ -113,7 +113,9 @@ public class SaveGameInfoBean extends Model{
 
     @NonNull
     public static SaveGameInfoBean getInstance4GameInfoBean(GameInfoBean gameInfoBean) {
+
         SaveGameInfoBean bean = new SaveGameInfoBean();
+
         bean.setDownload_url(gameInfoBean.getDownload_url());
         bean.setGame_logo(gameInfoBean.getGame_logo());
         bean.setGame_name(gameInfoBean.getGame_name());

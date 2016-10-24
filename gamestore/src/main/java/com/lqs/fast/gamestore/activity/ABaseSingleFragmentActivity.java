@@ -13,8 +13,8 @@ import android.support.v4.app.FragmentTransaction;
 public abstract class ABaseSingleFragmentActivity extends ABaseActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(getContainerViewId(),getFragment());

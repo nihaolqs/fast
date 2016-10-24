@@ -1,11 +1,13 @@
 package com.lqs.fast.gamestore.fragment;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.activity.SearchKfFragmentActivity;
 import com.lqs.fast.gamestore.adatpter.MyKfGameVPAdatpter;
 import com.lqs.fast.gamestore.bean.KfGame;
 
@@ -37,6 +39,14 @@ public class KFGameFragment extends ABaseFragment<KFGameFragment,KfGame>{
         MyKfGameVPAdatpter myKfGameVPAdatpter = new MyKfGameVPAdatpter(getChildFragmentManager());
         mViewPage.setAdapter(myKfGameVPAdatpter);
         mTabs.setViewPager(mViewPage);
+
+        mFragmentLauout.findViewById(R.id.fragmain_selete1_search_iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SearchKfFragmentActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

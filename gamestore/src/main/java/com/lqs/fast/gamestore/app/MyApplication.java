@@ -4,9 +4,11 @@ import android.app.Application;
 import android.graphics.Bitmap;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
 import com.android.volley.toolbox.Volley;
 import com.lqs.fast.fast.utils.HttpUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 /**
@@ -20,7 +22,7 @@ public class MyApplication extends Application {
         HttpUtil.initVolley(Volley.newRequestQueue(this)); //初始化Volley
         ImageUtils.initUIL(this); //初始化UIL
         openUILCache();
-        ActiveAndroid.initialize(this);
+        initializeDB();
     }
 
     @Override
@@ -39,5 +41,11 @@ public class MyApplication extends Application {
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         ImageUtils.setDisplayImageOptions(displayImageOptions);
+    }
+
+    protected void initializeDB() {
+        Configuration.Builder configurationBuilder = new Configuration.Builder(this);
+        configurationBuilder.addModelClasses(SaveGameInfoBean.class);
+        ActiveAndroid.initialize(configurationBuilder.create());
     }
 }

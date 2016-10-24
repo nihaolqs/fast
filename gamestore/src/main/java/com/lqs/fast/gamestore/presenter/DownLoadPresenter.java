@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import com.activeandroid.query.Select;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
@@ -21,7 +22,6 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     private MyDownLoadService.MyBinder mMybinder;
     private Intent mServiceIntent;
     private ServiceConnection mSeriveConn;
-
     public static final String TAG = "DownLoadPresenter";
     private MyDownLoadService.IDownLoadListener mDownloadListener;
 
@@ -75,6 +75,10 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
 
     @Override
     public void saveGameInfo(SaveGameInfoBean bean) {
+        try {
+            bean.delete();
+        } catch (Exception e) {
+        }
         bean.save();
     }
 

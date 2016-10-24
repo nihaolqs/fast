@@ -47,11 +47,11 @@ public class ManagerFragmentModel extends ABaseModel<List<SaveGameInfoBean>>  im
 
     @Override
     public List<SaveGameInfoBean> getDownloadedGame() {
-//        List<SaveGameInfoBean> execute = new Select().from(SaveGameInfoBean.class)
+        List<SaveGameInfoBean> execute = new Select().from(SaveGameInfoBean.class)
 //                .where("guid = ?" )
-//                .execute();
+                .execute();
         ArrayList<SaveGameInfoBean> list = new ArrayList<>();
-//        list.addAll(execute);
+        list.addAll(execute);
         return list;
     }
 

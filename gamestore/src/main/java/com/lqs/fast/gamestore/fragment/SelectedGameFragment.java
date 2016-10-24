@@ -38,7 +38,7 @@ import java.util.List;
  * Created by lin on 2016/10/5.
  */
 
-public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragment implements IAdGameView, ISelectedGameView,IDownLoadView{
+public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragment implements IAdGameView, ISelectedGameView, IDownLoadView {
 
     public static final String TAG = "SelectedGameFragment";
     private View mHeaderView;
@@ -50,6 +50,8 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     private MySelectedGameListAdatpter mMySelectedGameListAdatpter;
     private MyDownLoadService.IDownLoadListener mDownloadListener;
 
+    private boolean isDistory;
+
     @Override
     protected void initUI() {
         initHeaderView();
@@ -59,7 +61,7 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     private void initListView() {
         mSelectedListView = (ListView) mFragmentLauout.findViewById(R.id.lv_frag_selected_gamelist);
         mSelectedListView.addHeaderView(mHeaderView, null, false);
-        mMySelectedGameListAdatpter = new MySelectedGameListAdatpter(mSelectedGames, getContext(),getDownLoadPresenter());
+        mMySelectedGameListAdatpter = new MySelectedGameListAdatpter(mSelectedGames, getContext(), getDownLoadPresenter());
         mSelectedListView.setAdapter(mMySelectedGameListAdatpter);
         mSelectedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -151,27 +153,38 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         addPresenter(presenter);
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-////        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
-////        presenter.onStart(getContext());
-////        setDownLoadListener();
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+//        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
+//        presenter.onStart(getContext());
+//        setDownLoadListener();
+        isDistory = false;
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+//        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
+//        presenter.onStop(getContext());
+        isDistory = true;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
+        presenter.onStop(getContext());
+
+    }
+
+    //
 //    @Override
-//    public void onStop() {
-//        super.onStop();
+//    public void onDestroyView() {
+//        super.onDestroyView();
 //        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
 //        presenter.onStop(getContext());
 //    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
-        presenter.onStop(getContext());
-    }
 
     @Override
     public void setDownLoadListener() {
@@ -179,22 +192,22 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         mDownloadListener = new MyDownLoadService.IDownLoadListener() {
             @Override
             public void wail(String url) {
-                setItemState(url,"等待");
+                setItemState(url, "等待");
             }
 
             @Override
             public void progress(String url, int progre) {
-                setItemState(url,progre+"%");
+                setItemState(url, progre + "%");
             }
 
             @Override
             public void completed(String url) {
-                setItemState(url,"完成");
+                setItemState(url, "完成");
             }
 
             @Override
             public void fail(String url) {
-                setItemState(url,"重试");
+                setItemState(url, "重试");
             }
 
             @Override
@@ -212,18 +225,20 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     }
 
     private void setItemState(String url, final String state) {
-        for (int i = 0; i< mSelectedGames.size(); i++){
-            GameInfoBean bean = mSelectedGames.get(i);
-            if(bean.getDownload_url().equals(url)&& i >= mSelectedListView.getFirstVisiblePosition()  && i < mSelectedListView.getLastVisiblePosition()){  //在可见范围内才进行更新进度
+        if (!isDistory) {
+            for (int i = 0; i < mSelectedGames.size(); i++) {
+                GameInfoBean bean = mSelectedGames.get(i);
+                if (bean.getDownload_url().equals(url) && i >= mSelectedListView.getFirstVisiblePosition() && i < mSelectedListView.getLastVisiblePosition()) {  //在可见范围内才进行更新进度
 
-                View childAt = mSelectedListView.getChildAt(i + mSelectedListView.getHeaderViewsCount()- mSelectedListView.getFirstVisiblePosition());
-                final TextView tvState = (TextView) childAt.findViewById(R.id.item_select_tv_state);
-                tvState.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        tvState.setText(state);
-                    }
-                });
+                    View childAt = mSelectedListView.getChildAt(i + mSelectedListView.getHeaderViewsCount() - mSelectedListView.getFirstVisiblePosition());
+                    final TextView tvState = (TextView) childAt.findViewById(R.id.item_select_tv_state);
+                    tvState.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvState.setText(state);
+                        }
+                    });
+                }
             }
         }
     }
