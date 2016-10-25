@@ -12,6 +12,13 @@ public final class Constants {
         public static final String SEARCH_GAME = "search_game";
     }
 
+    public static class Settings{
+        public static final String SP_NAME ="gamestore_sp";
+        public static final String SEND_MESSAGE ="send_message";
+        public static final String AUTOMATIC_INSTALL ="automatic_install";
+        public static final String DELETE_INSTALLPACKAGE ="delete_installpackage";
+    }
+
     public static class ApiClient{
         //数据请求返回码
         public static final int SUCCESSFUL = 0;

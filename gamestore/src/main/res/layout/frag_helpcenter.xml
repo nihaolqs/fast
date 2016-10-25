@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40.0dip"
+        android:clickable="true">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40.0dip">
+
+            <Button
+                android:id="@+id/fragment_helpcenter_btn_telephone"
+                android:layout_width="60.0dip"
+                android:layout_height="60.0dip"
+                android:background="@drawable/selector_help_telephone" />
+
+            <TextView
+                android:layout_width="60.0dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_helpcenter_btn_telephone"
+                android:layout_marginTop="3.0dip"
+                android:gravity="center"
+                android:text="联系客服"
+                android:textColor="#ff4bd790"
+                android:textSize="12.0sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40.0dip">
+
+            <Button
+                android:id="@+id/fragment_helpcenter_btn_qq"
+                android:layout_width="60.0dip"
+                android:layout_height="60.0dip"
+                android:background="@drawable/selector_help_qq" />
+
+            <TextView
+                android:layout_width="60.0dip"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_helpcenter_btn_qq"
+                android:layout_marginTop="3.0dip"
+                android:gravity="center"
+                android:text="加入Q群"
+                android:textColor="#ff0ec0ec"
+                android:textSize="12.0sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_helpcenter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:id="@+id/fragment_helpcenter_ll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--<com.smwl.x7market.myview.HelpCenterItemView-->
+            <!--android:id="@+id/fragment_helpcenter_send_message"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true" />-->
+
+            <!--<com.smwl.x7market.myview.HelpCenterItemView-->
+            <!--android:id="@+id/fragment_helpcenter_automatic_install"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true" />-->
+
+            <!--<com.smwl.x7market.myview.HelpCenterItemView-->
+            <!--android:id="@+id/fragment_helpcenter_delete_installpackage"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true" />-->
+
+            <!--<com.smwl.x7market.myview.HelpCenterItemView-->
+            <!--android:id="@+id/fragment_helpcenter_update"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true" />-->
+
+            <!--<com.smwl.x7market.myview.HelpCenterItemView-->
+            <!--android:id="@+id/fragment_helpcenter_feedback"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true" />-->
+            <LinearLayout
+                android:id="@+id/ll_fra_helpcenter_send_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_send_message" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_weight="1"
+                    android:text="消息推送"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_frag_helpcenter_message_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_switch_on" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_shen"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                />
+            <LinearLayout
+                android:id="@+id/ll_fragment_helpcenter_automatic_install"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_automatic_install" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_weight="1"
+                    android:text="下载后自动安装"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_frag_helpcenter_automatic_install_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_switch_on" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_shen"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                />
+            <LinearLayout
+                android:id="@+id/ll_fragment_helpcenter_delete_installpackage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_delete_installpackage" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_weight="1"
+                    android:text="安装后自动删除安装包"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_frag_helpcenter_delete_installpackage_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_switch_on" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_shen"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                />
+            <LinearLayout
+                android:id="@+id/ll_fragment_helpcenter_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_update" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_weight="1"
+                    android:text="检查更新"
+                    android:textSize="15sp"
+                    android:id="@+id/textView2" />
+
+                <TextView
+                    android:id="@+id/tv_fragment_helpcenter_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="V1.0.4"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_shen"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                />
+            <LinearLayout
+                android:id="@+id/ll_fragment_helpcenter_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/helpcenter_feedback" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:layout_weight="1"
+                    android:text="意见反馈"
+                    android:textSize="15sp"
+                    android:id="@+id/textView3" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_shen"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>
