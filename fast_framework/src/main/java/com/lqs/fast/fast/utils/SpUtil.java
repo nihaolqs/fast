@@ -95,6 +95,9 @@ public final class SpUtil {
         Map<String,Serializable> map = new HashMap<>();
         for (String key: keys) {
             Serializable value = spGetValue(sp, key);
+            if(value == null){
+                continue;
+            }
             map.put(key,value);
         }
         return map;
@@ -103,7 +106,11 @@ public final class SpUtil {
     private static Serializable spGetValue(SharedPreferences sp,String key)
     {
         String type = sp.getString(key + SUFFIX, null);
+
         Serializable value = null;
+        if (type == null){
+            return null;
+        }
         switch (type)
         {
             case "Integer":

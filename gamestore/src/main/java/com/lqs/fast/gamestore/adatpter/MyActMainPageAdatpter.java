@@ -9,6 +9,7 @@ import com.lqs.fast.gamestore.bean.GameDetail;
 import com.lqs.fast.gamestore.bean.SearchGame;
 import com.lqs.fast.gamestore.fragment.FreaturedGameFragment;
 import com.lqs.fast.gamestore.fragment.GameDetailFragment;
+import com.lqs.fast.gamestore.fragment.HelpCenterFragment;
 import com.lqs.fast.gamestore.fragment.ManagerFragment;
 import com.lqs.fast.gamestore.fragment.SearchGameFragment;
 
@@ -39,7 +40,8 @@ public class MyActMainPageAdatpter extends FragmentPagerAdapter{
             }
             break;
             case 3:{
-                fragment = FreaturedGameFragment.getInstance(FreaturedGameFragment.class, "");
+//                fragment = FreaturedGameFragment.getInstance(FreaturedGameFragment.class, "");
+                fragment = HelpCenterFragment.getInstance(HelpCenterFragment.class, null);
             }
             break;
         }

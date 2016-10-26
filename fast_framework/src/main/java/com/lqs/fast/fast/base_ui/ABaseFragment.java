@@ -33,6 +33,14 @@ public abstract class ABaseFragment<T extends ABaseFragment, S extends Serializa
         return mFragmentLauout;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+
+        }
+    }
+
     protected abstract void initMvp();
 
     protected void initBundleData() {

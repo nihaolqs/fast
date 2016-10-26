@@ -16,17 +16,18 @@ import java.util.Map;
  * Created by dell on 2016/10/25.
  */
 
-public class HelpCenterFragmentPresenter extends ABasePresenter implements IHelpCenterPresenter{
-    public static final String TAG ="HelpCenterFragmentPresenter";
+public class HelpCenterFragmentPresenter extends ABasePresenter implements IHelpCenterPresenter {
+    public static final String TAG = "HelpCenterFragmentPresenter";
     private Context mContext;
 
-    public HelpCenterFragmentPresenter(Context context){
+    public HelpCenterFragmentPresenter(Context context) {
         super();
-       this.mContext = context;
+        this.mContext = context;
     }
+
     @Override
     public String getPresenterTag() {
-        return null;
+        return TAG;
     }
 
     @Override
@@ -34,27 +35,47 @@ public class HelpCenterFragmentPresenter extends ABasePresenter implements IHelp
         Map<String, Serializable> spData = SpUtil.readSp(mContext, Constants.Settings.SP_NAME,
                 Constants.Settings.AUTOMATIC_INSTALL, Constants.Settings.DELETE_INSTALLPACKAGE,
                 Constants.Settings.SEND_MESSAGE);
-        boolean autoInstall = (Boolean) spData.get(Constants.Settings.AUTOMATIC_INSTALL);
-        boolean deleteInstallPackage = (Boolean) spData.get(Constants.Settings.DELETE_INSTALLPACKAGE);
-        boolean sendMessage = (Boolean) spData.get(Constants.Settings.SEND_MESSAGE);
+        Boolean autoInstall = (Boolean) spData.get(Constants.Settings.AUTOMATIC_INSTALL);
+        Boolean deleteInstallPackage = (Boolean) spData.get(Constants.Settings.DELETE_INSTALLPACKAGE);
+        Boolean sendMessage = (Boolean) spData.get(Constants.Settings.SEND_MESSAGE);
         IHelpCenterView helpCenterView = getHelpCenterView();
-        helpCenterView.showDeleteSwitch(deleteInstallPackage);
+        if (deleteInstallPackage != null) {
+            helpCenterView.showDeleteSwitch(deleteInstallPackage);
+        } else {
+            helpCenterView.showDeleteSwitch(false);
+        }
 
+        if (helpCenterView != null) {
+            helpCenterView.showInstallSwitch(autoInstall);
+        } else {
+            helpCenterView.showInstallSwitch(false);
+        }
+
+        if (sendMessage != null) {
+            helpCenterView.showMessageSwitch(sendMessage);
+        } else {
+            helpCenterView.showMessageSwitch(false);
+        }
+//        helpCenterView.showInstallSwitch(autoInstall);
+//        helpCenterView.showMessageSwitch(sendMessage);
     }
 
     @Override
     public void settingMessageSwitch(boolean isSwitch) {
-        SpUtil.editSp(mContext, Constants.Settings.SEND_MESSAGE,isSwitch,Constants.Settings.SP_NAME);
+        SpUtil.editSp(mContext, Constants.Settings.SEND_MESSAGE, isSwitch, Constants.Settings.SP_NAME);
+        repalceHelpCenterView();
     }
 
     @Override
     public void settingInstallSwitch(boolean isSwitch) {
-        SpUtil.editSp(mContext, Constants.Settings.AUTOMATIC_INSTALL,isSwitch,Constants.Settings.SP_NAME);
+        SpUtil.editSp(mContext, Constants.Settings.AUTOMATIC_INSTALL, isSwitch, Constants.Settings.SP_NAME);
+        repalceHelpCenterView();
     }
 
     @Override
     public void settingDeleteSwitch(boolean isSwitch) {
-        SpUtil.editSp(mContext, Constants.Settings.DELETE_INSTALLPACKAGE,isSwitch,Constants.Settings.SP_NAME);
+        SpUtil.editSp(mContext, Constants.Settings.DELETE_INSTALLPACKAGE, isSwitch, Constants.Settings.SP_NAME);
+        repalceHelpCenterView();
     }
 
     @Override

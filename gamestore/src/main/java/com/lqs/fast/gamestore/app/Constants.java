@@ -1,5 +1,7 @@
 package com.lqs.fast.gamestore.app;
 
+import android.os.Environment;
+
 import com.android.volley.toolbox.StringRequest;
 
 /**
@@ -7,6 +9,8 @@ import com.android.volley.toolbox.StringRequest;
  */
 
 public final class Constants {
+
+    public static final String SAVEPATH = Environment.getDownloadCacheDirectory().getAbsolutePath();
     public static class Type{
         public static final String SEARCH_KF = "search_kf";
         public static final String SEARCH_GAME = "search_game";

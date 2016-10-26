@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.fast.utils.ImageUtils;
@@ -17,12 +16,9 @@ import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.adatpter.MyRvGameImageAdatpter;
 import com.lqs.fast.gamestore.bean.GameDetail;
 import com.lqs.fast.gamestore.model.GameDetailFragmentModel;
-import com.lqs.fast.gamestore.model.IGameDetailModel;
 import com.lqs.fast.gamestore.presenter.GameDetailFragmentPresenter;
 import com.lqs.fast.gamestore.presenter.IGameDetailPresenter;
 import com.lqs.fast.gamestore.view.IGameDetailView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

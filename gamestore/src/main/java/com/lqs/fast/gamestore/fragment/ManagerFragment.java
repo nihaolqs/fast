@@ -1,5 +1,6 @@
 package com.lqs.fast.gamestore.fragment;
 
+import android.content.Context;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
@@ -46,6 +47,9 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         MvpUtils.initMVP(managerFragmentModel, managerFragmentPresenter, this);
         DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
         this.setDownLoadPresenter(downLoadPresenter);
+
+        downLoadPresenter.onStart(getContext());
+        setDownLoadListener();
     }
 
     @Override
@@ -124,11 +128,31 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         setDownLoadListener();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
-        downLoadPresenter.onStop(getContext());
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
+//        downLoadPresenter.onStop(getContext());
+//    }
+
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+            this.setDownLoadPresenter(downLoadPresenter);
+            Context context = getContext();
+            if (context != null) {
+                downLoadPresenter.onStart(context);
+                setDownLoadListener();
+            }
+
+        } else {
+            DownLoadPresenter downLoadPresenter = (DownLoadPresenter) getDownLoadPresenter();
+
+            if (downLoadPresenter != null) {
+                downLoadPresenter.onStop(getContext());
+            }
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     private ServiceConnection mSeriveConn;
     public static final String TAG = "DownLoadPresenter";
     private MyDownLoadService.IDownLoadListener mDownloadListener;
+    private boolean isBinder;
 
     @Override
     public String getPresenterTag() {
@@ -84,28 +85,36 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
 
     @Override
     public void onStart(Context context) {
-        super.onStart(context);
-        mServiceIntent = new Intent(context, MyDownLoadService.class);
-        context.startService(mServiceIntent);
+        if (context != null) {
+            super.onStart(context);
+            isBinder = true;
+            mServiceIntent = new Intent(context, MyDownLoadService.class);
+            context.startService(mServiceIntent);
 
-        mSeriveConn = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                DownLoadPresenter.this.mMybinder = (MyDownLoadService.MyBinder) service;
-                mMybinder.setDownLoadListener(mDownloadListener);
-            }
+            mSeriveConn = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    DownLoadPresenter.this.mMybinder = (MyDownLoadService.MyBinder) service;
+                    mMybinder.setDownLoadListener(mDownloadListener);
+                }
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
 
-            }
-        };
-        context.bindService(mServiceIntent, mSeriveConn, BIND_AUTO_CREATE);
+                }
+            };
+
+//        context.unbindService(mSeriveConn);
+            context.bindService(mServiceIntent, mSeriveConn, BIND_AUTO_CREATE);
+        }
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-        context.unbindService(mSeriveConn);
+        if (isBinder) {
+            context.unbindService(mSeriveConn);
+            isBinder = false;
+        }
     }
 }

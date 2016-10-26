@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.lqs.fast.fast.utils.SingleFileDownLoadUtils;
+import com.lqs.fast.gamestore.app.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -121,8 +122,8 @@ public class MyDownLoadService extends Service {
             InputStream is = null;
             OutputStream os = null;
             String fileName = getFileName(mFileUrl);
-            String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String filePath = absolutePath + "/" + fileName;
+//            String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String filePath = Constants.SAVEPATH + "/" + fileName;
             File file = new File(filePath);
             try {
                 mDownLoadStateMap.put(mFileUrl, PROGRESS);

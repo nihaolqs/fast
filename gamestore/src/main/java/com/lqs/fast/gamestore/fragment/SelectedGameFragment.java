@@ -1,6 +1,7 @@
 package com.lqs.fast.gamestore.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -84,9 +85,6 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     protected void initData() {
         IAdGamePresenter adGamePresenter = getAdGamePresenter();
         adGamePresenter.replaceData();
-//        adGamePresenter.showAdGameList();
-//        ISelectedGamePresenter selectedGamePresenter = getSelectedGamePresenter();
-//        selectedGamePresenter.showSelectedGameList();
     }
 
     @Override
@@ -98,11 +96,13 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         selectedGameFragmentPresenter.setAdGameView(this);
         this.setAdGamePresenter(selectedGameFragmentPresenter);
 
-        DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
-        this.setDownLoadPresenter(downLoadPresenter);
+//        DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+//        this.setDownLoadPresenter(downLoadPresenter);
+//
+//        downLoadPresenter.onStart(getContext());
+//        setDownLoadListener();
 
-        downLoadPresenter.onStart(getContext());
-        setDownLoadListener();
+
     }
 
     @Override
@@ -156,18 +156,39 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     @Override
     public void onStart() {
         super.onStart();
-//        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
-//        presenter.onStart(getContext());
-//        setDownLoadListener();
+        ABasePresenter presenter = (ABasePresenter) getDownLoadPresenter();
+        this.setDownLoadPresenter((IDownloadPresenter) presenter);
+        presenter.onStart(getContext());
+        setDownLoadListener();
         isDistory = false;
     }
 
     @Override
     public void onStop() {
         super.onStop();
-//        ABasePresenter presenter = (ABasePresenter) getSelectedGamePresenter();
+//
 //        presenter.onStop(getContext());
         isDistory = true;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+            this.setDownLoadPresenter(downLoadPresenter);
+            Context context = getContext();
+            if (context != null) {
+                downLoadPresenter.onStart(context);
+                setDownLoadListener();
+            }
+        } else {
+            DownLoadPresenter downLoadPresenter = (DownLoadPresenter) getDownLoadPresenter();
+
+            if (downLoadPresenter != null) {
+                downLoadPresenter.onStop(getContext());
+            }
+        }
     }
 
     @Override

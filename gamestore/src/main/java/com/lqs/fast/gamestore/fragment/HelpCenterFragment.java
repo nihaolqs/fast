@@ -5,9 +5,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.fast.utils.ToastUtils;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.presenter.HelpCenterFragmentPresenter;
+import com.lqs.fast.gamestore.presenter.IHelpCenterPresenter;
 import com.lqs.fast.gamestore.view.IHelpCenterView;
 
 /**
@@ -25,15 +28,62 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
     private ImageView mIvInstallSwitch;
     private ImageView mIvDeleteSwitch;
     private TextView mTvVersion;
+    private boolean isAutoSentMessage;
+    private boolean isAutoInstall;
+    private boolean isAutoDeleteInstalled;
 
     @Override
     protected void initMvp() {
-
+        HelpCenterFragmentPresenter presenter = new HelpCenterFragmentPresenter(getContext());
+        this.setHelpCenterPresenter(presenter);
+        presenter.setHelpCenterView(this);
     }
 
     @Override
     protected void initUI() {
         findView();
+        initSetOnClick();
+    }
+
+    private void initSetOnClick() {
+        mLlAutoMaticInstall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IHelpCenterPresenter presenter = getHelpCenterPresenter();
+                presenter.settingInstallSwitch(!isAutoInstall);
+            }
+        });
+
+        mLlDeleteInstallPackage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IHelpCenterPresenter presenter = getHelpCenterPresenter();
+                presenter.settingDeleteSwitch(!isAutoDeleteInstalled);
+            }
+        });
+        mLlSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IHelpCenterPresenter presenter = getHelpCenterPresenter();
+                presenter.settingMessageSwitch(!isAutoSentMessage);
+            }
+        });
+
+        mLlUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IHelpCenterPresenter presenter = getHelpCenterPresenter();
+                presenter.checkLastVersion();
+            }
+        });
+        mLlFeedBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IHelpCenterPresenter presenter = getHelpCenterPresenter();
+                presenter.feedback();
+            }
+        });
+
     }
 
     private void findView() {
@@ -65,7 +115,8 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
 
     @Override
     public void showMessageSwitch(boolean isSwitch) {
-
+        this.isAutoSentMessage = isSwitch;
+        showSwitch(isSwitch,mIvMessageSwitch);
     }
 
     private void showSwitch(boolean isSwitch, ImageView switchImageView) {
@@ -78,11 +129,13 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
 
     @Override
     public void showInstallSwitch(boolean isSwitch) {
+        this.isAutoInstall = isSwitch;
         showSwitch(isSwitch, mIvInstallSwitch);
     }
 
     @Override
     public void showDeleteSwitch(boolean isSwitch) {
+        this.isAutoDeleteInstalled = isSwitch;
         showSwitch(isSwitch, mIvDeleteSwitch);
     }
 
@@ -98,5 +151,16 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
         }else {
             ToastUtils.makeToast(getContext(),"已经是最新版本");
         }
+    }
+
+    @Override
+    public IHelpCenterPresenter getHelpCenterPresenter() {
+        ABasePresenter presenter = getPresenter(HelpCenterFragmentPresenter.TAG);
+        return (IHelpCenterPresenter) presenter;
+    }
+
+    @Override
+    public void setHelpCenterPresenter(IHelpCenterPresenter helpCenterPresenter) {
+        addPresenter((ABasePresenter) helpCenterPresenter);
     }
 }
