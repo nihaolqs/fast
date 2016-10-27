@@ -4,4 +4,13 @@
         <attr name="horizontal_spacing" format="dimension"/>
         <attr name="vertical_spacing" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="ProgressButton">
+        <attr name="defaultColour" format="color" />
+        <attr name="completeColour" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="mMaxProgress" format="integer" />
+        <attr name="text" format="string" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
 </resources>

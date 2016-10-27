@@ -166,9 +166,11 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     @Override
     public void onStop() {
         super.onStop();
-//
-//        presenter.onStop(getContext());
-        isDistory = true;
+        DownLoadPresenter downLoadPresenter = (DownLoadPresenter) getDownLoadPresenter();
+
+        if (downLoadPresenter != null) {
+            downLoadPresenter.onStop(getContext());
+        }
     }
 
     @Override

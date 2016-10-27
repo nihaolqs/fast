@@ -30,4 +30,15 @@
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <com.lqs.fast.fast.widget.ProgressButton
+        android:id="@+id/progressbutton"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        app:completeColour="#66ff0000"
+        app:text="12333"
+        android:layout_alignBottom="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="172dp" />
+
 </RelativeLayout>

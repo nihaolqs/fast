@@ -1,5 +1,6 @@
 package com.lqs.fast.gamestore.presenter;
 
+import com.lqs.fast.gamestore.bean.GameDetail;
 import com.lqs.fast.gamestore.model.IGameDetailModel;
 import com.lqs.fast.gamestore.view.IGameDetailView;
 
@@ -20,4 +21,6 @@ public interface IGameDetailPresenter {
     IGameDetailView getGameDetailView();
 
     void setGameDetailView(IGameDetailView view);
+
+    GameDetail.GameDeatilBean getGameInfoData();
 }

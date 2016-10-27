@@ -12,12 +12,18 @@ import android.widget.TextView;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.fast.utils.ImageUtils;
+import com.lqs.fast.fast.widget.ProgressButton;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.adatpter.MyRvGameImageAdatpter;
 import com.lqs.fast.gamestore.bean.GameDetail;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.model.GameDetailFragmentModel;
+import com.lqs.fast.gamestore.presenter.DownLoadPresenter;
 import com.lqs.fast.gamestore.presenter.GameDetailFragmentPresenter;
+import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.presenter.IGameDetailPresenter;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
+import com.lqs.fast.gamestore.view.IDownLoadView;
 import com.lqs.fast.gamestore.view.IGameDetailView;
 
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ import java.util.List;
  * Created by lin on 2016/10/13.
  */
 
-public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String> implements IGameDetailView {
+public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String> implements IGameDetailView ,IDownLoadView {
     public static final String TAG = "GameDetailFragment";
     static final int INTRODUCTION_DEFAULTLINE = 3;
 
@@ -49,6 +55,7 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
     private TextView mTvOnlineTime;
     private MyRvGameImageAdatpter mRvGameImageAdatpter;
     private TextView mGameInfoTvMore;
+    private ProgressButton mProgressButton;
 
     @Override
     protected void initMvp() {
@@ -58,12 +65,42 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         presenter.setGameDetailView(this);
         presenter.setGameDetailModel(model);
         model.setGameDetailPresenter(presenter);
+
+        DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+        this.setDownLoadPresenter(downLoadPresenter);
+        downLoadPresenter.onStart(getContext());
+        setDownLoadListener();
     }
 
     @Override
     protected void initUI() {
         initFindView();
         initRecyclerView();
+        initOnclick();
+    }
+
+    private void initOnclick() {
+        mProgressButton.setOnClickListener(new View.OnClickListener() {
+
+            private String download_url;
+
+            @Override
+            public void onClick(View v) {
+                GameDetail.GameDeatilBean gameInfoData = getGameDetailPresenter().getGameInfoData();
+                download_url = gameInfoData.getDownload_url();
+                getDownLoadPresenter().addDownLoadTask(download_url);
+                SaveGameInfoBean saveGameInfo = new SaveGameInfoBean();
+                saveGameInfo.setDownload_url(download_url);
+                saveGameInfo.setGame_logo(gameInfoData.getGame_logo());
+                saveGameInfo.setGame_name(gameInfoData.getGame_name());
+                saveGameInfo.setGamesize(gameInfoData.getGamesize());
+                saveGameInfo.setGuid(mData);
+                saveGameInfo.setOne_game_info(saveGameInfo.getOne_game_info());
+                saveGameInfo.setPackage_name(gameInfoData.getPackage_name());
+                saveGameInfo.setTypename(gameInfoData.getTypename());
+                getDownLoadPresenter().saveGameInfo(saveGameInfo);
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -103,6 +140,8 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         mTvGameType = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_gametype);
         mTvGameLanguage = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_gamelanguage);
         mTvOnlineTime = (TextView) mFragmentLauout.findViewById(R.id.gameinfo_tv_online_time);
+
+        mProgressButton = (ProgressButton) mFragmentLauout.findViewById(R.id.gameinfo_pb_progressbutton);
 
     }
 
@@ -230,4 +269,84 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         return mData;
     }
 
+    @Override
+    public void setDownLoadListener() {
+        IDownloadPresenter downLoadPresenter = getDownLoadPresenter();
+        MyDownLoadService.IDownLoadListener listener = new MyDownLoadService.IDownLoadListener() {
+            @Override
+            public void wail(String url) {
+                setDownloadState(url,"等待",0,false);
+            }
+
+            @Override
+            public void progress(String url, int progre) {
+                setDownloadState(url,progre + "%",progre,false);
+            }
+
+            @Override
+            public void completed(String url) {
+                setDownloadState(url,"安装",mProgressButton.getMaxProgress(),true);
+            }
+
+            @Override
+            public void fail(String url) {
+                setDownloadState(url,"重试",mProgressButton.getMaxProgress(),true);
+            }
+
+            @Override
+            public void speed(String url, long speed) {
+
+            }
+
+            @Override
+            public void downloadedSize(String url, long size) {
+
+            }
+        };
+        downLoadPresenter.setDownLoadListener(listener);
+    }
+
+    private void setDownloadState(String url, final String state,final int progress,final boolean isClickable) {
+        GameDetail.GameDeatilBean gameInfoData = getGameDetailPresenter().getGameInfoData();
+        String download_url = gameInfoData.getDownload_url();
+        if(download_url.equals(url)){
+            mProgressButton.post(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressButton.setText(state);
+                    mProgressButton.setProgress(progress);
+                    mProgressButton.setClickable(isClickable);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void setDownLoadPresenter(IDownloadPresenter downLoadPresenter) {
+        addPresenter((ABasePresenter) downLoadPresenter);
+    }
+
+    @Override
+    public IDownloadPresenter getDownLoadPresenter() {
+        ABasePresenter presenter = getPresenter(DownLoadPresenter.TAG);
+        return (IDownloadPresenter) presenter;
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {  //没运行
+        super.setUserVisibleHint(isVisibleToUser);
+        DownLoadPresenter downLoadPresenter = (DownLoadPresenter) getDownLoadPresenter();
+        if(isVisibleToUser){
+            downLoadPresenter.onStart(getContext());
+        }else {
+            downLoadPresenter.onStop(getContext());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DownLoadPresenter downLoadPresenter = (DownLoadPresenter) getDownLoadPresenter();
+        downLoadPresenter.onStop(getContext());
+    }
 }

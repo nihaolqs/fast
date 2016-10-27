@@ -42,6 +42,7 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
     @Override
     protected void initUI() {
         findView();
+        getHelpCenterPresenter().repalceHelpCenterView();
         initSetOnClick();
     }
 

@@ -45,7 +45,7 @@ public class HelpCenterFragmentPresenter extends ABasePresenter implements IHelp
             helpCenterView.showDeleteSwitch(false);
         }
 
-        if (helpCenterView != null) {
+        if (autoInstall != null) {
             helpCenterView.showInstallSwitch(autoInstall);
         } else {
             helpCenterView.showInstallSwitch(false);

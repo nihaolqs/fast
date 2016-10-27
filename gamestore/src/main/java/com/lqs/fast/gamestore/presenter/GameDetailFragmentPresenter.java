@@ -80,4 +80,8 @@ public class GameDetailFragmentPresenter extends ABasePresenter<GameDetailFragme
     public void setGameDetailView(IGameDetailView view) {
         addView((ABaseView) view);
     }
+
+    public GameDetail.GameDeatilBean getGameInfoData(){
+        return getGameDetailModel().getGameDetail();
+    }
 }

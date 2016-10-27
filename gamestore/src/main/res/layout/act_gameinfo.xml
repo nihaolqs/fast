@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
@@ -361,12 +362,16 @@
             <!--android:gravity="center"-->
             <!--android:text=""-->
             <!--android:textColor="#ffffffff" />-->
-        <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbarSize="10dp"
-            android:minHeight="10dp"
-            android:id="@+id/progressBar" />
+        <com.lqs.fast.fast.widget.ProgressButton
+            android:id="@+id/gameinfo_pb_progressbutton"
+            android:layout_width="300.0dp"
+            android:layout_height="36.0dp"
+            android:layout_centerInParent="true"
+            app:text="下载"
+            app:defaultColour="#ffe0e0e0"
+            app:completeColour="#ff1744"
+            app:textSize="18sp"
+            app:textColor="#FFFFFFFF"
+            />
     </RelativeLayout>
 </RelativeLayout>

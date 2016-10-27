@@ -126,9 +126,16 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
         downLoadPresenter.onStart(getContext());
         setDownLoadListener();
+        isPause = false;
     }
 
-//    @Override
+    @Override
+    public void onPause() {
+        super.onPause();
+        isPause = true;
+    }
+
+    //    @Override
 //    public void onStop() {
 //        super.onStop();
 //        ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
@@ -293,6 +300,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
                         mTvDownloadding.setVisibility(View.VISIBLE);
                         mTvInstallState.setVisibility(View.GONE);
                         mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
+                        mTvSpeed.setText("0KB/s");
                     }
                 });
 
@@ -311,4 +319,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         ABasePresenter presenter = getPresenter(DownLoadPresenter.TAG);
         return (IDownloadPresenter) presenter;
     }
+
+
+
 }

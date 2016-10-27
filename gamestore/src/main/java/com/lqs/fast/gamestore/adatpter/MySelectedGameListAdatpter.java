@@ -47,8 +47,7 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
         String one_game_info = gameInfoBean.getOne_game_info();
         holder.tvGameDescribe.setText(one_game_info);
 
-        int state = mDownloadPresenter.getDownLoadState(gameInfoBean.getDownload_url());
-
+        int state = getState(gameInfoBean);
         switch (state) {
             case 0:
                 setState(holder, "下载");
@@ -132,7 +131,8 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
             @Override
             public void onClick(View v) {
                 String download_url = gameInfoBean.getDownload_url();
-                int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
+//                int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
+                int downLoadState = getState(gameInfoBean);
                 if (downLoadState == 0 || downLoadState == 4) {
                     mDownloadPresenter.addDownLoadTask(download_url);
                     SaveGameInfoBean bean = SaveGameInfoBean.getInstance4GameInfoBean(gameInfoBean);
@@ -155,6 +155,16 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
 
     }
 
+    private int getState(GameInfoBean gameInfoBean) {
+        int state = mDownloadPresenter.getDownLoadState(gameInfoBean.getDownload_url());
+        if (state == 0) {
+            boolean fileExists = mDownloadPresenter.isFileExists(gameInfoBean.getDownload_url());
+            if (fileExists){
+                state = 3;
+            }
+        }
+        return state;
+    }
 
 
     private void setState(final ViewHolder holder, final String state) {

@@ -65,6 +65,15 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                 tag.mTvGameName.setText(bean.getGame_name());
                 String download_url = bean.getDownload_url();
                 int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
+                if(downLoadState == 0){
+                    boolean fileExists = mDownloadPresenter.isFileExists(download_url);
+                    if(fileExists){
+                        downLoadState = MyDownLoadService.COMPLETED;
+                    }else{
+                        downLoadState = MyDownLoadService.FAIL;
+                    }
+                }
+
                 switch (downLoadState){
                     case MyDownLoadService.WAIT:{
                         tag.mTvDownloadState.setVisibility(View.VISIBLE);

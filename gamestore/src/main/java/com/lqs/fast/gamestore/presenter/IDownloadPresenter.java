@@ -24,4 +24,6 @@ public interface IDownloadPresenter {
     int getDownLoadState(String url);
 
     void saveGameInfo(SaveGameInfoBean bean);
+
+    boolean isFileExists(String url);
 }

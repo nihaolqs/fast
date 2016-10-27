@@ -6,11 +6,16 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
+import com.lqs.fast.fast.utils.FileUtil;
+import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 import com.lqs.fast.gamestore.view.IDownLoadView;
+
+import java.io.File;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -74,13 +79,20 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
         return 0;
     }
 
+
+
     @Override
     public void saveGameInfo(SaveGameInfoBean bean) {
-        try {
-            bean.delete();
-        } catch (Exception e) {
-        }
+        new Delete().from(SaveGameInfoBean.class).where("Url = ?", bean.getDownload_url()).execute();
         bean.save();
+    }
+
+    @Override
+    public boolean isFileExists(String url) {
+        String fileName = FileUtil.getFileName(url);
+        File file = new File(Constants.SAVEPATH + "/" + fileName);
+        boolean exists = file.exists();
+        return exists;
     }
 
     @Override
