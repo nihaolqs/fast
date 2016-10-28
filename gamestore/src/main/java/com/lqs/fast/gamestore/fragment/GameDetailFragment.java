@@ -1,5 +1,6 @@
 package com.lqs.fast.gamestore.fragment;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -112,7 +113,8 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         mRvGameImageAdatpter.setItemOnclickListener(new MyRvGameImageAdatpter.ItemOnClickListener() {
             @Override
             public void itemOnclick(View view, int position) {
-                GameDetailImagesDialogFragment dialogFragment = new GameDetailImagesDialogFragment(mGameImageList);
+//                GameDetailImagesDialogFragment dialogFragment = new GameDetailImagesDialogFragment(mGameImageList);
+                DialogFragment dialogFragment = GameDetailImagesDialogFragment.getInstance(mGameImageList);
                 FragmentManager fm = getChildFragmentManager();
                 dialogFragment.show(fm,"tag");
 //                dialogFragment.setViewPageItem(position);

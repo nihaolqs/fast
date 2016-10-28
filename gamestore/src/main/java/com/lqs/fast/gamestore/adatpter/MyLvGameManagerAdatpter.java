@@ -8,8 +8,10 @@ import android.widget.TextView;
 
 import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
 import com.lqs.fast.fast.utils.AppUtil;
+import com.lqs.fast.fast.utils.FileUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
@@ -82,6 +84,9 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         tag.mTvDownloadding.setVisibility(View.VISIBLE);
                         tag.mTvInstallState.setVisibility(View.GONE);
                         tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
+                        tag.mTvState.setText("等待");
+                        tag.mTvState.setClickable(false);
+
                     }
                     break;
                     case MyDownLoadService.PROGRESS:{
@@ -91,6 +96,8 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         tag.mTvDownloadding.setVisibility(View.VISIBLE);
                         tag.mTvInstallState.setVisibility(View.GONE);
                         tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
+                        tag.mTvState.setText("下载中");
+                        tag.mTvState.setClickable(false);
                     }
                     break;
                     case MyDownLoadService.COMPLETED:{
@@ -100,6 +107,14 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         tag.mTvDownloadding.setVisibility(View.GONE);
                         tag.mTvInstallState.setVisibility(View.VISIBLE);
                         tag.mTvInstallState.setText("等待安装");
+                        tag.mTvState.setText("安装");
+                        tag.mTvState.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String filePath = Constants.SAVEPATH + "/" + FileUtil.getFileName(bean.getDownload_url());
+                                AppUtil.installApk(mContext,filePath,true);
+                            }
+                        });
                     }
                     break;
                     case MyDownLoadService.FAIL:{
@@ -108,9 +123,21 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         tag.mTvDownloadState.setText("下载失败");
                         tag.mTvDownloadding.setVisibility(View.VISIBLE);
                         tag.mTvInstallState.setVisibility(View.GONE);
+                        tag.mTvState.setText("重试");
+                        View.OnClickListener onClickListener = new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mDownloadPresenter.addDownLoadTask(bean.getDownload_url());
+                                tag.mTvState.setClickable(false);
+                            }
+                        };
+                        tag.mTvState.setOnClickListener(onClickListener);
+
                         tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
                     }
                     break;
+
+
                 }
             }
             break;
@@ -129,7 +156,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
             holder.mTvGameSize = (TextView) itemView.findViewById(R.id.item_installed_tv_gamesize);
             holder.mTvGameType = (TextView) itemView.findViewById(R.id.item_installed_tv_gametype);
             holder.mTvGameDescribe = (TextView) itemView.findViewById(R.id.item_installed_tv_game_describe);
-            holder.mIvState = (TextView) itemView.findViewById(R.id.item_installed_iv_state);
+            holder.mIvState = (ImageView) itemView.findViewById(R.id.item_installed_iv_state);
             holder.mLlMoreoption = (LinearLayout) itemView.findViewById(R.id.item_installed_ll_moreoption);
             holder.mTvOpen = (TextView) itemView.findViewById(R.id.item_installed_tv_open);
             holder.mTvUnload = (TextView) itemView.findViewById(R.id.item_installed_tv_unload);
@@ -178,7 +205,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
         TextView mTvGameSize;
         TextView mTvGameType;
         TextView mTvGameDescribe;
-        TextView mIvState;
+        ImageView mIvState;
         LinearLayout mLlMoreoption;
         TextView mTvOpen;
         TextView mTvUnload;

@@ -22,6 +22,8 @@ import com.lqs.fast.gamestore.adatpter.MyDetailDialogAdatpter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.id.list;
+
 /**
  * Created by dell on 2016/10/17.
  */
@@ -32,15 +34,23 @@ public class GameDetailImagesDialogFragment extends DialogFragment {
     private View mLayout;
     private LayoutInflater mInflate;
     private List<String> mUrlList;
+    private static final String BUNDLE_KEY="Bundle_Key";
 
-    public GameDetailImagesDialogFragment(List<String> list) {
-        this.mUrlList = list;
+    public GameDetailImagesDialogFragment(){
+        super();
     }
+
+//    public GameDetailImagesDialogFragment(List<String> list) {
+//        this.mUrlList = list;
+//    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
+
+        initData();
+
         mLayout = inflater.inflate(R.layout.dialog_gamedetail_images, container, true);
         this.mInflate = inflater;
         initViewPage();
@@ -61,6 +71,12 @@ public class GameDetailImagesDialogFragment extends DialogFragment {
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
         return mLayout;
+    }
+
+    private void initData() {
+        Bundle arguments = getArguments();
+        ArrayList<String> list = arguments.getStringArrayList(BUNDLE_KEY);
+        mUrlList.addAll(list);
     }
 
     @Override
@@ -99,5 +115,15 @@ public class GameDetailImagesDialogFragment extends DialogFragment {
             mVpImages.setCurrentItem(position, false);
 
         }
+    }
+
+    public static DialogFragment getInstance(List<String> list){
+        GameDetailImagesDialogFragment fragment = new GameDetailImagesDialogFragment();
+        Bundle bundle = new Bundle();
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.addAll(list);
+        bundle.putStringArrayList(BUNDLE_KEY,arrayList);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 }

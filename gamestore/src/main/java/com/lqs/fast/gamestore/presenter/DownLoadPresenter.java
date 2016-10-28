@@ -1,10 +1,15 @@
 package com.lqs.fast.gamestore.presenter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
@@ -30,6 +35,8 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     public static final String TAG = "DownLoadPresenter";
     private MyDownLoadService.IDownLoadListener mDownloadListener;
     private boolean isBinder;
+    private Context mContext;
+    private int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @Override
     public String getPresenterTag() {
@@ -38,7 +45,17 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
 
     @Override
     public void addDownLoadTask(String url) {
-        mMybinder.addDownLoadTask(url);
+
+        if (ContextCompat.checkSelfPermission((Activity)mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission((Activity)mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity)mContext,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }else{
+            mMybinder.addDownLoadTask(url);
+        }
+
     }
 
     @Override
@@ -98,6 +115,7 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     @Override
     public void onStart(Context context) {
         if (context != null) {
+            this.mContext = context;
             super.onStart(context);
             isBinder = true;
             mServiceIntent = new Intent(context, MyDownLoadService.class);

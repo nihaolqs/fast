@@ -40,7 +40,7 @@ public final class AppUtil {
         }
     }
 
-    private void installApk(Context context, String filePath, boolean isOpen) {
+    public static void installApk(Context context, String filePath, boolean isOpen) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");

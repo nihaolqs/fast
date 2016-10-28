@@ -2,7 +2,9 @@ package com.lqs.fast.gamestore.activity;
 
 import android.support.v4.view.ViewPager;
 
+import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.adatpter.MyActMainPageAdatpter;
@@ -16,6 +18,8 @@ public class MainAct extends ABaseActivity {
     private RadioGroup mRgFragmentGroup;
     private ViewPager mPage;
     private boolean isDragging;
+    private View mMainTitle;
+    private TextView mMainCententTitle;
 
     @Override
     protected void initData() {
@@ -27,6 +31,7 @@ public class MainAct extends ABaseActivity {
         initFindView();
         initViewPage();
         initRadioGroup();
+
     }
 
     private void initRadioGroup() {
@@ -35,13 +40,17 @@ public class MainAct extends ABaseActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (!isDragging) {
                     switch (checkedId) {
-                        case R.id.main_selete: mPage.setCurrentItem(0,false);
+                        case R.id.main_selete:
+                            mPage.setCurrentItem(0, false);
                             break;
-                        case R.id.main_search: mPage.setCurrentItem(1,false);
+                        case R.id.main_search:
+                            mPage.setCurrentItem(1, false);
                             break;
-                        case R.id.main_manager: mPage.setCurrentItem(2,false);
+                        case R.id.main_manager:
+                            mPage.setCurrentItem(2, false);
                             break;
-                        case R.id.main_help: mPage.setCurrentItem(3,false);
+                        case R.id.main_help:
+                            mPage.setCurrentItem(3, false);
                             break;
                     }
 
@@ -63,18 +72,28 @@ public class MainAct extends ABaseActivity {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 0:
+                    case 0: {
                         mRgFragmentGroup.check(R.id.main_selete);
-                        break;
-                    case 1:
+                        mMainTitle.setVisibility(View.GONE);
+                    }
+                    break;
+                    case 1: {
                         mRgFragmentGroup.check(R.id.main_search);
-                        break;
-                    case 2:
+                        mMainTitle.setVisibility(View.GONE);
+                    }
+                    break;
+                    case 2: {
                         mRgFragmentGroup.check(R.id.main_manager);
-                        break;
-                    case 3:
+                        mMainTitle.setVisibility(View.VISIBLE);
+                        mMainCententTitle.setText("管理");
+                    }
+                    break;
+                    case 3: {
                         mRgFragmentGroup.check(R.id.main_help);
-                        break;
+                        mMainTitle.setVisibility(View.VISIBLE);
+                        mMainCententTitle.setText("帮助中心");
+                    }
+                    break;
                 }
             }
 
@@ -88,6 +107,9 @@ public class MainAct extends ABaseActivity {
     private void initFindView() {
         mRgFragmentGroup = (RadioGroup) findViewById(R.id.main_rg);
         mPage = (ViewPager) findViewById(R.id.mPager);
+        mMainTitle = findViewById(R.id.main_title_rl);
+        mMainTitle.setVisibility(View.GONE);
+        mMainCententTitle = (TextView) findViewById(R.id.center_title);
     }
 
     @Override
