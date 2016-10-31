@@ -33,7 +33,7 @@ public class GameDetailImagesDialogFragment extends DialogFragment {
     private ViewPager mVpImages;
     private View mLayout;
     private LayoutInflater mInflate;
-    private List<String> mUrlList;
+    private List<String> mUrlList = new ArrayList<>();
     private static final String BUNDLE_KEY="Bundle_Key";
 
     public GameDetailImagesDialogFragment(){
@@ -43,6 +43,13 @@ public class GameDetailImagesDialogFragment extends DialogFragment {
 //    public GameDetailImagesDialogFragment(List<String> list) {
 //        this.mUrlList = list;
 //    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+    }
 
     @Nullable
     @Override
@@ -54,7 +61,7 @@ public class GameDetailImagesDialogFragment extends DialogFragment {
         mLayout = inflater.inflate(R.layout.dialog_gamedetail_images, container, true);
         this.mInflate = inflater;
         initViewPage();
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+
         mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +77,14 @@ public class GameDetailImagesDialogFragment extends DialogFragment {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;   //设置宽度充满屏幕
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
+
+//        View button = mLayout.findViewById(R.id.button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dismiss();
+//            }
+//        });
         return mLayout;
     }
 

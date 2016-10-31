@@ -1,5 +1,6 @@
 package com.lqs.fast.myapplication;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private int progest = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,16 @@ public class MainActivity extends AppCompatActivity {
                 progressbutton.setProgress(progest);
             }
         });
+
+        try{
+            //加载MySql的驱动类
+            Class.forName("com.mysql.jdbc.Driver") ;
+            Log.e("数据库辅助类","数据库辅助类");
+        }catch(ClassNotFoundException e){
+            System.out.println("找不到驱动程序类 ，加载驱动失败！");
+            e.printStackTrace() ;
+            Log.e("数据库辅助类","找不到驱动程序类 ，加载驱动失败！");
+        }
 
     }
 }
