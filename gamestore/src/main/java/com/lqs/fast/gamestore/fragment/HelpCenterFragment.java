@@ -1,12 +1,14 @@
 package com.lqs.fast.gamestore.fragment;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
+import com.lqs.fast.fast.utils.OtherUtil;
 import com.lqs.fast.fast.utils.ToastUtils;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.presenter.HelpCenterFragmentPresenter;
@@ -31,6 +33,8 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
     private boolean isAutoSentMessage;
     private boolean isAutoInstall;
     private boolean isAutoDeleteInstalled;
+    private Button mBtnTelephone;
+    private Button mBtnQq;
 
     @Override
     protected void initMvp() {
@@ -84,7 +88,18 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
                 presenter.feedback();
             }
         });
-
+        mBtnTelephone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OtherUtil.telPhone(getContext(),"4006186883");
+            }
+        });
+        mBtnQq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OtherUtil.joinQQGroup(getContext(),"XXX");
+            }
+        });
     }
 
     private void findView() {
@@ -97,6 +112,9 @@ public class HelpCenterFragment extends ABaseFragment<HelpCenterFragment, String
         mIvInstallSwitch = (ImageView) mFragmentLauout.findViewById(R.id.iv_frag_helpcenter_automatic_install_switch);
         mIvDeleteSwitch = (ImageView) mFragmentLauout.findViewById(R.id.iv_frag_helpcenter_delete_installpackage_switch);
         mTvVersion = (TextView) mFragmentLauout.findViewById(R.id.tv_fragment_helpcenter_version);
+
+        mBtnTelephone = (Button) mFragmentLauout.findViewById(R.id.fragment_helpcenter_btn_telephone);
+        mBtnQq = (Button) mFragmentLauout.findViewById(R.id.fragment_helpcenter_btn_qq);
     }
 
     @Override
