@@ -6,10 +6,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lqs.fast.fast.utils.OtherUtil;
 import com.lqs.fast.gamestore.adatpter.MyActMainPageAdatpter;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.fragment.FreaturedGameFragment;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OtherUtil.HideStatusBar(this);
         setContentView(R.layout.act_main);
 
         initUI();
@@ -136,4 +140,5 @@ public class MainActivity extends AppCompatActivity {
         mRlMainTitle = (RelativeLayout) findViewById(R.id.main_title_rl);
         mMainCententTitle = (TextView) findViewById(R.id.center_title);
     }
+
 }

@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.lqs.fast.fast.utils.OtherUtil;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.fragment.GameDetailFragment;
 
@@ -24,6 +25,7 @@ public class GameDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        OtherUtil.HideStatusBar(this);
         setContentView(R.layout.activity_gamedetail);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

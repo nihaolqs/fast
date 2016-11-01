@@ -44,6 +44,7 @@ fast_framework/src/main/res/drawable/
 myapplication/libs/
 myapplication/src/main/res/drawable/
 samples/
-gamestore/libs/
 
-
+gradle/
+import-summary.txt
+lib_PullToRefresh/src/

@@ -39,4 +39,5 @@ dependencies {
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile project(':lib_PullToRefresh')
+    compile project(':UMengPushSDK')
 }

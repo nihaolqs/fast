@@ -7,9 +7,8 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:srcCompat="@mipmap/default_ad"
         android:id="@+id/iv_frag_ad_banner"
-        android:layout_weight="0.12"
-        android:scaleType="fitXY" />
+        android:scaleType="centerCrop" />
 </LinearLayout>

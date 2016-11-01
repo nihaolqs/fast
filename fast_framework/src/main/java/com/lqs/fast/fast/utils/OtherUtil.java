@@ -1,12 +1,15 @@
 package com.lqs.fast.fast.utils;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * Created by dell on 2016/10/31.
@@ -45,6 +48,19 @@ public class OtherUtil {
         } catch (Exception e) {
             Log.e("SampleApp", "Failed to invoke call", e);
         }
+    }
+
+    public static void HideStatusBar(Activity activity)
+    {
+        //隐藏标题
+        activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        //定义全屏参数
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        //获得窗口对象
+        Window myWindow = activity.getWindow();
+        //设置Flag标识
+        myWindow.setFlags(flag, flag);
     }
 
 

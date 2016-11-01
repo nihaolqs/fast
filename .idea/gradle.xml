@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/UMengPushSDK" />
             <option value="$PROJECT_DIR$/fast_framework" />
             <option value="$PROJECT_DIR$/gamestore" />
             <option value="$PROJECT_DIR$/lib_PullToRefresh" />
