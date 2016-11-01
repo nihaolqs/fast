@@ -1,3 +1,3 @@
-include ':fast_framework', ':myapplication', ':samples:comparison', ':gamestore'
+include ':fast_framework', ':myapplication', ':gamestore'
 include ':lib_PullToRefresh'
-include ':pulltorefreshsample'
+include ':lib_PullToRefresh'

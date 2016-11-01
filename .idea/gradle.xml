@@ -13,9 +13,6 @@
             <option value="$PROJECT_DIR$/gamestore" />
             <option value="$PROJECT_DIR$/lib_PullToRefresh" />
             <option value="$PROJECT_DIR$/myapplication" />
-            <option value="$PROJECT_DIR$/pulltorefreshsample" />
-            <option value="$PROJECT_DIR$/samples" />
-            <option value="$PROJECT_DIR$/samples/comparison" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.lqs.fast.gamestore.adatpter.MyActMainPageAdatpter;
 import com.lqs.fast.gamestore.app.Constants;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mPage;
     private boolean isDragging;
     private RelativeLayout mRlMainTitle;
+    private TextView mMainCententTitle;
 
 
     @Override
@@ -61,22 +63,23 @@ public class MainActivity extends AppCompatActivity {
                     switch (checkedId) {
                         case R.id.main_selete: {
                             mPage.setCurrentItem(0, false);
-                            mRlMainTitle.setVisibility(View.GONE);
+//                            mRlMainTitle.setVisibility(View.GONE);
                         }
                         break;
                         case R.id.main_search: {
                             mPage.setCurrentItem(1, false);
-                            mRlMainTitle.setVisibility(View.GONE);
+//                            mRlMainTitle.setVisibility(View.GONE);
                         }
                         break;
                         case R.id.main_manager: {
                             mPage.setCurrentItem(2, false);
-                            mRlMainTitle.setVisibility(View.GONE);
+//                            mRlMainTitle.setVisibility(View.VISIBLE);
+
                         }
                         break;
                         case R.id.main_help: {
                             mPage.setCurrentItem(3, false);
-                            mRlMainTitle.setVisibility(View.GONE);
+//                            mRlMainTitle.setVisibility(View.VISIBLE);
                         }
                         break;
                     }
@@ -101,15 +104,21 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         mRgFragmentGroup.check(R.id.main_selete);
+                        mRlMainTitle.setVisibility(View.GONE);
                         break;
                     case 1:
                         mRgFragmentGroup.check(R.id.main_search);
+                        mRlMainTitle.setVisibility(View.GONE);
                         break;
                     case 2:
                         mRgFragmentGroup.check(R.id.main_manager);
+                        mRlMainTitle.setVisibility(View.VISIBLE);
+                        mMainCententTitle.setText("管理");
                         break;
                     case 3:
                         mRgFragmentGroup.check(R.id.main_help);
+                        mRlMainTitle.setVisibility(View.VISIBLE);
+                        mMainCententTitle.setText("帮助中心");
                         break;
                 }
             }
@@ -125,5 +134,6 @@ public class MainActivity extends AppCompatActivity {
         mRgFragmentGroup = (RadioGroup) findViewById(R.id.main_rg);
         mPage = (ViewPager) findViewById(R.id.mPager);
         mRlMainTitle = (RelativeLayout) findViewById(R.id.main_title_rl);
+        mMainCententTitle = (TextView) findViewById(R.id.center_title);
     }
 }

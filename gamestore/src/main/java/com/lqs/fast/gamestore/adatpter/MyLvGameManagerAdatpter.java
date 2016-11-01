@@ -45,12 +45,14 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                     @Override
                     public void onClick(View v) {
                         tag.mLlMoreoption.setVisibility(View.VISIBLE);
+                        tag.mIvState.setVisibility(View.INVISIBLE);
                     }
                 });
 //                tag.mLlMoreoption
                 tag.mTvOpen.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        notifyDataSetChanged();
                         AppUtil.startAPk(mContext, bean.getPackage_name());
                     }
                 });
@@ -58,6 +60,8 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                     @Override
                     public void onClick(View v) {
                         AppUtil.unInstallApk(mContext, bean.getPackage_name());
+                        bean.delete();
+                        notifyDataSetChanged();
                     }
                 });
             }
@@ -67,17 +71,17 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                 tag.mTvGameName.setText(bean.getGame_name());
                 String download_url = bean.getDownload_url();
                 int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
-                if(downLoadState == 0){
+                if (downLoadState == 0) {
                     boolean fileExists = mDownloadPresenter.isFileExists(download_url);
-                    if(fileExists){
+                    if (fileExists) {
                         downLoadState = MyDownLoadService.COMPLETED;
-                    }else{
+                    } else {
                         downLoadState = MyDownLoadService.FAIL;
                     }
                 }
 
-                switch (downLoadState){
-                    case MyDownLoadService.WAIT:{
+                switch (downLoadState) {
+                    case MyDownLoadService.WAIT: {
                         tag.mTvDownloadState.setVisibility(View.VISIBLE);
                         tag.mTvSpeed.setVisibility(View.GONE);
                         tag.mTvDownloadState.setText("等待");
@@ -89,7 +93,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
 
                     }
                     break;
-                    case MyDownLoadService.PROGRESS:{
+                    case MyDownLoadService.PROGRESS: {
                         tag.mTvDownloadState.setVisibility(View.GONE);
                         tag.mTvSpeed.setVisibility(View.VISIBLE);
                         tag.mTvSpeed.setText("0KB/S");
@@ -100,7 +104,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         tag.mTvState.setClickable(false);
                     }
                     break;
-                    case MyDownLoadService.COMPLETED:{
+                    case MyDownLoadService.COMPLETED: {
                         tag.mTvDownloadState.setVisibility(View.VISIBLE);
                         tag.mTvSpeed.setVisibility(View.GONE);
                         tag.mTvDownloadState.setText("下载完成");
@@ -112,12 +116,12 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                             @Override
                             public void onClick(View v) {
                                 String filePath = Constants.SAVEPATH + "/" + FileUtil.getFileName(bean.getDownload_url());
-                                AppUtil.installApk(mContext,filePath,true);
+                                AppUtil.installApk(mContext, filePath, true);
                             }
                         });
                     }
                     break;
-                    case MyDownLoadService.FAIL:{
+                    case MyDownLoadService.FAIL: {
                         tag.mTvDownloadState.setVisibility(View.VISIBLE);
                         tag.mTvSpeed.setVisibility(View.GONE);
                         tag.mTvDownloadState.setText("下载失败");

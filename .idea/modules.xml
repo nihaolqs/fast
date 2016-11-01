@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/samples/comparison/comparison.iml" filepath="$PROJECT_DIR$/samples/comparison/comparison.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast.iml" filepath="$PROJECT_DIR$/fast.iml" />
       <module fileurl="file://$PROJECT_DIR$/fast_framework/fast_framework.iml" filepath="$PROJECT_DIR$/fast_framework/fast_framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/gamestore/gamestore.iml" filepath="$PROJECT_DIR$/gamestore/gamestore.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_PullToRefresh/lib_PullToRefresh.iml" filepath="$PROJECT_DIR$/lib_PullToRefresh/lib_PullToRefresh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_PullToRefresh/lib_PullToRefresh.iml" filepath="$PROJECT_DIR$/lib_PullToRefresh/lib_PullToRefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulltorefreshsample/pulltorefreshsample.iml" filepath="$PROJECT_DIR$/pulltorefreshsample/pulltorefreshsample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />
     </modules>
   </component>
 </project>
