@@ -1,6 +1,7 @@
 package com.lqs.fast.gamestore.model;
 
 import com.lqs.fast.fast.base.model.IAsynReplaceDataModel;
+import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.presenter.ISelectedGamePresenter;
 
@@ -16,5 +17,7 @@ public interface ISelectedGameModel {
     ISelectedGamePresenter getSelectedGamePresenter();
 
     void setSelectedGamePresenter(ISelectedGamePresenter selectedGamePresenter);
+
+    void nextPageData(ReplaceDataListener listener);
 
 }

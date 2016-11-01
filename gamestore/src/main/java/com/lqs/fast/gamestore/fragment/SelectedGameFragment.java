@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.*;
 import com.lqs.fast.gamestore.R;
@@ -52,6 +55,7 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     private MyDownLoadService.IDownLoadListener mDownloadListener;
 
     private boolean isDistory;
+    private PullToRefreshListView mPullToRefreshListView;
 
     @Override
     protected void initUI() {
@@ -60,7 +64,23 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
     }
 
     private void initListView() {
-        mSelectedListView = (ListView) mFragmentLauout.findViewById(R.id.lv_frag_selected_gamelist);
+        mPullToRefreshListView = (PullToRefreshListView) mFragmentLauout.findViewById(R.id.lv_frag_selected_gamelist);
+        mPullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                Log.e("onRefresh","onRefresh");
+//                refreshView.onRefreshComplete();
+                getSelectedGamePresenter().replaceData(refreshView);
+            }
+        });
+        mPullToRefreshListView.setOnLastItemVisibleListener(new PullToRefreshBase.OnLastItemVisibleListener() {
+            @Override
+            public void onLastItemVisible() {
+                ISelectedGamePresenter presenter = getSelectedGamePresenter();
+                presenter.nextPage();
+            }
+        });
+        mSelectedListView = mPullToRefreshListView.getRefreshableView();
         mSelectedListView.addHeaderView(mHeaderView, null, false);
         mMySelectedGameListAdatpter = new MySelectedGameListAdatpter(mSelectedGames, getContext(), getDownLoadPresenter());
         mSelectedListView.setAdapter(mMySelectedGameListAdatpter);

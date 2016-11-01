@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
@@ -69,6 +70,21 @@ public final class GsonUtil {
     }
     public static<T> void downLoadJson(String url, final Class<T> clazz, final DownLoadedJsonListener<T> listener){
         HttpUtil.getString(url, new HttpUtil.HttpListener<String>() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("Json错误","Json下载失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                T t = parseJsonString(s, clazz);
+                listener.downLoaded(t);
+            }
+        });
+    }
+
+    public static<T> void downLoadJson(String url, Map<String, String> map, final Class<T> clazz, final DownLoadedJsonListener<T> listener){
+        HttpUtil.getString(url,map, new HttpUtil.HttpListener<String>() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 Log.d("Json错误","Json下载失败");

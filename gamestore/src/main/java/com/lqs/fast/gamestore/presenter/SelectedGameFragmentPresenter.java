@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
+import android.widget.ListView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.lqs.fast.fast.base.model.ABaseModel;
 import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
@@ -35,15 +38,15 @@ import static android.content.Context.BIND_AUTO_CREATE;
  * Created by lin on 2016/10/5.
  */
 
-public class SelectedGameFragmentPresenter extends ABasePresenter implements IAdGamePresenter,ISelectedGamePresenter{
+public class SelectedGameFragmentPresenter extends ABasePresenter implements IAdGamePresenter, ISelectedGamePresenter {
 
-    public static final String TAG ="SelectedGameFragmentPresenter";
+    public static final String TAG = "SelectedGameFragmentPresenter";
     private Context mContext;
 
-    public SelectedGameFragmentPresenter(Context context)
-    {
+    public SelectedGameFragmentPresenter(Context context) {
         this.mContext = context;
     }
+
     @Override
     public String getPresenterTag() {
         return SelectedGameFragmentPresenter.TAG;
@@ -58,6 +61,11 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
     }
 
     @Override
+    public void replaceData() {
+        replaceData(null);
+    }
+
+    @Override
     public void showSelectedGameList() {
         ISelectedGameModel selectedGameModel = getSelectedGameModel();
         List<GameInfoBean> searchGameList = selectedGameModel.getSelectedGameList();
@@ -66,28 +74,36 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
     }
 
     @Override
-    public void replaceData() {
+    public void replaceData(final PullToRefreshBase<ListView> refreshView) {
         ReplaceDataListener listener = new ReplaceDataListener() {
             @Override
             public void replacedData() {
                 showAdGameList();
                 showSelectedGameList();
+                if (refreshView != null) {
+                    refreshView.onRefreshComplete();
+                    Log.e("onRefreshComplete","onRefreshComplete");
+                }
             }
 
             @Override
             public void replaceDataError() {
-                LogUtil.d(TAG,"数据更新错误");
+                LogUtil.d(TAG, "数据更新错误");
+                if (refreshView != null) {
+                    refreshView.onRefreshComplete();
+                    Log.e("onRefreshComplete","onRefreshComplete");
+                }
             }
         };
         ABaseModel<SelectedGame> selectedGameModel = (ABaseModel) getSelectedGameModel();
-        selectedGameModel.ReplaceData(Constants.ApiClient.SELECTED_GAME,listener);
+        selectedGameModel.ReplaceData(Constants.ApiClient.SELECTED_GAME, listener);
     }
 
     @Override
     public void showDeatil(GameInfoBean bean) {
 
         Intent intent = new Intent(mContext, GameDetailActivity.class);
-        intent.putExtra(GameDetailActivity.GUID_KEY,bean.getGuid());
+        intent.putExtra(GameDetailActivity.GUID_KEY, bean.getGuid());
         mContext.startActivity(intent);
     }
 
@@ -113,6 +129,23 @@ public class SelectedGameFragmentPresenter extends ABasePresenter implements IAd
     public void setSelectedGameView(ISelectedGameView selectedGameView) {
         ABaseView view = (ABaseView) selectedGameView;
         addView(view);
+    }
+
+    @Override
+    public void nextPage() {
+        ISelectedGameModel model = getSelectedGameModel();
+        ReplaceDataListener listener = new ReplaceDataListener() {
+            @Override
+            public void replacedData() {
+                showSelectedGameList();
+            }
+
+            @Override
+            public void replaceDataError() {
+
+            }
+        };
+        model.nextPageData(listener);
     }
 
     @Override

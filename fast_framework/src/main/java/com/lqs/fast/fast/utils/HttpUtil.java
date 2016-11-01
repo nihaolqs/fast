@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by dell on 2016/9/27.
@@ -21,17 +22,15 @@ public class HttpUtil {
     public static RequestQueue sRequestQueue;
 
     public static void getString(String url, HttpListener<String> listener) {
-        if(censorVolleyInit())
-        {
+        if (censorVolleyInit()) {
             return;
         }
         StringRequest stringRequest = new MyStringRequest(Request.Method.GET, url, listener, listener);
         sRequestQueue.add(stringRequest);
     }
 
-    public static void postString(String url, final Map<String,String> map, HttpListener listener) {
-        if(censorVolleyInit())
-        {
+    public static void postString(String url, final Map<String, String> map, HttpListener listener) {
+        if (censorVolleyInit()) {
             return;
         }
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, listener, listener) {
@@ -42,24 +41,45 @@ public class HttpUtil {
         };
     }
 
-    public static boolean censorVolleyInit(){
-        if(sRequestQueue == null)
-        {
-            Log.e("VolleyError","Volley未进行初始化");
+    public static void getString(String url, Map<String, String> map, HttpListener<String> listener) {
+        if (censorVolleyInit()) {
+            return;
+        }
+        StringBuffer sb = new StringBuffer();
+        if (map != null && map.size() != 0) {
+            sb.append(url).append("?");
+            Set<Map.Entry<String, String>> entries = map.entrySet();
+            for (Map.Entry<String, String> entry : entries
+                    ) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                sb.append(key).append("=").append(value).append("&");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            url = sb.toString();
+        }
+        StringRequest stringRequest = new StringRequest(url, listener, listener);
+        sRequestQueue.add(stringRequest);
+    }
+
+
+    public static boolean censorVolleyInit() {
+        if (sRequestQueue == null) {
+            Log.e("VolleyError", "Volley未进行初始化");
         }
         return (sRequestQueue == null);
     }
 
-    public static void initVolley(RequestQueue requestQueue)
-    {
+    public static void initVolley(RequestQueue requestQueue) {
         sRequestQueue = requestQueue;
     }
 
     /**
      * 对接口进行合并
+     *
      * @param <T> 请求泛型
      */
-    public static interface HttpListener<T> extends Response.Listener<T> ,Response.ErrorListener{
+    public static interface HttpListener<T> extends Response.Listener<T>, Response.ErrorListener {
 
     }
 
@@ -69,7 +89,7 @@ public class HttpUtil {
      * 如果没有Charset编码信息尝试使用UTF-8 进行解码,
      * 如果解码失败用ISO-8859-1
      */
-    private static class MyStringRequest extends StringRequest{
+    private static class MyStringRequest extends StringRequest {
 
         public MyStringRequest(int method, String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
             super(method, url, listener, errorListener);
@@ -82,7 +102,7 @@ public class HttpUtil {
                 parsed = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             } catch (UnsupportedEncodingException var4) {
                 try {
-                    parsed = new String(response.data,"UTF-8");
+                    parsed = new String(response.data, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     parsed = new String(response.data);
                     e.printStackTrace();

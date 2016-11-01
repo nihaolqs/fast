@@ -2,9 +2,13 @@ package com.lqs.fast.gamestore.model;
 
 import android.util.Log;
 
+import com.android.volley.toolbox.Volley;
 import com.google.gson.reflect.TypeToken;
 import com.lqs.fast.fast.base.model.ABaseModel;
+import com.lqs.fast.fast.base.model.ReplaceDataListener;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
+import com.lqs.fast.fast.utils.GsonUtil;
+import com.lqs.fast.fast.utils.HttpUtil;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.SelectedGame;
@@ -13,7 +17,9 @@ import com.lqs.fast.gamestore.presenter.ISelectedGamePresenter;
 import com.lqs.fast.gamestore.presenter.SelectedGameFragmentPresenter;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AAsynReplaceData 抽离出数据更新的方法
@@ -21,6 +27,7 @@ import java.util.List;
  */
 
 public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implements IAdGameModel,ISelectedGameModel{
+    private int page = 1;
 
     public static final String TAG = "SelectedGameFragmentModle";
 
@@ -76,5 +83,22 @@ public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implemen
     public void setSelectedGamePresenter(ISelectedGamePresenter selectedGamePresenter) {
         ABasePresenter presenter = (ABasePresenter) selectedGamePresenter;
         addPresenter(presenter);
+    }
+
+    @Override
+    public void nextPageData(final ReplaceDataListener listener) {
+        page ++;
+        String url = "https://market.x7sy.com/game/index_selected";
+        Map<String, String> map = new HashMap<>();
+        map.put("page",String.valueOf(page));
+        map.put("os_type","2");
+        map.put("sign","2267c9070c5ab7d178b32d31eb2ec6b0");
+        GsonUtil.DownLoadedJsonListener<SelectedGame> l = new GsonUtil.DownLoadedJsonListener<SelectedGame>() {
+            @Override
+            public void downLoaded(SelectedGame selectedGame) {
+                listener.replacedData();  //TODO cuowu
+            }
+        };
+        GsonUtil.downLoadJson(url,map,SelectedGame.class,l);
     }
 }
