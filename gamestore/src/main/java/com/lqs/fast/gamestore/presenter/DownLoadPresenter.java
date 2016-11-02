@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
+import com.lqs.fast.fast.base_ui.ABaseBannerFragment;
 import com.lqs.fast.fast.utils.FileUtil;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
@@ -21,6 +23,10 @@ import com.lqs.fast.gamestore.service.MyDownLoadService;
 import com.lqs.fast.gamestore.view.IDownLoadView;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import static android.content.Context.BIND_AUTO_CREATE;
 
@@ -46,13 +52,13 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     @Override
     public void addDownLoadTask(String url) {
 
-        if (ContextCompat.checkSelfPermission((Activity)mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission((Activity) mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission((Activity)mContext,
-                Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity)mContext,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-        }else{
+                || ContextCompat.checkSelfPermission((Activity) mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) mContext,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else {
             mMybinder.addDownLoadTask(url);
         }
 
@@ -97,7 +103,6 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     }
 
 
-
     @Override
     public void saveGameInfo(SaveGameInfoBean bean) {
         new Delete().from(SaveGameInfoBean.class).where("Url = ?", bean.getDownload_url()).execute();
@@ -105,10 +110,24 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     }
 
     @Override
-    public boolean isFileExists(String url) {
-        String fileName = FileUtil.getFileName(url);
+    public boolean isFileExists(String urlStr) {
+        String fileName = FileUtil.getFileName(urlStr);
         File file = new File(Constants.SAVEPATH + "/" + fileName);
         boolean exists = file.exists();
+//        URL url = null;
+//        try {
+//            url = new URL(urlStr);
+//            URLConnection cc = url.openConnection();
+//            long length = cc.getContentLength();
+//            long length1 = file.length();
+//            if (exists && length == length1) {
+//                return true;
+//            }
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return exists;
     }
 
@@ -147,4 +166,6 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
             isBinder = false;
         }
     }
+
+
 }

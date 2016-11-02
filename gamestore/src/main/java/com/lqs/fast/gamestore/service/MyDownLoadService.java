@@ -3,20 +3,26 @@ package com.lqs.fast.gamestore.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.fast.utils.SingleFileDownLoadUtils;
+import com.lqs.fast.fast.utils.SpUtil;
 import com.lqs.fast.gamestore.app.Constants;
+import com.lqs.fast.gamestore.presenter.ICheckListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -64,19 +70,18 @@ public class MyDownLoadService extends Service {
     }
 
 
-
     public interface IDownLoadListener {
         void wail(String url);  //等待
 
-        void progress(String url,int progre);  //下载中
+        void progress(String url, int progre);  //下载中
 
         void completed(String url);  //完成
 
         void fail(String url);  //失败
 
-        void speed(String url,long speed);  //下载速度
+        void speed(String url, long speed);  //下载速度
 
-        void downloadedSize(String url,long size);  //已经下载大小
+        void downloadedSize(String url, long size);  //已经下载大小
     }
 
     public static String getFileName(String pathandname) {
@@ -102,7 +107,7 @@ public class MyDownLoadService extends Service {
             mListener.wail(url);
         }
 
-        public void threadPause(){
+        public void threadPause() {
             try {
                 Thread.currentThread().wait();
             } catch (InterruptedException e) {
@@ -110,11 +115,11 @@ public class MyDownLoadService extends Service {
             }
         }
 
-        public void threadContinue(){
+        public void threadContinue() {
             Thread.currentThread().notify();
         }
 
-        public void threadCancel(){
+        public void threadCancel() {
             this.isCancel = true;
         }
 
@@ -129,7 +134,7 @@ public class MyDownLoadService extends Service {
             File file = new File(filePath);
             try {
                 mDownLoadStateMap.put(mFileUrl, PROGRESS);
-                mListener.progress(mFileUrl,0);
+                mListener.progress(mFileUrl, 0);
                 URL url = new URL(mFileUrl);
                 URLConnection cc = url.openConnection();
                 long length = cc.getContentLength();
@@ -146,7 +151,7 @@ public class MyDownLoadService extends Service {
                     os.write(bs, 0, len);
                     sum += len;
 
-                    if(isCancel){
+                    if (isCancel) {
                         mListener.fail(mFileUrl);
                         return;
                     }
@@ -155,18 +160,23 @@ public class MyDownLoadService extends Service {
 
                     long speed = len * 1000 / (l - oldTime);
 
-                    mListener.speed(mFileUrl,speed);
+                    mListener.speed(mFileUrl, speed);
 
-                    mListener.downloadedSize(mFileUrl,sum);
+                    mListener.downloadedSize(mFileUrl, sum);
 
 //                    Log.d("run",sum + "/" + length);
-                    point = (int)((sum * 100) / length);
-                    mListener.progress(mFileUrl,point);
+                    point = (int) ((sum * 100) / length);
+                    mListener.progress(mFileUrl, point);
 
                 }
-                mListener.progress(mFileUrl,100);
+                mListener.progress(mFileUrl, 100);
                 mListener.completed(mFileUrl);
                 mDownLoadStateMap.put(mFileUrl, COMPLETED);
+                Boolean isAutoInstall = (Boolean) SpUtil.readSp(MyDownLoadService.this, Constants.Settings.SP_NAME, Constants.Settings.AUTOMATIC_INSTALL);
+                if (isAutoInstall != null && isAutoInstall == true) {   //自动安装
+                    AppUtil.installApk(MyDownLoadService.this, filePath, true);
+                }
+
 
             } catch (MalformedURLException e) {
                 mListener.fail(mFileUrl);
@@ -202,7 +212,6 @@ public class MyDownLoadService extends Service {
     }
 
 
-
     @Override
     public IBinder onBind(Intent intent) {
         return new MyBinder();
@@ -210,32 +219,76 @@ public class MyDownLoadService extends Service {
 
 
     public class MyBinder extends Binder {
-        public void setDownLoadListener(MyDownLoadService.IDownLoadListener listener){
+        public void setDownLoadListener(MyDownLoadService.IDownLoadListener listener) {
             MyDownLoadService.this.setListener(listener);
         }
 
-        public void addDownLoadTask(String url){
+        public void addDownLoadTask(String url) {
             MyDownLoadService.this.addDownLoadTask(url);
         }
 
-        public void pauseDownLoadTask(String url){
+        public void pauseDownLoadTask(String url) {
             DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
             downLoadTask.threadPause();
         }
 
-        public void continueDownLoadTast(String url){
+        public void continueDownLoadTast(String url) {
             DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
             downLoadTask.threadContinue();
         }
 
-        public void cancelDownLoadTask(String url){
+        public void cancelDownLoadTask(String url) {
             DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
             downLoadTask.threadCancel();
         }
 
-        public int getDownLoadState(String url){
+        public int getDownLoadState(String url) {
             int state = MyDownLoadService.this.getDownLoadState(url);
             return state;
+        }
+    }
+
+    public void getLength(String url, ICheckListener listener) {
+        MyCheckTask myCheckTask = new MyCheckTask(url, listener);
+        mFixedThreadPool.execute(myCheckTask);
+    }
+
+    class MyCheckTask implements Runnable {
+        private String mUrl;
+        private ICheckListener mListener;
+
+        public MyCheckTask(String url, ICheckListener listener) {
+            this.mUrl = url;
+            this.mListener = listener;
+        }
+
+        @Override
+        public void run() {
+
+            String fileName = getFileName(mUrl);
+            String filepath = Constants.SAVEPATH + "/" + fileName;
+            File file = new File(filepath);
+            boolean exists = file.exists();
+            if (!exists) {
+                mListener.check(false);
+                return;
+            }
+            long length = file.length();
+            try {
+                URL url = new URL(mUrl);
+                URLConnection connection = url.openConnection();
+                int contentLength = connection.getContentLength();
+                if (length == contentLength) {
+                   mListener.check(true);
+                    return;
+                }
+            } catch (MalformedURLException e) {
+                mListener.check(false);
+            } catch (IOException e) {
+                e.printStackTrace();
+                mListener.check(false);
+            }
+
         }
     }
 

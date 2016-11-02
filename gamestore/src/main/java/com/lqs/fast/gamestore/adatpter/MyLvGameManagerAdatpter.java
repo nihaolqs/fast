@@ -10,12 +10,15 @@ import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
 import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.fast.utils.FileUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
+import com.lqs.fast.fast.utils.SpUtil;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 
+import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -64,6 +67,17 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         notifyDataSetChanged();
                     }
                 });
+                Boolean isDeleteInstallPackage = (Boolean) SpUtil.readSp(mContext,   //自动删除已安装
+                        Constants.Settings.SP_NAME, Constants.Settings.DELETE_INSTALLPACKAGE);
+                if(isDeleteInstallPackage != null && isDeleteInstallPackage ==true){
+                    String fileName = MyDownLoadService.getFileName(bean.getDownload_url());
+                    String filePath = Constants.SAVEPATH + "/" + fileName;
+                    File file = new File(filePath);
+                    boolean exists = file.exists();
+                    if(exists){
+                        file.delete();
+                    }
+                }
             }
             break;
             case 1: {
@@ -73,7 +87,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                 int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
                 if (downLoadState == 0) {
                     boolean fileExists = mDownloadPresenter.isFileExists(download_url);
-                    if (fileExists) {
+                    if (fileExists ) {
                         downLoadState = MyDownLoadService.COMPLETED;
                     } else {
                         downLoadState = MyDownLoadService.FAIL;

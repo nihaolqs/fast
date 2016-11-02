@@ -1,11 +1,14 @@
 package com.lqs.fast.gamestore.presenter;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base.view.ABaseView;
 import com.lqs.fast.fast.utils.SpUtil;
 import com.lqs.fast.gamestore.app.Constants;
+import com.lqs.fast.gamestore.app.MyApplication;
 import com.lqs.fast.gamestore.fragment.HelpCenterFragment;
 import com.lqs.fast.gamestore.view.IHelpCenterView;
 
@@ -63,6 +66,9 @@ public class HelpCenterFragmentPresenter extends ABasePresenter implements IHelp
     @Override
     public void settingMessageSwitch(boolean isSwitch) {
         SpUtil.editSp(mContext, Constants.Settings.SEND_MESSAGE, isSwitch, Constants.Settings.SP_NAME);
+        Activity mContext = (Activity) this.mContext;
+        MyApplication application = (MyApplication) mContext.getApplication();
+        application.settingSendMessage();
         repalceHelpCenterView();
     }
 

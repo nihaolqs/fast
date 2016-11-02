@@ -9,16 +9,23 @@ import com.activeandroid.Configuration;
 import com.android.volley.toolbox.Volley;
 import com.lqs.fast.fast.utils.HttpUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
+import com.lqs.fast.fast.utils.SpUtil;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.umeng.message.IUmengCallback;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+
+import java.io.Serializable;
 
 /**
  * Created by lin on 2016/10/9.
  */
 
 public class MyApplication extends Application {
+
+    private PushAgent mPushAgent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,18 +37,58 @@ public class MyApplication extends Application {
     }
 
     private void initUMengMessage() {
-        PushAgent mPushAgent = PushAgent.getInstance(this);
+        mPushAgent = PushAgent.getInstance(this);
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
 
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
+                Log.e("UmengToken",deviceToken);
             }
 
             @Override
             public void onFailure(String s, String s1) {
                 Log.e(s,s1);
+            }
+        });
+
+        settingSendMessage();
+    }
+
+    public void settingSendMessage() {
+        Boolean sendMessage = (Boolean) SpUtil.readSp(getApplicationContext(), Constants.Settings.SP_NAME, Constants.Settings.SEND_MESSAGE);
+        if(sendMessage != null && sendMessage == true){
+            openUMengMessagePush();
+        }else {
+            closeUMengMessagePush();
+        }
+    }
+
+    private void openUMengMessagePush(){
+        mPushAgent.enable(new IUmengCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+
+            }
+        });
+    }
+
+    private void closeUMengMessagePush(){
+        mPushAgent.disable(new IUmengCallback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+
             }
         });
     }
@@ -69,4 +116,6 @@ public class MyApplication extends Application {
         configurationBuilder.addModelClasses(SaveGameInfoBean.class);
         ActiveAndroid.initialize(configurationBuilder.create());
     }
+
+
 }
