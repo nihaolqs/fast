@@ -132,6 +132,10 @@ public class MyDownLoadService extends Service {
 //
             String filePath = Constants.SAVEPATH + "/" + fileName;
             File file = new File(filePath);
+            boolean isDirectory = file.isDirectory();
+            if(!isDirectory){
+                file.mkdirs();
+            }
             try {
                 mDownLoadStateMap.put(mFileUrl, PROGRESS);
                 mListener.progress(mFileUrl, 0);
