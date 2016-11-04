@@ -112,7 +112,7 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     @Override
     public boolean isFileExists(String urlStr) {
         String fileName = FileUtil.getFileName(urlStr);
-        File file = new File(Constants.SAVEPATH + "/" + fileName);
+        File file = new File(Constants.getSavePath(mContext) + "/" + fileName);
         boolean exists = file.exists();
 //        URL url = null;
 //        try {

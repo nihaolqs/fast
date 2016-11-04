@@ -56,6 +56,15 @@
             android:value="Channel_1" >
         </meta-data>
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.lqs.fast.gamestore.fileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

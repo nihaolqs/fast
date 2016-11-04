@@ -7,10 +7,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
+import com.lqs.fast.fast.utils.FileUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.fast.widget.FlowLayout;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
 
 import java.util.List;
 
@@ -20,8 +23,11 @@ import java.util.List;
 
 public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearchedAdatpter.MyViewHolder>{
 
-    public MyLvSearchedAdatpter(List<GameInfoBean> list, Context context) {
+    private IDownloadPresenter mDownloadPresenter;
+
+    public MyLvSearchedAdatpter(List<GameInfoBean> list, Context context, IDownloadPresenter downloadPresenter) {
         super(list, context);
+        this.mDownloadPresenter = downloadPresenter;
     }
 
     @Override
@@ -32,6 +38,13 @@ public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearche
         tag.mTvGameType.setText(bean.getTypename());
         tag.mTvGameDescribe.setText(bean.getOne_game_info());
         tag.mTvState.setText(R.string.download);
+        int state = mDownloadPresenter.getDownLoadState(bean.getDownload_url());
+        if(state == 0 && MyDownLoadService)
+        if(state == MyDownLoadService.COMPLETED){
+
+        }else if(state == 0){
+
+        }
         tag.mFlowLayout.removeAllViews();
         final List<String> time_list = bean.getTime_list();
         if(time_list != null)

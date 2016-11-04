@@ -49,6 +49,7 @@ public class MyDownLoadService extends Service {
     public MyDownLoadService() {
 
         mFixedThreadPool = Executors.newFixedThreadPool(MAXTHREAD);
+        Executors.new
     }
 
 
@@ -130,12 +131,12 @@ public class MyDownLoadService extends Service {
             OutputStream os = null;
             String fileName = getFileName(mFileUrl);
 //
-            String filePath = Constants.SAVEPATH + "/" + fileName;
+            String filePath = Constants.getSavePath(MyDownLoadService.this) + "/" + fileName;
             File file = new File(filePath);
-            boolean isDirectory = file.isDirectory();
-            if(!isDirectory){
-                file.mkdirs();
-            }
+//            boolean isDirectory = file.isDirectory();
+//            if(!isDirectory){
+//                file.mkdirs();
+//            }
             try {
                 mDownLoadStateMap.put(mFileUrl, PROGRESS);
                 mListener.progress(mFileUrl, 0);
@@ -270,7 +271,7 @@ public class MyDownLoadService extends Service {
         public void run() {
 
             String fileName = getFileName(mUrl);
-            String filepath = Constants.SAVEPATH + "/" + fileName;
+            String filepath = Constants.getSavePath(MyDownLoadService.this) + "/" + fileName;
             File file = new File(filepath);
             boolean exists = file.exists();
             if (!exists) {

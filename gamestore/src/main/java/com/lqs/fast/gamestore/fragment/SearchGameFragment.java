@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
+import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.adatpter.MyHotSearchAdatpter;
 import com.lqs.fast.gamestore.adatpter.MyLvSearchedAdatpter;
@@ -21,8 +22,12 @@ import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.KfGameSearch;
 import com.lqs.fast.gamestore.bean.SearchGame;
 import com.lqs.fast.gamestore.model.SearchGameFragmentModle;
+import com.lqs.fast.gamestore.presenter.DownLoadPresenter;
+import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.presenter.ISearchGamePresenter;
 import com.lqs.fast.gamestore.presenter.SearchGameFragmentPresenter;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
+import com.lqs.fast.gamestore.view.IDownLoadView;
 import com.lqs.fast.gamestore.view.ISearchGameView;
 
 import java.util.ArrayList;
@@ -32,7 +37,7 @@ import java.util.List;
  * Created by dell on 2016/10/11.
  */
 
-public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String> implements ISearchGameView {
+public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String> implements ISearchGameView, IDownLoadView {
     public static final String TAG = "SearchGameFragment";
 
     private ArrayList<GameInfoBean> mHotCearchGame = new ArrayList<>();
@@ -50,10 +55,10 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     protected void initMvp() {
         SearchGameFragmentPresenter presenter = new SearchGameFragmentPresenter(getContext());
         SearchGameFragmentModle modle = null;
-        if(mData.equals(Constants.Type.SEARCH_GAME)){
+        if (mData.equals(Constants.Type.SEARCH_GAME)) {
 
             modle = new SearchGameFragmentModle<SearchGame>();
-        }else {
+        } else {
             modle = new SearchGameFragmentModle<KfGameSearch>();
         }
         this.setSearchGamePresenter(presenter);
@@ -61,7 +66,6 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         presenter.setSearchGameModel(modle);
         modle.setSearchGamePresenter(presenter);
     }
-
 
 
     @Override
@@ -109,7 +113,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
 
     private void initLvSearched() {
         mLvSearched = (ListView) mFragmentLauout.findViewById(R.id.frag_search_lv);
-        mMyLvSearchedAdatpter = new MyLvSearchedAdatpter(mSearchedGame,getContext());
+        mMyLvSearchedAdatpter = new MyLvSearchedAdatpter(mSearchedGame, getContext(),getDownLoadPresenter());
         mLvSearched.setAdapter(mMyLvSearchedAdatpter);
     }
 
@@ -194,5 +198,84 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     @Override
     public String getSearchContent() {
         return mEtSearchContent.getText().toString();
+    }
+
+    @Override
+    public void setDownLoadListener() {
+        IDownloadPresenter downLoadPresenter = getDownLoadPresenter();
+        downLoadPresenter.setDownLoadListener(new MyDownLoadService.IDownLoadListener() {
+            @Override
+            public void wail(String url) {
+                initItemState(url,"等待",null);
+            }
+
+            @Override
+            public void progress(String url, int progre) {
+                initItemState(url,""+progre,null);
+            }
+
+            @Override
+            public void completed(final String url) {
+                initItemState(url, "安装", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String filePath = Constants.getSavePath(getContext()) + "/" +  MyDownLoadService.getFileName(url);
+                        AppUtil.installApk(getContext(),filePath,true);
+                    }
+                });
+
+            }
+
+            @Override
+            public void fail(final String url) {
+                initItemState(url, "失败", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IDownloadPresenter presenter = getDownLoadPresenter();
+                        presenter.addDownLoadTask(url);
+                    }
+                });
+            }
+
+            @Override
+            public void speed(String url, long speed) {
+
+            }
+
+            @Override
+            public void downloadedSize(String url, long size) {
+
+            }
+        });
+    }
+
+    private void initItemState(String url, final String strState, View.OnClickListener onClickListener) {
+        for (int i = mLvSearched.getFirstVisiblePosition(); i < mLvSearched.getLastVisiblePosition(); i++) {
+            GameInfoBean gameInfoBean = mSearchedGame.get(i);
+            if(gameInfoBean.getDownload_url().equals(url)){
+                View childAt = mLvSearched.getChildAt(i - mLvSearched.getFirstVisiblePosition());
+                final TextView itemState = (TextView) childAt.findViewById(R.id.item_select_tv_state);
+                itemState.setOnClickListener(onClickListener);
+                itemState.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        itemState.setText(strState);
+                    }
+                });
+
+            }
+        }
+    }
+
+    @Override
+    public void setDownLoadPresenter(IDownloadPresenter downLoadPresenter) {
+        DownLoadPresenter presenter = new DownLoadPresenter();
+        addPresenter(presenter);
+    }
+
+    @Override
+    public IDownloadPresenter getDownLoadPresenter() {
+        ABasePresenter presenter = getPresenter(DownLoadPresenter.TAG);
+        return (IDownloadPresenter) presenter;
     }
 }

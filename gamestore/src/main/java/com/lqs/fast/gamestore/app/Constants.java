@@ -15,7 +15,7 @@ public final class Constants {
 //    public static final String SAVEPATH = Environment.getExternalStorageDirectory().getAbsolutePath();
 //    public static final String SAVEPATH = "";
     public static String getSavePath(Context context){
-        context.getExternalFilesDir();
+        return context.getFilesDir().getAbsolutePath();
     }
 
     public static class Type{

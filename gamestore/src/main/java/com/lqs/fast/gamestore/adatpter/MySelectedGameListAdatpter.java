@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
+import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
@@ -141,13 +143,14 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
                 } else if (downLoadState == 3) {
                     //TODO 安装
                     String fileName = MyDownLoadService.getFileName(gameInfoBean.getDownload_url());
-                    String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                    String filePath = absolutePath + "/" + fileName;
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
-                    mContext.startActivity(i);
-                    android.os.Process.killProcess(android.os.Process.myPid());
+//                    String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                    String filePath = Constants.getSavePath(mContext) + "/" + fileName;
+//                    Intent i = new Intent(Intent.ACTION_VIEW);
+//                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
+//                    mContext.startActivity(i);
+//                    android.os.Process.killProcess(android.os.Process.myPid());
+                    AppUtil.installApk(mContext,filePath,true);
                 }
             }
         };

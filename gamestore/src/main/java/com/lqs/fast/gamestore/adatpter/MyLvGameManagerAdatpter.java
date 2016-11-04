@@ -71,7 +71,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         Constants.Settings.SP_NAME, Constants.Settings.DELETE_INSTALLPACKAGE);
                 if(isDeleteInstallPackage != null && isDeleteInstallPackage ==true){
                     String fileName = MyDownLoadService.getFileName(bean.getDownload_url());
-                    String filePath = Constants.SAVEPATH + "/" + fileName;
+                    String filePath = Constants.getSavePath(mContext) + "/" + fileName;
                     File file = new File(filePath);
                     boolean exists = file.exists();
                     if(exists){
@@ -129,7 +129,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         tag.mTvState.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String filePath = Constants.SAVEPATH + "/" + FileUtil.getFileName(bean.getDownload_url());
+                                String filePath = Constants.getSavePath(mContext) + "/" + FileUtil.getFileName(bean.getDownload_url());
                                 AppUtil.installApk(mContext, filePath, true);
                             }
                         });
