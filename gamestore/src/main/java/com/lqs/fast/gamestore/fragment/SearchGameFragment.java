@@ -65,6 +65,12 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         presenter.setSerachGameView(this);
         presenter.setSearchGameModel(modle);
         modle.setSearchGamePresenter(presenter);
+        DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
+        this.setDownLoadPresenter(downLoadPresenter);
+
+        setDownLoadListener();
+        downLoadPresenter.onStart(getContext());
+
     }
 
 
@@ -111,9 +117,36 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
+        downLoadPresenter.onStop(getContext());
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+//            DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
+//            this.setDownLoadPresenter(downLoadPresenter);
+
+            ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
+            if (downLoadPresenter != null) {
+//                setDownLoadListener();
+                downLoadPresenter.onStart(getContext());
+            }
+        } else {
+            ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
+            if (downLoadPresenter != null) {
+                downLoadPresenter.onStop(getContext());
+            }
+        }
+    }
+
     private void initLvSearched() {
         mLvSearched = (ListView) mFragmentLauout.findViewById(R.id.frag_search_lv);
-        mMyLvSearchedAdatpter = new MyLvSearchedAdatpter(mSearchedGame, getContext(),getDownLoadPresenter());
+        mMyLvSearchedAdatpter = new MyLvSearchedAdatpter(mSearchedGame, getContext(), getDownLoadPresenter());
         mLvSearched.setAdapter(mMyLvSearchedAdatpter);
     }
 
@@ -206,12 +239,12 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         downLoadPresenter.setDownLoadListener(new MyDownLoadService.IDownLoadListener() {
             @Override
             public void wail(String url) {
-                initItemState(url,"等待",null);
+                initItemState(url, "等待", null);
             }
 
             @Override
             public void progress(String url, int progre) {
-                initItemState(url,""+progre,null);
+                initItemState(url, "" + progre, null);
             }
 
             @Override
@@ -219,8 +252,8 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
                 initItemState(url, "安装", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String filePath = Constants.getSavePath(getContext()) + "/" +  MyDownLoadService.getFileName(url);
-                        AppUtil.installApk(getContext(),filePath,true);
+                        String filePath = Constants.getSavePath(getContext()) + "/" + MyDownLoadService.getFileName(url);
+                        AppUtil.installApk(getContext(), filePath, true);
                     }
                 });
 
@@ -252,7 +285,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     private void initItemState(String url, final String strState, View.OnClickListener onClickListener) {
         for (int i = mLvSearched.getFirstVisiblePosition(); i < mLvSearched.getLastVisiblePosition(); i++) {
             GameInfoBean gameInfoBean = mSearchedGame.get(i);
-            if(gameInfoBean.getDownload_url().equals(url)){
+            if (gameInfoBean.getDownload_url().equals(url)) {
                 View childAt = mLvSearched.getChildAt(i - mLvSearched.getFirstVisiblePosition());
                 final TextView itemState = (TextView) childAt.findViewById(R.id.item_select_tv_state);
                 itemState.setOnClickListener(onClickListener);
@@ -269,8 +302,8 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
 
     @Override
     public void setDownLoadPresenter(IDownloadPresenter downLoadPresenter) {
-        DownLoadPresenter presenter = new DownLoadPresenter();
-        addPresenter(presenter);
+//        DownLoadPresenter presenter = new DownLoadPresenter(getContext());
+        addPresenter((ABasePresenter) downLoadPresenter);
     }
 
     @Override

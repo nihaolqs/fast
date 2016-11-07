@@ -45,7 +45,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         ManagerFragmentModel managerFragmentModel = new ManagerFragmentModel();
         ManagerFragmentPresenter managerFragmentPresenter = new ManagerFragmentPresenter(getContext());
         MvpUtils.initMVP(managerFragmentModel, managerFragmentPresenter, this);
-        DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+        DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
         this.setDownLoadPresenter(downLoadPresenter);
 
         downLoadPresenter.onStart(getContext());
@@ -145,7 +145,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+            DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
             this.setDownLoadPresenter(downLoadPresenter);
             Context context = getContext();
             if (context != null) {

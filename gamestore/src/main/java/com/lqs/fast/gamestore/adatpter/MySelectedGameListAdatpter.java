@@ -16,6 +16,7 @@ import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
+import com.lqs.fast.gamestore.presenter.ICheckListener;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 
@@ -156,16 +157,33 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
         };
         holder.tvState.setOnClickListener(listener);
 
+        mDownloadPresenter.checkFileExists(gameInfoBean.getDownload_url(), new ICheckListener() {
+            @Override
+            public void check(boolean b) {
+                if(b){
+                    holder.tvState.setText("安装");
+                    holder.tvState.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String fileName = MyDownLoadService.getFileName(gameInfoBean.getDownload_url());
+                            String filePath = Constants.getSavePath(mContext) + "/" + fileName;
+                            AppUtil.installApk(mContext,filePath,true);
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     private int getState(GameInfoBean gameInfoBean) {
         int state = mDownloadPresenter.getDownLoadState(gameInfoBean.getDownload_url());
-        if (state == 0) {
-            boolean fileExists = mDownloadPresenter.isFileExists(gameInfoBean.getDownload_url());
-            if (fileExists){
-                state = 3;
-            }
-        }
+//        if (state == 0) {
+//            boolean fileExists = mDownloadPresenter.isFileExists(gameInfoBean.getDownload_url());
+//            if (fileExists){
+//                state = 3;
+//            }
+//        }
         return state;
     }
 

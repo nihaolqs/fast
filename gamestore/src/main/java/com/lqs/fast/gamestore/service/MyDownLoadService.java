@@ -45,11 +45,12 @@ public class MyDownLoadService extends Service {
     private HashMap<String, MyDownLoadService.DownLoadTask> mDawnLoadTaskMap = new HashMap<>();
 
     private MyDownLoadService.IDownLoadListener mListener;
+    private final ExecutorService mCachedThreadPool;
 
     public MyDownLoadService() {
 
         mFixedThreadPool = Executors.newFixedThreadPool(MAXTHREAD);
-        Executors.new
+        mCachedThreadPool = Executors.newCachedThreadPool();
     }
 
 
@@ -251,11 +252,14 @@ public class MyDownLoadService extends Service {
             int state = MyDownLoadService.this.getDownLoadState(url);
             return state;
         }
+        public void checkFile(String url, ICheckListener listener){
+            MyDownLoadService.this.checkFile(url,listener);
+        }
     }
 
-    public void getLength(String url, ICheckListener listener) {
+    public void checkFile(String url, ICheckListener listener) {
         MyCheckTask myCheckTask = new MyCheckTask(url, listener);
-        mFixedThreadPool.execute(myCheckTask);
+        mCachedThreadPool.execute(myCheckTask);
     }
 
     class MyCheckTask implements Runnable {
@@ -285,6 +289,9 @@ public class MyDownLoadService extends Service {
                 int contentLength = connection.getContentLength();
                 if (length == contentLength) {
                    mListener.check(true);
+                    return;
+                }else{
+                    mListener.check(false);
                     return;
                 }
             } catch (MalformedURLException e) {

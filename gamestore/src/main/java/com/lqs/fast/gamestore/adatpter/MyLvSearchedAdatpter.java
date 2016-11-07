@@ -7,11 +7,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.base.adatpter.ABaseAdatpter;
+import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.fast.utils.FileUtil;
 import com.lqs.fast.fast.utils.ImageUtils;
 import com.lqs.fast.fast.widget.FlowLayout;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.presenter.ICheckListener;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 
@@ -31,7 +34,7 @@ public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearche
     }
 
     @Override
-    protected void initItemUi(final MyViewHolder tag, GameInfoBean bean, int position) {
+    protected void initItemUi(final MyViewHolder tag, final GameInfoBean bean, int position) {
         ImageUtils.LoadImage(tag.mIvGameIcon,bean.getGame_logo());
         tag.mTvGameShowName.setText(bean.getShow_name());
         tag.mTvGameSize.setText(bean.getGamesize());
@@ -39,12 +42,41 @@ public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearche
         tag.mTvGameDescribe.setText(bean.getOne_game_info());
         tag.mTvState.setText(R.string.download);
         int state = mDownloadPresenter.getDownLoadState(bean.getDownload_url());
-        if(state == 0 && MyDownLoadService)
-        if(state == MyDownLoadService.COMPLETED){
-
-        }else if(state == 0){
-
+//        if(state == 0 && MyDownLoadService)
+//        if(state == MyDownLoadService.COMPLETED){
+//
+//        }else if(state == 0){
+//
+//        }
+        if(state == MyDownLoadService.FAIL){
+            tag.mTvState.setText(R.string.retry);
         }
+        if(state == 0 || state == MyDownLoadService.FAIL) {
+
+            tag.mTvState.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDownloadPresenter.addDownLoadTask(bean.getDownload_url());
+                }
+            });
+        }
+        mDownloadPresenter.checkFileExists(bean.getDownload_url(), new ICheckListener() {
+            @Override
+            public void check(boolean b) {
+                if(b){
+                    tag.mTvState.setText("安装");
+                    tag.mTvState.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String fileName = MyDownLoadService.getFileName(bean.getDownload_url());
+                            String filePath = Constants.getSavePath(mContext) + "/" +fileName;
+                            AppUtil.installApk(mContext,filePath,true);
+                        }
+                    });
+                }
+            }
+        });
+
         tag.mFlowLayout.removeAllViews();
         final List<String> time_list = bean.getTime_list();
         if(time_list != null)

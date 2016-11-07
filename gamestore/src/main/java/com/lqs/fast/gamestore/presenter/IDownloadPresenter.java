@@ -25,6 +25,7 @@ public interface IDownloadPresenter {
 
     void saveGameInfo(SaveGameInfoBean bean);
 
-    boolean isFileExists(String url);
+    void checkFileExists(String url,ICheckListener listener);
+
 
 }

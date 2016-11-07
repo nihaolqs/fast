@@ -44,6 +44,10 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     private Context mContext;
     private int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
+    public DownLoadPresenter(Context context) {
+        this.mContext = context;
+    }
+
     @Override
     public String getPresenterTag() {
         return TAG;
@@ -110,10 +114,10 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     }
 
     @Override
-    public boolean isFileExists(String urlStr) {
-        String fileName = FileUtil.getFileName(urlStr);
-        File file = new File(Constants.getSavePath(mContext) + "/" + fileName);
-        boolean exists = file.exists();
+    public void checkFileExists(String urlStr, ICheckListener listener) {
+//        String fileName = FileUtil.getFileName(urlStr);
+//        File file = new File(Constants.getSavePath(mContext) + "/" + fileName);
+//        boolean exists = file.exists();
 //        URL url = null;
 //        try {
 //            url = new URL(urlStr);
@@ -128,7 +132,10 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        return exists;
+//        return exists;
+        if (mMybinder != null) {
+            mMybinder.checkFile(urlStr, listener);
+        }
     }
 
     @Override
@@ -136,7 +143,11 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
         if (context != null) {
             this.mContext = context;
             super.onStart(context);
-            isBinder = true;
+            if (isBinder) {
+                context.unbindService(mSeriveConn);
+                isBinder = false;
+            }
+
             mServiceIntent = new Intent(context, MyDownLoadService.class);
             context.startService(mServiceIntent);
 
@@ -154,7 +165,10 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
             };
 
 //        context.unbindService(mSeriveConn);
-            context.bindService(mServiceIntent, mSeriveConn, BIND_AUTO_CREATE);
+            if (!isBinder) {
+                context.bindService(mServiceIntent, mSeriveConn, BIND_AUTO_CREATE);
+                isBinder = true;
+            }
         }
     }
 

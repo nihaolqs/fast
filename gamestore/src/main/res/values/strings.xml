@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">GameStore</string>
     <string name="download">下载</string>
+    <string name="retry">重试</string>
 </resources>

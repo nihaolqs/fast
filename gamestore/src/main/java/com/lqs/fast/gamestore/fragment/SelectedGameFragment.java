@@ -193,11 +193,13 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         }
     }
 
+
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+            DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
             this.setDownLoadPresenter(downLoadPresenter);
             Context context = getContext();
             if (context != null) {

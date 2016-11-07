@@ -67,7 +67,7 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         presenter.setGameDetailModel(model);
         model.setGameDetailPresenter(presenter);
 
-        DownLoadPresenter downLoadPresenter = new DownLoadPresenter();
+        DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
         this.setDownLoadPresenter(downLoadPresenter);
         downLoadPresenter.onStart(getContext());
         setDownLoadListener();

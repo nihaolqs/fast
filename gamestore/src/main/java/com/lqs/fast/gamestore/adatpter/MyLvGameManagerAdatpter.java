@@ -14,6 +14,7 @@ import com.lqs.fast.fast.utils.SpUtil;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
+import com.lqs.fast.gamestore.presenter.ICheckListener;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
 
@@ -85,14 +86,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                 tag.mTvGameName.setText(bean.getGame_name());
                 String download_url = bean.getDownload_url();
                 int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
-                if (downLoadState == 0) {
-                    boolean fileExists = mDownloadPresenter.isFileExists(download_url);
-                    if (fileExists ) {
-                        downLoadState = MyDownLoadService.COMPLETED;
-                    } else {
-                        downLoadState = MyDownLoadService.FAIL;
-                    }
-                }
+
 
                 switch (downLoadState) {
                     case MyDownLoadService.WAIT: {
@@ -119,47 +113,66 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                     }
                     break;
                     case MyDownLoadService.COMPLETED: {
-                        tag.mTvDownloadState.setVisibility(View.VISIBLE);
-                        tag.mTvSpeed.setVisibility(View.GONE);
-                        tag.mTvDownloadState.setText("下载完成");
-                        tag.mTvDownloadding.setVisibility(View.GONE);
-                        tag.mTvInstallState.setVisibility(View.VISIBLE);
-                        tag.mTvInstallState.setText("等待安装");
-                        tag.mTvState.setText("安装");
-                        tag.mTvState.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String filePath = Constants.getSavePath(mContext) + "/" + FileUtil.getFileName(bean.getDownload_url());
-                                AppUtil.installApk(mContext, filePath, true);
-                            }
-                        });
+                        setCompletedState(tag, bean);
                     }
                     break;
                     case MyDownLoadService.FAIL: {
-                        tag.mTvDownloadState.setVisibility(View.VISIBLE);
-                        tag.mTvSpeed.setVisibility(View.GONE);
-                        tag.mTvDownloadState.setText("下载失败");
-                        tag.mTvDownloadding.setVisibility(View.VISIBLE);
-                        tag.mTvInstallState.setVisibility(View.GONE);
-                        tag.mTvState.setText("重试");
-                        View.OnClickListener onClickListener = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                mDownloadPresenter.addDownLoadTask(bean.getDownload_url());
-                                tag.mTvState.setClickable(false);
-                            }
-                        };
-                        tag.mTvState.setOnClickListener(onClickListener);
-
-                        tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
+                        setFailState(tag, bean);
                     }
                     break;
-
-
                 }
+                if (downLoadState == 0) {
+                    mDownloadPresenter.checkFileExists(download_url, new ICheckListener() {
+                        @Override
+                        public void check(boolean b) {
+                            if(b){
+                                setCompletedState(tag, bean);
+                            }else {
+                                setFailState(tag, bean);
+                            }
+                        }
+                    });
+                }
+
             }
             break;
         }
+    }
+
+    private void setCompletedState(MyViewHolder tag, final SaveGameInfoBean bean) {
+        tag.mTvDownloadState.setVisibility(View.VISIBLE);
+        tag.mTvSpeed.setVisibility(View.GONE);
+        tag.mTvDownloadState.setText("下载完成");
+        tag.mTvDownloadding.setVisibility(View.GONE);
+        tag.mTvInstallState.setVisibility(View.VISIBLE);
+        tag.mTvInstallState.setText("等待安装");
+        tag.mTvState.setText("安装");
+        tag.mTvState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String filePath = Constants.getSavePath(mContext) + "/" + FileUtil.getFileName(bean.getDownload_url());
+                AppUtil.installApk(mContext, filePath, true);
+            }
+        });
+    }
+
+    private void setFailState(final MyViewHolder tag, final SaveGameInfoBean bean) {
+        tag.mTvDownloadState.setVisibility(View.VISIBLE);
+        tag.mTvSpeed.setVisibility(View.GONE);
+        tag.mTvDownloadState.setText("下载失败");
+        tag.mTvDownloadding.setVisibility(View.VISIBLE);
+        tag.mTvInstallState.setVisibility(View.GONE);
+        tag.mTvState.setText("重试");
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDownloadPresenter.addDownLoadTask(bean.getDownload_url());
+                tag.mTvState.setClickable(false);
+            }
+        };
+        tag.mTvState.setOnClickListener(onClickListener);
+
+        tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
     }
 
     @Override
