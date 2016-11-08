@@ -49,7 +49,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         this.setDownLoadPresenter(downLoadPresenter);
 
         downLoadPresenter.onStart(getContext());
-        setDownLoadListener();
+//        setDownLoadListener();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         super.onStart();
         ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
         downLoadPresenter.onStart(getContext());
-        setDownLoadListener();
+//        setDownLoadListener();
         isPause = false;
     }
 

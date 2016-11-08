@@ -1,6 +1,8 @@
 package com.lqs.fast.gamestore.adatpter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,12 +72,12 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                 });
                 Boolean isDeleteInstallPackage = (Boolean) SpUtil.readSp(mContext,   //自动删除已安装
                         Constants.Settings.SP_NAME, Constants.Settings.DELETE_INSTALLPACKAGE);
-                if(isDeleteInstallPackage != null && isDeleteInstallPackage ==true){
+                if (isDeleteInstallPackage != null && isDeleteInstallPackage == true) {
                     String fileName = MyDownLoadService.getFileName(bean.getDownload_url());
                     String filePath = Constants.getSavePath(mContext) + "/" + fileName;
                     File file = new File(filePath);
                     boolean exists = file.exists();
-                    if(exists){
+                    if (exists) {
                         file.delete();
                     }
                 }
@@ -124,12 +126,18 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                 if (downLoadState == 0) {
                     mDownloadPresenter.checkFileExists(download_url, new ICheckListener() {
                         @Override
-                        public void check(boolean b) {
-                            if(b){
-                                setCompletedState(tag, bean);
-                            }else {
-                                setFailState(tag, bean);
-                            }
+                        public void check(final boolean b) {
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (b) {
+                                        setCompletedState(tag, bean);
+                                    } else {
+                                        setFailState(tag, bean);
+                                    }
+                                }
+                            });
                         }
                     });
                 }

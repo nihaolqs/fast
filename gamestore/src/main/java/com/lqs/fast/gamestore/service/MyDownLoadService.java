@@ -174,6 +174,8 @@ public class MyDownLoadService extends Service {
                     point = (int) ((sum * 100) / length);
                     mListener.progress(mFileUrl, point);
 
+                    Log.e("下载",mFileUrl + "  " + sum);
+
                 }
                 mListener.progress(mFileUrl, 100);
                 mListener.completed(mFileUrl);

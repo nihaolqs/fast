@@ -68,7 +68,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
         this.setDownLoadPresenter(downLoadPresenter);
 
-        setDownLoadListener();
+//        setDownLoadListener();
         downLoadPresenter.onStart(getContext());
 
     }
@@ -128,12 +128,10 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-//            DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
-//            this.setDownLoadPresenter(downLoadPresenter);
 
             ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
             if (downLoadPresenter != null) {
-//                setDownLoadListener();
+                setDownLoadListener();
                 downLoadPresenter.onStart(getContext());
             }
         } else {
@@ -142,6 +140,12 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
                 downLoadPresenter.onStop(getContext());
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDownLoadListener();
     }
 
     private void initLvSearched() {
@@ -261,7 +265,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
 
             @Override
             public void fail(final String url) {
-                initItemState(url, "失败", new View.OnClickListener() {
+                initItemState(url, "重试", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         IDownloadPresenter presenter = getDownLoadPresenter();
@@ -292,7 +296,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
                 itemState.post(new Runnable() {
                     @Override
                     public void run() {
-                        itemState.setText(strState);
+                        itemState.setText(strState + "%");
                     }
                 });
 
