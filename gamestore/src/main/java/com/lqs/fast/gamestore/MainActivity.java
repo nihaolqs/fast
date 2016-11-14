@@ -1,6 +1,10 @@
 package com.lqs.fast.gamestore;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -13,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.utils.OtherUtil;
+import com.lqs.fast.gamestore.activity.ABaseActivity;
 import com.lqs.fast.gamestore.adatpter.MyActMainPageAdatpter;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.fragment.FreaturedGameFragment;
@@ -20,6 +25,7 @@ import com.lqs.fast.gamestore.fragment.KFGameFragment;
 import com.lqs.fast.gamestore.fragment.KFGamePageFragment;
 import com.lqs.fast.gamestore.fragment.SearchGameFragment;
 import com.lqs.fast.gamestore.fragment.SelectedGameFragment;
+import com.lqs.fast.gamestore.service.MyDownLoadService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isDragging;
     private RelativeLayout mRlMainTitle;
     private TextView mMainCententTitle;
+    private ServiceConnection mDownloadConne;
 
 
     @Override
@@ -35,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         OtherUtil.HideStatusBar(this);
         setContentView(R.layout.act_main);
-
+        binderDownloadService();
         initUI();
 
 //        SelectedGameFragment selectedGameFragment = new SelectedGameFragment();
@@ -141,4 +148,27 @@ public class MainActivity extends AppCompatActivity {
         mMainCententTitle = (TextView) findViewById(R.id.center_title);
     }
 
+    private void binderDownloadService() {
+        Intent intent = new Intent(this, MyDownLoadService.class);
+        startService(intent) ;
+        mDownloadConne = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                MyDownLoadService.setBinder(MainActivity.this, (MyDownLoadService.MyBinder) service);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(intent, mDownloadConne,BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyDownLoadService.removeBinder(this);
+        unbindService(mDownloadConne);
+    }
 }

@@ -40,7 +40,7 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     private ServiceConnection mSeriveConn;
     public static final String TAG = "DownLoadPresenter";
     private MyDownLoadService.IDownLoadListener mDownloadListener;
-    private boolean isBinder;
+//    private boolean isBinder;
     private Context mContext;
     private int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
@@ -140,45 +140,46 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
 
     @Override
     public void onStart(Context context) {
+        super.onStart(context);
         if (context != null) {
             this.mContext = context;
-            super.onStart(context);
-            if (isBinder) {
-                context.unbindService(mSeriveConn);
-                isBinder = false;
+
+            MyDownLoadService.MyBinder binder = MyDownLoadService.getBinder(mContext);
+            if(binder != null){
+                this.mMybinder = binder;
+                mMybinder.setDownLoadListener(mDownloadListener);
             }
 
-            mServiceIntent = new Intent(context, MyDownLoadService.class);
-            context.startService(mServiceIntent);
+//            else{
+//                mServiceIntent = new Intent(context, MyDownLoadService.class);
+//                context.startService(mServiceIntent);
+//
+//                mSeriveConn = new ServiceConnection() {
+//                    @Override
+//                    public void onServiceConnected(ComponentName name, IBinder service) {
+//                        DownLoadPresenter.this.mMybinder = (MyDownLoadService.MyBinder) service;
+//                        mMybinder.setDownLoadListener(mDownloadListener);
+//                    }
+//
+//                    @Override
+//                    public void onServiceDisconnected(ComponentName name) {
+//
+//                    }
+//                };
+//
+//                    context.bindService(mServiceIntent, mSeriveConn, BIND_AUTO_CREATE);
+//            }
 
-            mSeriveConn = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    DownLoadPresenter.this.mMybinder = (MyDownLoadService.MyBinder) service;
-                    mMybinder.setDownLoadListener(mDownloadListener);
-                }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-
-                }
-            };
-
-//        context.unbindService(mSeriveConn);
-            if (!isBinder) {
-                context.bindService(mServiceIntent, mSeriveConn, BIND_AUTO_CREATE);
-                isBinder = true;
-            }
         }
     }
 
     @Override
     public void onStop(Context context) {
         super.onStop(context);
-        if (isBinder) {
-            context.unbindService(mSeriveConn);
-            isBinder = false;
-        }
+//        if (isBinder) {
+//            context.unbindService(mSeriveConn);
+//            isBinder = false;
+//        }
     }
 
 

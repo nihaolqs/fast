@@ -71,4 +71,11 @@ public abstract class ABaseFragment<T extends ABaseFragment, S extends Serializa
         }
         return t;
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+
 }

@@ -17,13 +17,13 @@ import com.lqs.fast.gamestore.fragment.GameDetailFragment;
  * Created by dell on 2016/10/17.
  */
 
-public class GameDetailActivity extends AppCompatActivity {
+public class GameDetailActivity extends ABaseActivity {
 
     public static final String GUID_KEY = "detail_guid_intent_key";
     private String mGUID;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OtherUtil.HideStatusBar(this);
         setContentView(R.layout.activity_gamedetail);
@@ -48,6 +48,16 @@ public class GameDetailActivity extends AppCompatActivity {
     protected void initData() {
         Intent intent = getIntent();
         mGUID = intent.getStringExtra(GUID_KEY);
+    }
+
+    @Override
+    protected void initUI() {
+
+    }
+
+    @Override
+    protected int getLayoutResID() {
+        return 0;
     }
 
 //    protected void initUI() {

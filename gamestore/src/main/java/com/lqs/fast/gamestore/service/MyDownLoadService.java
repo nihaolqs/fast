@@ -44,8 +44,22 @@ public class MyDownLoadService extends Service {
     private HashMap<String, Integer> mDownLoadStateMap = new HashMap<>();
     private HashMap<String, MyDownLoadService.DownLoadTask> mDawnLoadTaskMap = new HashMap<>();
 
+    private static HashMap<Context,MyBinder> mBinderMap = new HashMap<>();
+
     private MyDownLoadService.IDownLoadListener mListener;
     private final ExecutorService mCachedThreadPool;
+
+    public static MyBinder getBinder(Context context){
+        return mBinderMap.get(context);
+    }
+
+    public static void setBinder(Context context,MyBinder myBinder){
+        mBinderMap.put(context,myBinder);
+    }
+
+    public static void removeBinder(Context context){
+        mBinderMap.remove(context);
+    }
 
     public MyDownLoadService() {
 
