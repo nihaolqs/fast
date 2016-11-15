@@ -39,6 +39,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
 
     private ArrayList<SaveGameInfoBean> mGameInfoBeenList = new ArrayList<>();
     private MyLvGameManagerAdatpter mMyLvGameManagerAdatpter;
+    private MyDownLoadService.IDownLoadListener mDownLoadListener;
 
     @Override
     protected void initMvp() {
@@ -125,13 +126,14 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         super.onStart();
         ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
         downLoadPresenter.onStart(getContext());
-//        setDownLoadListener();
+        setDownLoadListener();
         isPause = false;
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        removeDownLoadListener();
         isPause = true;
     }
 
@@ -150,7 +152,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
             Context context = getContext();
             if (context != null) {
                 downLoadPresenter.onStart(context);
-                setDownLoadListener();
+//                setDownLoadListener();
             }
 
         } else {
@@ -164,7 +166,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
 
     @Override
     public void setDownLoadListener() {
-        getDownLoadPresenter().setDownLoadListener(new MyDownLoadService.IDownLoadListener() {
+        mDownLoadListener = new MyDownLoadService.IDownLoadListener() {
             @Override
             public void wail(String url) {
                 setItemDownloadStateWail(url);
@@ -204,7 +206,13 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
                     setItemDownloadStateSize(url, size);
                 }
             }
-        });
+        };
+        getDownLoadPresenter().setDownLoadListener(mDownLoadListener);
+    }
+
+    @Override
+    public void removeDownLoadListener() {
+        getDownLoadPresenter().removeDownLoadListener(mDownLoadListener);
     }
 
     private void setItemDownloadStateSpeed(String url, final long speed) {
@@ -238,7 +246,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
             final SaveGameInfoBean bean = mGameInfoBeenList.get(i);
             if (bean.getDownload_url().equals(url) &&
                     i >= mLvGameManager.getFirstVisiblePosition() &&
-                    i < mLvGameManager.getLastVisiblePosition() &&
+                    i <= mLvGameManager.getLastVisiblePosition() &&
                     itemViewType == 1) {
                 View itemView = mLvGameManager.getChildAt(i - mLvGameManager.getFirstVisiblePosition());
                 final TextView mTvDownloadding = (TextView) itemView.findViewById(R.id.item_download_tv_downloadding);

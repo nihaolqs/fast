@@ -15,6 +15,8 @@ public interface IDownloadPresenter {
 
     void setDownLoadListener(MyDownLoadService.IDownLoadListener listener);
 
+    void removeDownLoadListener(MyDownLoadService.IDownLoadListener listener);
+
     void pauseDownLoadTask(String url);
 
     void continueDownLoadTast(String url);

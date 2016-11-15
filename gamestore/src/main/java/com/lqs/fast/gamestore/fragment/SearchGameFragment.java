@@ -50,6 +50,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     private TextView mTvSearFragNothing;
     private ImageView mIvSearchFragSearch;
     private EditText mEtSearchContent;
+    private MyDownLoadService.IDownLoadListener mDownloadListenrt;
 
     @Override
     protected void initMvp() {
@@ -131,7 +132,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
 
             ABasePresenter downLoadPresenter = (ABasePresenter) getDownLoadPresenter();
             if (downLoadPresenter != null) {
-                setDownLoadListener();
+//                setDownLoadListener();
                 downLoadPresenter.onStart(getContext());
             }
         } else {
@@ -146,6 +147,12 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     public void onResume() {
         super.onResume();
         setDownLoadListener();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        removeDownLoadListener();
     }
 
     private void initLvSearched() {
@@ -240,7 +247,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     @Override
     public void setDownLoadListener() {
         IDownloadPresenter downLoadPresenter = getDownLoadPresenter();
-        downLoadPresenter.setDownLoadListener(new MyDownLoadService.IDownLoadListener() {
+        mDownloadListenrt = new MyDownLoadService.IDownLoadListener() {
             @Override
             public void wail(String url) {
                 initItemState(url, "等待", null);
@@ -283,7 +290,13 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
             public void downloadedSize(String url, long size) {
 
             }
-        });
+        };
+        downLoadPresenter.setDownLoadListener(mDownloadListenrt);
+    }
+
+    @Override
+    public void removeDownLoadListener() {
+        getDownLoadPresenter().removeDownLoadListener(mDownloadListenrt);
     }
 
     private void initItemState(String url, final String strState, View.OnClickListener onClickListener) {

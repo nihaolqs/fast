@@ -14,9 +14,10 @@ import java.lang.reflect.Type;
  * Created by lin on 2016/10/13.
  */
 
-public class GameDetailFragmentModel extends ABaseModel<GameDetail> implements IGameDetailModel{
+public class GameDetailFragmentModel extends ABaseModel<GameDetail> implements IGameDetailModel {
 
     public static final String TAG = "GameDetailFragmentModel";
+
     @Override
     protected boolean checkData(GameDetail gameDetail) {
         int errorno = gameDetail.getErrorno();
@@ -38,8 +39,12 @@ public class GameDetailFragmentModel extends ABaseModel<GameDetail> implements I
 
     @Override
     public GameDetail.GameDeatilBean getGameDetail() {
-        GameDetail.GameDeatilBean game_info = mData.getGame_info();
-        return game_info;
+        if (mData != null) {
+            GameDetail.GameDeatilBean game_info = mData.getGame_info();
+            return game_info;
+        } else {
+            return null;
+        }
     }
 
     @Override

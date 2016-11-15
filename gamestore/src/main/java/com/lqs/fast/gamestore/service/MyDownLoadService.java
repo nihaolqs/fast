@@ -44,21 +44,37 @@ public class MyDownLoadService extends Service {
     private HashMap<String, Integer> mDownLoadStateMap = new HashMap<>();
     private HashMap<String, MyDownLoadService.DownLoadTask> mDawnLoadTaskMap = new HashMap<>();
 
-    private static HashMap<Context,MyBinder> mBinderMap = new HashMap<>();
+    private static HashMap<Context, MyBinder> mBinderMap = new HashMap<>();
 
-    private MyDownLoadService.IDownLoadListener mListener;
+    private static ArrayList<IBinderListener> sBinderListener = new ArrayList<>();
+
+    //    private MyDownLoadService.IDownLoadListener mListener;
+    private ArrayList<IDownLoadListener> mListeners = new ArrayList<>();
     private final ExecutorService mCachedThreadPool;
 
-    public static MyBinder getBinder(Context context){
+    public static MyBinder getBinder(Context context) {
         return mBinderMap.get(context);
     }
 
-    public static void setBinder(Context context,MyBinder myBinder){
-        mBinderMap.put(context,myBinder);
+    public static void setBinder(Context context, MyBinder myBinder) {
+        mBinderMap.put(context, myBinder);
+
+        for (IBinderListener listener : sBinderListener
+                ) {
+
+            listener.onBinded();
+        }
+
+        sBinderListener.clear();
     }
 
-    public static void removeBinder(Context context){
+    public static void removeBinder(Context context) {
+
         mBinderMap.remove(context);
+    }
+
+    public static void addBinderListener(IBinderListener binderListener) {
+        sBinderListener.add(binderListener);
     }
 
     public MyDownLoadService() {
@@ -74,7 +90,16 @@ public class MyDownLoadService extends Service {
     }
 
     private void setListener(MyDownLoadService.IDownLoadListener listener) {
-        this.mListener = listener;
+//        this.mListener = listener;
+        synchronized (mListeners) {
+            this.mListeners.add(listener);
+        }
+    }
+
+    private void removeListener(IDownLoadListener listener) {
+        synchronized (mListeners) {
+            mListeners.remove(listener);
+        }
     }
 
     private int getDownLoadState(String url) {
@@ -120,7 +145,13 @@ public class MyDownLoadService extends Service {
             this.mFileUrl = url;
             mDownLoadStateMap.put(url, WAIT);
             mDawnLoadTaskMap.put(url, this);
-            mListener.wail(url);
+            for (IDownLoadListener listener : mListeners
+                    ) {
+                if (listener != null) {
+                    listener.wail(url);
+                }
+            }
+//            mListener.wail(url);
         }
 
         public void threadPause() {
@@ -154,7 +185,13 @@ public class MyDownLoadService extends Service {
 //            }
             try {
                 mDownLoadStateMap.put(mFileUrl, PROGRESS);
-                mListener.progress(mFileUrl, 0);
+                for (IDownLoadListener listener : mListeners
+                        ) {
+                    if (listener != null) {
+                        listener.progress(mFileUrl, 0);
+                    }
+                }
+//                mListener.progress(mFileUrl, 0);
                 URL url = new URL(mFileUrl);
                 URLConnection cc = url.openConnection();
                 long length = cc.getContentLength();
@@ -167,32 +204,60 @@ public class MyDownLoadService extends Service {
                 long sum = 0;
                 int point = 0;
                 long oldTime = 0;
+                long leng = 0;
                 while (-1 != (len = is.read(bs))) {
                     os.write(bs, 0, len);
                     sum += len;
 
                     if (isCancel) {
-                        mListener.fail(mFileUrl);
+                        for (IDownLoadListener listener : mListeners
+                                ) {
+                            listener.fail(mFileUrl);
+                        }
+//                        mListener.fail(mFileUrl);
                         return;
                     }
 
                     long l = System.currentTimeMillis();
 
-                    long speed = len * 1000 / (l - oldTime);
+                    long l1 = l - oldTime;
+                    if (l1 > 100) {
+                        long speed = (sum - leng) * 1000 / l1;
+                        Log.e("speed", "" + speed);
 
-                    mListener.speed(mFileUrl, speed);
+//                    mListener.speed(mFileUrl, speed);
 
-                    mListener.downloadedSize(mFileUrl, sum);
+//                    mListener.downloadedSize(mFileUrl, sum);
 
 //                    Log.d("run",sum + "/" + length);
-                    point = (int) ((sum * 100) / length);
-                    mListener.progress(mFileUrl, point);
-
-                    Log.e("下载",mFileUrl + "  " + sum);
+                        point = (int) ((sum * 100) / length);
+//                    mListener.progress(mFileUrl, point);
+                        synchronized (mListeners) {
+                            for (IDownLoadListener listener : mListeners
+                                    ) {
+//                        Log.e("listener",""+listener);
+                                if (listener != null) {
+                                    listener.speed(mFileUrl, speed);
+                                    listener.downloadedSize(mFileUrl, sum);
+                                    listener.progress(mFileUrl, point);
+                                }
+                            }
+                        }
+                        oldTime = l;
+                        leng = sum;
+                        Log.e("下载", mFileUrl + "  " + sum);
+                    }
 
                 }
-                mListener.progress(mFileUrl, 100);
-                mListener.completed(mFileUrl);
+//                mListener.progress(mFileUrl, 100);
+//                mListener.completed(mFileUrl);
+                for (IDownLoadListener listener : mListeners
+                        ) {
+                    if (listener != null) {
+                        listener.progress(mFileUrl, 100);
+                        listener.completed(mFileUrl);
+                    }
+                }
                 mDownLoadStateMap.put(mFileUrl, COMPLETED);
                 Boolean isAutoInstall = (Boolean) SpUtil.readSp(MyDownLoadService.this, Constants.Settings.SP_NAME, Constants.Settings.AUTOMATIC_INSTALL);
                 if (isAutoInstall != null && isAutoInstall == true) {   //自动安装
@@ -201,12 +266,22 @@ public class MyDownLoadService extends Service {
 
 
             } catch (MalformedURLException e) {
-                mListener.fail(mFileUrl);
+//                mListener.fail(mFileUrl);
+                for (IDownLoadListener listener : mListeners
+                        ) {
+                    listener.fail(mFileUrl);
+                }
                 mDownLoadStateMap.put(mFileUrl, FAIL);
                 file.delete();
                 e.printStackTrace();
             } catch (IOException e) {
-                mListener.fail(mFileUrl);
+//                mListener.fail(mFileUrl);
+                for (IDownLoadListener listener : mListeners
+                        ) {
+                    if (listener != null) {
+                        listener.fail(mFileUrl);
+                    }
+                }
                 mDownLoadStateMap.put(mFileUrl, FAIL);
                 file.delete();
                 e.printStackTrace();
@@ -236,13 +311,22 @@ public class MyDownLoadService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+
         return new MyBinder();
+    }
+
+    public interface IBinderListener {
+        void onBinded();
     }
 
 
     public class MyBinder extends Binder {
         public void setDownLoadListener(MyDownLoadService.IDownLoadListener listener) {
             MyDownLoadService.this.setListener(listener);
+        }
+
+        public void removeDownLoadListener(MyDownLoadService.IDownLoadListener listener) {
+            MyDownLoadService.this.removeListener(listener);
         }
 
         public void addDownLoadTask(String url) {
@@ -268,8 +352,9 @@ public class MyDownLoadService extends Service {
             int state = MyDownLoadService.this.getDownLoadState(url);
             return state;
         }
-        public void checkFile(String url, ICheckListener listener){
-            MyDownLoadService.this.checkFile(url,listener);
+
+        public void checkFile(String url, ICheckListener listener) {
+            MyDownLoadService.this.checkFile(url, listener);
         }
     }
 
@@ -304,9 +389,9 @@ public class MyDownLoadService extends Service {
                 URLConnection connection = url.openConnection();
                 int contentLength = connection.getContentLength();
                 if (length == contentLength) {
-                   mListener.check(true);
+                    mListener.check(true);
                     return;
-                }else{
+                } else {
                     mListener.check(false);
                     return;
                 }
@@ -319,5 +404,4 @@ public class MyDownLoadService extends Service {
 
         }
     }
-
 }

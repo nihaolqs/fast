@@ -11,6 +11,8 @@ public interface IDownLoadView {
 
     void setDownLoadListener();
 
+    void removeDownLoadListener();
+
     void setDownLoadPresenter(IDownloadPresenter downLoadPresenter);
 
     IDownloadPresenter getDownLoadPresenter();

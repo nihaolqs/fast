@@ -40,7 +40,7 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     private ServiceConnection mSeriveConn;
     public static final String TAG = "DownLoadPresenter";
     private MyDownLoadService.IDownLoadListener mDownloadListener;
-//    private boolean isBinder;
+    //    private boolean isBinder;
     private Context mContext;
     private int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
@@ -63,7 +63,9 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
             ActivityCompat.requestPermissions((Activity) mContext,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
         } else {
-            mMybinder.addDownLoadTask(url);
+            if (mMybinder != null) {
+                mMybinder.addDownLoadTask(url);
+            }
         }
 
     }
@@ -73,6 +75,13 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
         this.mDownloadListener = listener;
         if (mMybinder != null) {
             mMybinder.setDownLoadListener(mDownloadListener);
+        }
+    }
+
+    @Override
+    public void removeDownLoadListener(MyDownLoadService.IDownLoadListener listener) {
+        if (mMybinder != null) {
+            mMybinder.removeDownLoadListener(mDownloadListener);
         }
     }
 
@@ -145,9 +154,20 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
             this.mContext = context;
 
             MyDownLoadService.MyBinder binder = MyDownLoadService.getBinder(mContext);
-            if(binder != null){
+            if (binder != null) {
                 this.mMybinder = binder;
                 mMybinder.setDownLoadListener(mDownloadListener);
+            } else {
+                MyDownLoadService.addBinderListener(new MyDownLoadService.IBinderListener() {
+                    @Override
+                    public void onBinded() {
+                        MyDownLoadService.MyBinder binder = MyDownLoadService.getBinder(mContext);
+                        if (binder != null) {
+                            DownLoadPresenter.this.mMybinder = binder;
+                            mMybinder.setDownLoadListener(mDownloadListener);
+                        }
+                    }
+                });
             }
 
 //            else{

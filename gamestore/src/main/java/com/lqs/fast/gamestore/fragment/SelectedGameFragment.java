@@ -68,7 +68,7 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         mPullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                Log.e("onRefresh","onRefresh");
+                Log.e("onRefresh", "onRefresh");
 //                refreshView.onRefreshComplete();
                 getSelectedGamePresenter().replaceData(refreshView);
             }
@@ -191,8 +191,8 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         if (downLoadPresenter != null) {
             downLoadPresenter.onStop(getContext());
         }
+        removeDownLoadListener();
     }
-
 
 
 //    @Override
@@ -269,6 +269,11 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
 
     }
 
+    @Override
+    public void removeDownLoadListener() {
+        getDownLoadPresenter().removeDownLoadListener(mDownloadListener);
+    }
+
     private void setItemState(String url, final String state) {
         if (!isDistory) {
             for (int i = 0; i < mSelectedGames.size(); i++) {
@@ -276,13 +281,17 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
                 if (bean.getDownload_url().equals(url) && i >= mSelectedListView.getFirstVisiblePosition() && i < mSelectedListView.getLastVisiblePosition()) {  //在可见范围内才进行更新进度
 
                     View childAt = mSelectedListView.getChildAt(i + mSelectedListView.getHeaderViewsCount() - mSelectedListView.getFirstVisiblePosition());
-                    final TextView tvState = (TextView) childAt.findViewById(R.id.item_select_tv_state);
-                    tvState.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            tvState.setText(state);
-                        }
-                    });
+                    if (childAt != null) {
+                        final TextView tvState = (TextView) childAt.findViewById(R.id.item_select_tv_state);
+
+                        tvState.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                tvState.setText(state);
+                            }
+                        });
+
+                    }
                 }
             }
         }

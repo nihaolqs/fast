@@ -1,5 +1,8 @@
 package com.lqs.fast.fast.utils;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /**
  * Created by dell on 2016/10/19.
  */
@@ -22,10 +25,12 @@ public final class FileUtil {
         StringBuffer sb = new StringBuffer();
         double kb = speed / 1024.0; //KB
         double m = kb / 1024;  //MB
+        DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
+        df.setMaximumFractionDigits(2);
         if (m>1){
-            sb.append(m).append("M");
+            sb.append(df.format(m)).append("M");
         }else{
-            sb.append(kb).append("KB");
+            sb.append(df.format(kb)).append("KB");
         }
         return sb.toString();
     }
@@ -35,12 +40,14 @@ public final class FileUtil {
         double k = size / 1024.0;
         double m = k / 1024;
         double g = m / 1024;
+        DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
+        df.setMaximumFractionDigits(2);
         if(g > 1){
-            sb.append(g).append("G");
+            sb.append(df.format(g)).append("G");
         }else if(m > 1){
-            sb.append(m).append("M");
+            sb.append(df.format(m)).append("M");
         }else{
-            sb.append(k).append("KB");
+            sb.append(df.format(k)).append("KB");
         }
 
         return sb.toString();

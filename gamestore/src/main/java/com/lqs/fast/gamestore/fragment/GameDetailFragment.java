@@ -34,7 +34,7 @@ import java.util.List;
  * Created by lin on 2016/10/13.
  */
 
-public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String> implements IGameDetailView ,IDownLoadView {
+public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String> implements IGameDetailView, IDownLoadView {
     public static final String TAG = "GameDetailFragment";
     static final int INTRODUCTION_DEFAULTLINE = 3;
 
@@ -57,6 +57,7 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
     private MyRvGameImageAdatpter mRvGameImageAdatpter;
     private TextView mGameInfoTvMore;
     private ProgressButton mProgressButton;
+    private MyDownLoadService.IDownLoadListener mDownLoadListener;
 
     @Override
     protected void initMvp() {
@@ -70,7 +71,7 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
         this.setDownLoadPresenter(downLoadPresenter);
         downLoadPresenter.onStart(getContext());
-        setDownLoadListener();
+//        setDownLoadListener();
     }
 
     @Override
@@ -104,8 +105,10 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         });
     }
 
+
+
     private void initRecyclerView() {
-        mRvGameImageAdatpter = new MyRvGameImageAdatpter(getContext(),mGameImageList);
+        mRvGameImageAdatpter = new MyRvGameImageAdatpter(getContext(), mGameImageList);
         mRvGameImage.setLayoutManager(new StaggeredGridLayoutManager(1,
                 StaggeredGridLayoutManager.HORIZONTAL));
         mRvGameImage.setAdapter(mRvGameImageAdatpter);
@@ -116,7 +119,7 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
 //                GameDetailImagesDialogFragment dialogFragment = new GameDetailImagesDialogFragment(mGameImageList);
                 DialogFragment dialogFragment = GameDetailImagesDialogFragment.getInstance(mGameImageList);
                 FragmentManager fm = getChildFragmentManager();
-                dialogFragment.show(fm,"tag");
+                dialogFragment.show(fm, "tag");
 //                dialogFragment.setViewPageItem(position);
             }
         });
@@ -168,26 +171,26 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
 
 //        private ImageView mIvGameIcon;
         String game_logo = bean.getGame_logo();
-        ImageUtils.LoadImage(mIvGameIcon,game_logo);
+        ImageUtils.LoadImage(mIvGameIcon, game_logo);
 
 //        private RelativeLayout mTvDiscount;
         String gamediscount = bean.getGamediscount();
-        if(!TextUtils.isEmpty(gamediscount)){
+        if (!TextUtils.isEmpty(gamediscount)) {
             mTvDiscount.setVisibility(View.VISIBLE);
             mTvDiscount2.setText(gamediscount);
-        }else{
+        } else {
             mTvDiscount.setVisibility(View.GONE);
         }
 
 //        private RecyclerView mRvGameImage;
 
         List<String> atlas_img = bean.getAtlas_img();
-        if(atlas_img.size() > 0){
+        if (atlas_img.size() > 0) {
             mRvGameImage.setVisibility(View.VISIBLE);
             mGameImageList.clear();
             mGameImageList.addAll(atlas_img);
             mRvGameImageAdatpter.notifyDataSetChanged();
-        }else {
+        } else {
             mRvGameImage.setVisibility(View.GONE);
         }
 
@@ -209,7 +212,7 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         String game_info = bean.getGame_info();
         mTvIntroduction.setText(game_info);
         int lineCount = mTvIntroduction.getLineCount();
-        if(lineCount >= INTRODUCTION_DEFAULTLINE){
+        if (lineCount >= INTRODUCTION_DEFAULTLINE) {
             mGameInfoTvMore.setVisibility(View.VISIBLE);
             mGameInfoTvMore.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -219,7 +222,7 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
                     mGameInfoTvMore.setVisibility(View.GONE);
                 }
             });
-        }else{
+        } else {
             mGameInfoTvMore.setVisibility(View.GONE);
         }
 
@@ -273,26 +276,26 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
 
     @Override
     public void setDownLoadListener() {
-        IDownloadPresenter downLoadPresenter = getDownLoadPresenter();
-        MyDownLoadService.IDownLoadListener listener = new MyDownLoadService.IDownLoadListener() {
+        IDownloadPresenter downLoadPresenter =  getDownLoadPresenter();
+        mDownLoadListener = new MyDownLoadService.IDownLoadListener() {
             @Override
             public void wail(String url) {
-                setDownloadState(url,"等待",0,false);
+                setDownloadState(url, "等待", 0, false);
             }
 
             @Override
             public void progress(String url, int progre) {
-                setDownloadState(url,progre + "%",progre,false);
+                setDownloadState(url, progre + "%", progre, false);
             }
 
             @Override
             public void completed(String url) {
-                setDownloadState(url,"安装",mProgressButton.getMaxProgress(),true);
+                setDownloadState(url, "安装", mProgressButton.getMaxProgress(), true);
             }
 
             @Override
             public void fail(String url) {
-                setDownloadState(url,"重试",mProgressButton.getMaxProgress(),true);
+                setDownloadState(url, "重试", mProgressButton.getMaxProgress(), true);
             }
 
             @Override
@@ -305,21 +308,28 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
 
             }
         };
-        downLoadPresenter.setDownLoadListener(listener);
+        downLoadPresenter.setDownLoadListener(mDownLoadListener);
     }
 
-    private void setDownloadState(String url, final String state,final int progress,final boolean isClickable) {
+    @Override
+    public void removeDownLoadListener() {
+        getDownLoadPresenter().removeDownLoadListener(mDownLoadListener);
+    }
+
+    private void setDownloadState(String url, final String state, final int progress, final boolean isClickable) {
         GameDetail.GameDeatilBean gameInfoData = getGameDetailPresenter().getGameInfoData();
-        String download_url = gameInfoData.getDownload_url();
-        if(download_url.equals(url)){
-            mProgressButton.post(new Runnable() {
-                @Override
-                public void run() {
-                    mProgressButton.setText(state);
-                    mProgressButton.setProgress(progress);
-                    mProgressButton.setClickable(isClickable);
-                }
-            });
+        if (gameInfoData != null) {
+            String download_url = gameInfoData.getDownload_url();
+            if (download_url.equals(url)) {
+                mProgressButton.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressButton.setText(state);
+                        mProgressButton.setProgress(progress);
+                        mProgressButton.setClickable(isClickable);
+                    }
+                });
+            }
         }
     }
 
@@ -338,11 +348,17 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
     public void setUserVisibleHint(boolean isVisibleToUser) {  //没运行
         super.setUserVisibleHint(isVisibleToUser);
         DownLoadPresenter downLoadPresenter = (DownLoadPresenter) getDownLoadPresenter();
-        if(isVisibleToUser){
+        if (isVisibleToUser) {
             downLoadPresenter.onStart(getContext());
-        }else {
+        } else {
             downLoadPresenter.onStop(getContext());
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        setDownLoadListener();
     }
 
     @Override
@@ -350,5 +366,6 @@ public class GameDetailFragment extends ABaseFragment<GameDetailFragment, String
         super.onStop();
         DownLoadPresenter downLoadPresenter = (DownLoadPresenter) getDownLoadPresenter();
         downLoadPresenter.onStop(getContext());
+        removeDownLoadListener();
     }
 }

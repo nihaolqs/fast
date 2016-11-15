@@ -14,6 +14,8 @@ import com.lqs.fast.fast.widget.FlowLayout;
 import com.lqs.fast.gamestore.R;
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameInfoBean;
+import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
+import com.lqs.fast.gamestore.presenter.DownLoadPresenter;
 import com.lqs.fast.gamestore.presenter.ICheckListener;
 import com.lqs.fast.gamestore.presenter.IDownloadPresenter;
 import com.lqs.fast.gamestore.service.MyDownLoadService;
@@ -57,6 +59,9 @@ public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearche
                 @Override
                 public void onClick(View v) {
                     mDownloadPresenter.addDownLoadTask(bean.getDownload_url());
+                    SaveGameInfoBean saveGameInfoBean = SaveGameInfoBean.getInstance4GameInfoBean(bean);
+
+                    mDownloadPresenter.saveGameInfo(saveGameInfoBean);
                 }
             });
         }

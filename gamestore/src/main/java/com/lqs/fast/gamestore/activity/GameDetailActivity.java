@@ -24,9 +24,9 @@ public class GameDetailActivity extends ABaseActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         OtherUtil.HideStatusBar(this);
-        setContentView(R.layout.activity_gamedetail);
+        super.onCreate(savedInstanceState);
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         GameDetailFragment fragment = GameDetailFragment.getInstance(GameDetailFragment.class, mGUID);
@@ -34,16 +34,7 @@ public class GameDetailActivity extends ABaseActivity {
         ft.commit();
     }
 
-    //
-//    protected Fragment getFragment() {
-//
-//        GameDetailFragment fragment = GameDetailFragment.getInstance(GameDetailFragment.class, mGUID);
-//        return fragment;
-//    }
 
-//    protected int getContainerViewId() {
-//        return R.id.container;
-//    }
 
     protected void initData() {
         Intent intent = getIntent();
@@ -57,14 +48,8 @@ public class GameDetailActivity extends ABaseActivity {
 
     @Override
     protected int getLayoutResID() {
-        return 0;
+        return R.layout.activity_gamedetail;
     }
 
-//    protected void initUI() {
-//
-//    }
 
-//    protected int getLayoutResID() {
-//        return R.layout.activity_gamedetail;
-//    }
 }
