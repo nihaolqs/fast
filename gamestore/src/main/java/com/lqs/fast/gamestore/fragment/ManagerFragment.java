@@ -222,7 +222,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
             final SaveGameInfoBean bean = mGameInfoBeenList.get(i);
             if (bean.getDownload_url().equals(url) &&
                     i >= mLvGameManager.getFirstVisiblePosition() &&
-                    i < mLvGameManager.getLastVisiblePosition() &&
+                    i <= mLvGameManager.getLastVisiblePosition() &&
                     itemViewType == 1) {
                 View itemView = mLvGameManager.getChildAt(i - mLvGameManager.getFirstVisiblePosition());
                 final TextView mTvSpeed = (TextView) itemView.findViewById(R.id.item_download_tv_internetspeed);
@@ -232,7 +232,8 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
                     public void run() {
                         mTvDownloadState.setVisibility(View.GONE);
                         mTvSpeed.setVisibility(View.VISIBLE);
-                        mTvDownloadState.setText(FileUtil.formatDownLoadSpeed(speed));
+                        mTvSpeed.setText(FileUtil.formatDownLoadSpeed(speed));
+//                        mTvDownloadState.setText(100000000+"");
                     }
                 });
             }

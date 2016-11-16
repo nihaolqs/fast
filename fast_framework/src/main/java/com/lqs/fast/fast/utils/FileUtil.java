@@ -28,9 +28,9 @@ public final class FileUtil {
         DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
         df.setMaximumFractionDigits(2);
         if (m>1){
-            sb.append(df.format(m)).append("M");
+            sb.append(df.format(m)).append("MB/S");
         }else{
-            sb.append(df.format(kb)).append("KB");
+            sb.append(df.format(kb)).append("KB/S");
         }
         return sb.toString();
     }
@@ -43,9 +43,9 @@ public final class FileUtil {
         DecimalFormat df=(DecimalFormat) NumberFormat.getInstance();
         df.setMaximumFractionDigits(2);
         if(g > 1){
-            sb.append(df.format(g)).append("G");
+            sb.append(df.format(g)).append("GB");
         }else if(m > 1){
-            sb.append(df.format(m)).append("M");
+            sb.append(df.format(m)).append("MB");
         }else{
             sb.append(df.format(k)).append("KB");
         }
