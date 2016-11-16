@@ -1,17 +1,22 @@
 package com.lqs.fast.gamestore.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
+import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.fast.utils.FileUtil;
 import com.lqs.fast.fast.utils.MvpUtils;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.activity.GameDetailActivity;
 import com.lqs.fast.gamestore.adatpter.MyLvGameManagerAdatpter;
+import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.SaveGameInfoBean;
 import com.lqs.fast.gamestore.model.ManagerFragmentModel;
 import com.lqs.fast.gamestore.presenter.DownLoadPresenter;
@@ -62,6 +67,16 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     private void initListView() {
         mMyLvGameManagerAdatpter = new MyLvGameManagerAdatpter(mGameInfoBeenList, getContext(), getDownLoadPresenter());
         mLvGameManager.setAdapter(mMyLvGameManagerAdatpter);
+        mLvGameManager.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Context context = getContext();
+                Intent intent = new Intent(context, GameDetailActivity.class);
+                SaveGameInfoBean saveGameInfoBean = mGameInfoBeenList.get(position - mLvGameManager.getHeaderViewsCount());
+                intent.putExtra(GameDetailActivity.GUID_KEY,saveGameInfoBean.getGuid());
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void initFindView() {
@@ -74,8 +89,14 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
 
     @Override
     protected void initData() {
-        IManagerPresenter presenter = getManagerPresenter();
-        presenter.replaceData();
+        new Handler(getContext().getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                IManagerPresenter presenter = getManagerPresenter();
+                presenter.replaceData();
+            }
+        });
+
     }
 
     @Override
@@ -175,21 +196,33 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
             @Override
             public void progress(String url, final int progre) {
                 if (!isPause) {
-                    setItemDownloadState(url, progre + "%");
+                    setItemDownloadState(url, progre + "%",null);
                 }
             }
 
             @Override
             public void completed(String url) {
                 if (!isPause) {
-                    setItemDownloadState(url, "完成");
+                    String fileName = FileUtil.getFileName(url);
+                    final String filePath = Constants.getSavePath(getContext()) + "/" + fileName;
+                    setItemDownloadState(url, "完成", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AppUtil.installApk(getContext(),filePath,true);
+                        }
+                    });
                 }
             }
 
             @Override
-            public void fail(String url) {
+            public void fail(final String url) {
                 if (!isPause) {
-                    setItemDownloadState(url, "重试");
+                    setItemDownloadState(url, "重试", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getDownLoadPresenter().addDownLoadTask(url);
+                        }
+                    });
                 }
             }
 
@@ -265,7 +298,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         }
     }
 
-    private void setItemDownloadState(String url, final String stateStr) {
+    private void setItemDownloadState(String url, final String stateStr, View.OnClickListener onClickListener) {
         Handler handler = new Handler(getContext().getMainLooper());
         for (int i = 0; i < mGameInfoBeenList.size(); i++) {
             int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
@@ -276,6 +309,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
                     itemViewType == 1) {
                 View itemView = mLvGameManager.getChildAt(i - mLvGameManager.getFirstVisiblePosition());
                 final TextView tvState = (TextView) itemView.findViewById(R.id.item_download_tv_state);
+                tvState.setOnClickListener(onClickListener);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

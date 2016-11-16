@@ -1,6 +1,7 @@
 package com.lqs.fast.fast.base_ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,15 +29,22 @@ public abstract class ABaseFragment<T extends ABaseFragment, S extends Serializa
         mLayoutInflater = inflater;
         mFragmentLauout = mLayoutInflater.inflate(getLayoutResId(), container, false);
         initMvp();
-        initUI();
-        initData();
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                initUI();
+                initData();
+            }
+        });
+
         return mFragmentLauout;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser){
+        if (isVisibleToUser) {
 
         }
     }

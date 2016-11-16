@@ -17,6 +17,7 @@ import com.lqs.fast.gamestore.presenter.ISelectedGamePresenter;
 import com.lqs.fast.gamestore.presenter.SelectedGameFragmentPresenter;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.Map;
  * Created by dell on 2016/9/30.
  */
 
-public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implements IAdGameModel,ISelectedGameModel{
+public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implements IAdGameModel, ISelectedGameModel {
     private int page = 1;
 
     public static final String TAG = "SelectedGameFragmentModle";
@@ -70,7 +71,11 @@ public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implemen
 
     @Override
     public List<GameInfoBean> getSelectedGameList() {
-        return mData.getSelected_list();
+        if (mData != null) {
+            return mData.getSelected_list();
+        }else {
+            return new ArrayList<GameInfoBean>();
+        }
     }
 
     @Override
@@ -87,18 +92,18 @@ public class SelectedGameFragmentModle extends ABaseModel<SelectedGame> implemen
 
     @Override
     public void nextPageData(final ReplaceDataListener listener) {
-        page ++;
+        page++;
         String url = "https://market.x7sy.com/game/index_selected";
         Map<String, String> map = new HashMap<>();
-        map.put("page",String.valueOf(page));
-        map.put("os_type","2");
-        map.put("sign","2267c9070c5ab7d178b32d31eb2ec6b0");
+        map.put("page", String.valueOf(page));
+        map.put("os_type", "2");
+        map.put("sign", "2267c9070c5ab7d178b32d31eb2ec6b0");
         GsonUtil.DownLoadedJsonListener<SelectedGame> l = new GsonUtil.DownLoadedJsonListener<SelectedGame>() {
             @Override
             public void downLoaded(SelectedGame selectedGame) {
                 listener.replacedData();  //TODO cuowu
             }
         };
-        GsonUtil.downLoadJson(url,map,SelectedGame.class,l);
+        GsonUtil.downLoadJson(url, map, SelectedGame.class, l);
     }
 }

@@ -59,8 +59,8 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
 
     @Override
     protected void initUI() {
-        initHeaderView();
-        initListView();
+//        initHeaderView();
+//        initListView();
     }
 
     private void initListView() {
@@ -121,7 +121,9 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
 //
 //        downLoadPresenter.onStart(getContext());
 //        setDownLoadListener();
-
+//        initHeaderView();
+        initHeaderView();
+        initListView();
 
     }
 

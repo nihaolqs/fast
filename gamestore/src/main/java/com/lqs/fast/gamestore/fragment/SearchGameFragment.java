@@ -1,5 +1,7 @@
 package com.lqs.fast.gamestore.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.text.InputType;
 import android.text.method.CharacterPickerDialog;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.lqs.fast.fast.base.presenter.ABasePresenter;
 import com.lqs.fast.fast.base_ui.ABaseFragment;
 import com.lqs.fast.fast.utils.AppUtil;
 import com.lqs.fast.gamestore.R;
+import com.lqs.fast.gamestore.activity.GameDetailActivity;
 import com.lqs.fast.gamestore.adatpter.MyHotSearchAdatpter;
 import com.lqs.fast.gamestore.adatpter.MyLvSearchedAdatpter;
 import com.lqs.fast.gamestore.app.Constants;
@@ -69,7 +72,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         DownLoadPresenter downLoadPresenter = new DownLoadPresenter(getContext());
         this.setDownLoadPresenter(downLoadPresenter);
 
-//        setDownLoadListener();
+        setDownLoadListener();
         downLoadPresenter.onStart(getContext());
 
     }
@@ -143,10 +146,17 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         }
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//    }
+
     @Override
-    public void onResume() {
-        super.onResume();
-        setDownLoadListener();
+    public void onStart() {
+        super.onStart();
+
+//        setDownLoadListener();
     }
 
     @Override
@@ -159,6 +169,16 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
         mLvSearched = (ListView) mFragmentLauout.findViewById(R.id.frag_search_lv);
         mMyLvSearchedAdatpter = new MyLvSearchedAdatpter(mSearchedGame, getContext(), getDownLoadPresenter());
         mLvSearched.setAdapter(mMyLvSearchedAdatpter);
+        mLvSearched.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Context context = getContext();
+                Intent intent = new Intent(context, GameDetailActivity.class);
+                GameInfoBean gameInfoBean = mSearchedGame.get(position - mLvSearched.getHeaderViewsCount());
+                intent.putExtra(GameDetailActivity.GUID_KEY,gameInfoBean.getGuid());
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void initGvHotSearch() {
@@ -300,7 +320,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
     }
 
     private void initItemState(String url, final String strState, View.OnClickListener onClickListener) {
-        for (int i = mLvSearched.getFirstVisiblePosition(); i < mLvSearched.getLastVisiblePosition(); i++) {
+        for (int i = mLvSearched.getFirstVisiblePosition(); i <= mLvSearched.getLastVisiblePosition(); i++) {
             GameInfoBean gameInfoBean = mSearchedGame.get(i);
             if (gameInfoBean.getDownload_url().equals(url)) {
                 View childAt = mLvSearched.getChildAt(i - mLvSearched.getFirstVisiblePosition());

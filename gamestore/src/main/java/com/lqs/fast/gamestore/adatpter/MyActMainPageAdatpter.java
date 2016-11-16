@@ -3,6 +3,7 @@ package com.lqs.fast.gamestore.adatpter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.lqs.fast.gamestore.app.Constants;
 import com.lqs.fast.gamestore.bean.GameDetail;
@@ -17,7 +18,7 @@ import com.lqs.fast.gamestore.fragment.SearchGameFragment;
  * Created by dell on 2016/10/13.
  */
 
-public class MyActMainPageAdatpter extends FragmentPagerAdapter{
+public class MyActMainPageAdatpter extends FragmentPagerAdapter {
     public MyActMainPageAdatpter(FragmentManager fm) {
         super(fm);
     }

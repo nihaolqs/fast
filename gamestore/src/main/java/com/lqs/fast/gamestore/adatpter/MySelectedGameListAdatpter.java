@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
@@ -161,7 +162,13 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
             @Override
             public void check(boolean b) {
                 if(b){
-                    holder.tvState.setText("安装");
+                    new Handler(mContext.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            holder.tvState.setText("安装");
+                        }
+                    });
+
                     holder.tvState.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

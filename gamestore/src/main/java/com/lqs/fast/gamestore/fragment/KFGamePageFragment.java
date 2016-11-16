@@ -65,6 +65,7 @@ public class KFGamePageFragment extends ABaseFragment<KFGamePageFragment,String>
 
     @Override
     public void showKfGameList(List<KfGame.KfListBean> kflist) {
+        this.mKfList.clear();
         this.mKfList.addAll(kflist);
         mMyLvKfListAdatpter.notifyDataSetChanged();
     }
