@@ -15,6 +15,8 @@ import java.util.List;
 
 public class MyBannerAdatpter extends FragmentStatePagerAdapter {
     private List<GameInfoBean> mGameList;
+    public static final int COUNT_MULTIPLE = 10000;
+
 
     public MyBannerAdatpter(FragmentManager fm, List<GameInfoBean> list) {
         super(fm);
@@ -30,6 +32,6 @@ public class MyBannerAdatpter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mGameList.size() * 10000;
+        return mGameList.size() * COUNT_MULTIPLE;
     }
 }

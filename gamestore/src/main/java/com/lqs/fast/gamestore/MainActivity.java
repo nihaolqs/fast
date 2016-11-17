@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyActMainPageAdatpter myActMainPageAdatpter = new MyActMainPageAdatpter(getSupportFragmentManager());
         mPage.setAdapter(myActMainPageAdatpter);
+//        mPage.setOffscreenPageLimit(4);
         mPage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

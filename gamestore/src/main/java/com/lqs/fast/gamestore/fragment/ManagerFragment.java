@@ -321,7 +321,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     }
 
     private void setItemDownloadStateWail(String url) {
-        Handler handler = new Handler(getContext().getMainLooper());
+        Handler handler = new Handler();
         for (int i = 0; i < mGameInfoBeenList.size(); i++) {
             int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
             final SaveGameInfoBean bean = mGameInfoBeenList.get(i);

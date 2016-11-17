@@ -3,6 +3,7 @@ package com.lqs.fast.gamestore.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -56,6 +57,8 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
 
     private boolean isDistory;
     private PullToRefreshListView mPullToRefreshListView;
+    private static final int AddelayMillis = 3000;
+    private boolean isBannerTouch;
 
     @Override
     protected void initUI() {
@@ -99,6 +102,38 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         FragmentManager fm = getChildFragmentManager();
         mMyBannerAdatpter = new MyBannerAdatpter(fm, mAdGames);
         mBannerViewPage.setAdapter(mMyBannerAdatpter);
+        mBannerViewPage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                isBannerTouch = (state == ViewPager.SCROLL_STATE_DRAGGING);
+            }
+        });
+        final Handler handler = new Handler(getContext().getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!isDistory) {
+                    int currentItem = mBannerViewPage.getCurrentItem();
+                    if (currentItem < mAdGames.size() * MyBannerAdatpter.COUNT_MULTIPLE && !isBannerTouch) {
+                        currentItem++;
+                        mBannerViewPage.setCurrentItem(currentItem);
+                    }
+                    handler.postDelayed(this, AddelayMillis);
+
+                }
+            }
+        }, AddelayMillis);
+
     }
 
     @Override
@@ -137,6 +172,9 @@ public class SelectedGameFragment extends com.lqs.fast.fast.base_ui.ABaseFragmen
         mAdGames.clear();
         mAdGames.addAll(gameList);
         mMyBannerAdatpter.notifyDataSetChanged();
+        if (mAdGames.size() > 0) {   //banner调到正中间
+            mBannerViewPage.setCurrentItem(mAdGames.size() * MyBannerAdatpter.COUNT_MULTIPLE / 2, false);
+        }
     }
 
     @Override
