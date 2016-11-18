@@ -75,7 +75,7 @@ public class MyLvSearchedAdatpter extends ABaseAdatpter<GameInfoBean,MyLvSearche
                         public void onClick(View v) {
                             String fileName = MyDownLoadService.getFileName(bean.getDownload_url());
                             String filePath = Constants.getSavePath(mContext) + "/" +fileName;
-                            AppUtil.installApk(mContext,filePath,true);
+                            AppUtil.installApk(mContext,filePath,Constants.FILEPROVIDER);
                         }
                     });
                 }

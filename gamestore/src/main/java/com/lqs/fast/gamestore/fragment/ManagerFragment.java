@@ -208,7 +208,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
                     setItemDownloadState(url, "完成", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            AppUtil.installApk(getContext(),filePath,true);
+                            AppUtil.installApk(getContext(),filePath,Constants.FILEPROVIDER);
                         }
                     });
                 }

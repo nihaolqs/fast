@@ -261,7 +261,7 @@ public class MyDownLoadService extends Service {
                 mDownLoadStateMap.put(mFileUrl, COMPLETED);
                 Boolean isAutoInstall = (Boolean) SpUtil.readSp(MyDownLoadService.this, Constants.Settings.SP_NAME, Constants.Settings.AUTOMATIC_INSTALL);
                 if (isAutoInstall != null && isAutoInstall == true) {   //自动安装
-                    AppUtil.installApk(MyDownLoadService.this, filePath, true);
+                    AppUtil.installApk(MyDownLoadService.this, filePath, Constants.FILEPROVIDER);
                 }
 
 

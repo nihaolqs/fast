@@ -284,7 +284,7 @@ public class SearchGameFragment extends ABaseFragment<SearchGameFragment, String
                     @Override
                     public void onClick(View v) {
                         String filePath = Constants.getSavePath(getContext()) + "/" + MyDownLoadService.getFileName(url);
-                        AppUtil.installApk(getContext(), filePath, true);
+                        AppUtil.installApk(getContext(), filePath, Constants.FILEPROVIDER);
                     }
                 });
 

@@ -13,7 +13,9 @@ public final class Constants {
 
 //    public static final String SAVEPATH = Environment.getDownloadCacheDirectory().getAbsolutePath();
 //    public static final String SAVEPATH = Environment.getExternalStorageDirectory().getAbsolutePath();
-//    public static final String SAVEPATH = "";
+
+    public static final String FILEPROVIDER = "com.lqs.fast.gamestore.fileProvider";
+
     public static String getSavePath(Context context){
         return context.getFilesDir().getAbsolutePath();
     }

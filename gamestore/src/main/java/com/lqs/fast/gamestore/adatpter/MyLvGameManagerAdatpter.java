@@ -52,6 +52,13 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                     public void onClick(View v) {
                         tag.mLlMoreoption.setVisibility(View.VISIBLE);
                         tag.mIvState.setVisibility(View.INVISIBLE);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                tag.mLlMoreoption.setVisibility(View.INVISIBLE);
+                                tag.mIvState.setVisibility(View.VISIBLE);
+                            }
+                        },3000);
                     }
                 });
 //                tag.mLlMoreoption
@@ -159,7 +166,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
             @Override
             public void onClick(View v) {
                 String filePath = Constants.getSavePath(mContext) + "/" + FileUtil.getFileName(bean.getDownload_url());
-                AppUtil.installApk(mContext, filePath, true);
+                AppUtil.installApk(mContext, filePath, Constants.FILEPROVIDER);
             }
         });
     }

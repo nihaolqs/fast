@@ -152,7 +152,7 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
 //                    i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
 //                    mContext.startActivity(i);
 //                    android.os.Process.killProcess(android.os.Process.myPid());
-                    AppUtil.installApk(mContext,filePath,true);
+                    AppUtil.installApk(mContext,filePath,Constants.FILEPROVIDER);
                 }
             }
         };
@@ -174,7 +174,7 @@ public class MySelectedGameListAdatpter extends ABaseAdatpter<GameInfoBean, MySe
                         public void onClick(View v) {
                             String fileName = MyDownLoadService.getFileName(gameInfoBean.getDownload_url());
                             String filePath = Constants.getSavePath(mContext) + "/" + fileName;
-                            AppUtil.installApk(mContext,filePath,true);
+                            AppUtil.installApk(mContext,filePath,Constants.FILEPROVIDER);
                         }
                     });
                 }

@@ -52,26 +52,20 @@ public final class AppUtil {
         }
     }
 
-    public static void installApk(Context context, String filePath, boolean isOpen) {
+    public static void installApk(Context context, String filePath, String fileProvider) {
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
-//        ComponentName comp;
-//        if(android.os.Build.VERSION.SDK_INT < 23){
-//            comp = new ComponentName("com.android.packageinstaller", "com.android.packageinstaller.PackageInstallerActivity");
-//        }else{
-//            comp = new ComponentName("com.google.android.packageinstaller", "com.android.packageinstaller.PackageInstallerActivity");
-//        }
-//        由于没有在Activity环境下启动Activity,设置下面的标签
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        Uri contentUri = FileProvider.getUriForFile(context, "com.lqs.fast.gamestore.fileProvider", new File(filePath));
-        intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.setComponent(comp);
+        File file = new File(filePath);
+        if (Build.VERSION.SDK_INT >= 24) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(context, fileProvider, file);
+//            Uri contentUri = FileProvider.getUriForFile(context, "com.lqs.fast.gamestore.fileProvider", file);
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }
         context.startActivity(intent);
-//        if (isOpen) {
-//            android.os.Process.killProcess(android.os.Process.myPid());
-//        }
-//        openFile(new File(filePath),context);
     }
 
     public static void unInstallApk(Context context, String packageName) {
