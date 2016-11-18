@@ -107,6 +107,12 @@ public class DownLoadPresenter extends ABasePresenter implements IDownloadPresen
     }
 
     @Override
+    public Boolean isDownLoadTaskPause(String url) {
+        Boolean pauseTask = mMybinder.isPauseTask(url);
+        return pauseTask;
+    }
+
+    @Override
     public int getDownLoadState(String url) {
         if (mMybinder != null) {
             int state = mMybinder.getDownLoadState(url);

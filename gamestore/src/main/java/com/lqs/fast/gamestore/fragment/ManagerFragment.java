@@ -36,6 +36,8 @@ import java.util.List;
 
 public class ManagerFragment extends ABaseFragment<ManagerFragment, String> implements IManagerView, IDownLoadView {
     public static final String TAG = "ManagerFragment";
+    public static final int UNINSTALLED = 1;
+    private static final long mDelayMillis = 3000;
     private ListView mLvGameManager;
     private TextView mTvPhoneMemory;
     private TextView mTvAlready;
@@ -45,6 +47,9 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     private ArrayList<SaveGameInfoBean> mGameInfoBeenList = new ArrayList<>();
     private MyLvGameManagerAdatpter mMyLvGameManagerAdatpter;
     private MyDownLoadService.IDownLoadListener mDownLoadListener;
+    private Handler mLongClickHandler;
+
+    private Runnable mLongClickRunnable;
 
     @Override
     protected void initMvp() {
@@ -73,8 +78,62 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
                 Context context = getContext();
                 Intent intent = new Intent(context, GameDetailActivity.class);
                 SaveGameInfoBean saveGameInfoBean = mGameInfoBeenList.get(position - mLvGameManager.getHeaderViewsCount());
-                intent.putExtra(GameDetailActivity.GUID_KEY,saveGameInfoBean.getGuid());
+                intent.putExtra(GameDetailActivity.GUID_KEY, saveGameInfoBean.getGuid());
                 context.startActivity(intent);
+            }
+        });
+
+        mLvGameManager.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(position);
+                if (itemViewType == UNINSTALLED) {
+                    View childAt = mLvGameManager.getChildAt(position - mLvGameManager.getFirstVisiblePosition());
+                    if (childAt != null) {
+                        IDownloadPresenter downLoadPresenter = getDownLoadPresenter();
+                        Boolean isPause = downLoadPresenter.isDownLoadTaskPause(mGameInfoBeenList.get(position).getDownload_url());
+
+                        final View delete = childAt.findViewById(R.id.item_download_iv_delete);
+                        final View state = childAt.findViewById(R.id.item_download_tv_state);
+                        final View begin = childAt.findViewById(R.id.item_download_iv_begin);
+                        final View pause = childAt.findViewById(R.id.item_download_iv_pause);
+
+                        delete.setVisibility(View.VISIBLE);
+                        if (isPause != null) {
+
+                            state.setVisibility(View.INVISIBLE);
+
+                            if (isPause) {
+                                begin.setVisibility(View.VISIBLE);
+                                pause.setVisibility(View.INVISIBLE);
+                            } else {
+                                begin.setVisibility(View.INVISIBLE);
+                                pause.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        if (mLongClickHandler == null) {
+                            mLongClickHandler = new Handler();
+                        }
+
+                        mLongClickRunnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                if (position >= mLvGameManager.getFirstVisiblePosition() && position <= mLvGameManager.getLastVisiblePosition()) {   //可见状态
+                                    delete.setVisibility(View.INVISIBLE);
+                                    state.setVisibility(View.VISIBLE);
+                                    begin.setVisibility(View.INVISIBLE);
+                                    pause.setVisibility(View.INVISIBLE);
+                                }
+                            }
+                        };
+
+                        mLongClickHandler.postDelayed(mLongClickRunnable, mDelayMillis);
+
+                    }
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -196,7 +255,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
             @Override
             public void progress(String url, final int progre) {
                 if (!isPause) {
-                    setItemDownloadState(url, progre + "%",null);
+                    setItemDownloadState(url, progre + "%", null);
                 }
             }
 
@@ -208,7 +267,7 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
                     setItemDownloadState(url, "完成", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            AppUtil.installApk(getContext(),filePath,Constants.FILEPROVIDER);
+                            AppUtil.installApk(getContext(), filePath, Constants.FILEPROVIDER);
                         }
                     });
                 }
@@ -274,26 +333,29 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
     }
 
     private void setItemDownloadStateSize(String url, final long size) {
-        Handler handler = new Handler(getContext().getMainLooper());
-        for (int i = 0; i < mGameInfoBeenList.size(); i++) {
-            int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
-            final SaveGameInfoBean bean = mGameInfoBeenList.get(i);
-            if (bean.getDownload_url().equals(url) &&
-                    i >= mLvGameManager.getFirstVisiblePosition() &&
-                    i <= mLvGameManager.getLastVisiblePosition() &&
-                    itemViewType == 1) {
-                View itemView = mLvGameManager.getChildAt(i - mLvGameManager.getFirstVisiblePosition());
-                final TextView mTvDownloadding = (TextView) itemView.findViewById(R.id.item_download_tv_downloadding);
-                final TextView mTvInstallState = (TextView) itemView.findViewById(R.id.item_download_tv_install_state);
-                final String gamesize = mGameInfoBeenList.get(i).getGamesize();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTvInstallState.setVisibility(View.GONE);
-                        mTvDownloadding.setVisibility(View.VISIBLE);
-                        mTvDownloadding.setText(FileUtil.formatSize(size) + "/" + gamesize);
-                    }
-                });
+        Context context = getContext();
+        if (context != null) {
+            Handler handler = new Handler(context.getMainLooper());
+            for (int i = 0; i < mGameInfoBeenList.size(); i++) {
+                int itemViewType = mMyLvGameManagerAdatpter.getItemViewType(i);
+                final SaveGameInfoBean bean = mGameInfoBeenList.get(i);
+                if (bean.getDownload_url().equals(url) &&
+                        i >= mLvGameManager.getFirstVisiblePosition() &&
+                        i <= mLvGameManager.getLastVisiblePosition() &&
+                        itemViewType == 1) {
+                    View itemView = mLvGameManager.getChildAt(i - mLvGameManager.getFirstVisiblePosition());
+                    final TextView mTvDownloadding = (TextView) itemView.findViewById(R.id.item_download_tv_downloadding);
+                    final TextView mTvInstallState = (TextView) itemView.findViewById(R.id.item_download_tv_install_state);
+                    final String gamesize = mGameInfoBeenList.get(i).getGamesize();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mTvInstallState.setVisibility(View.GONE);
+                            mTvDownloadding.setVisibility(View.VISIBLE);
+                            mTvDownloadding.setText(FileUtil.formatSize(size) + "/" + gamesize);
+                        }
+                    });
+                }
             }
         }
     }
@@ -362,7 +424,6 @@ public class ManagerFragment extends ABaseFragment<ManagerFragment, String> impl
         ABasePresenter presenter = getPresenter(DownLoadPresenter.TAG);
         return (IDownloadPresenter) presenter;
     }
-
 
 
 }

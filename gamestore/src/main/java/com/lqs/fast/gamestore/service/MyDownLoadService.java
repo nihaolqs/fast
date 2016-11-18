@@ -25,7 +25,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -140,6 +142,7 @@ public class MyDownLoadService extends Service {
 
         private String mFileUrl;
         private boolean isCancel;
+        private boolean isPause = false;
 
         public DownLoadTask(String url) {
             this.mFileUrl = url;
@@ -154,20 +157,29 @@ public class MyDownLoadService extends Service {
 //            mListener.wail(url);
         }
 
+        public boolean isPause() {
+            return isPause;
+        }
+
+
         public void threadPause() {
-            try {
-                Thread.currentThread().wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            isPause = true;
+
         }
 
         public void threadContinue() {
-            Thread.currentThread().notify();
+            synchronized (this) {
+                isPause = false;
+                this.notifyAll();
+            }
+
         }
 
         public void threadCancel() {
+            threadContinue();
             this.isCancel = true;
+
         }
 
 
@@ -206,46 +218,56 @@ public class MyDownLoadService extends Service {
                 long oldTime = 0;
                 long leng = 0;
                 while (-1 != (len = is.read(bs))) {
-                    os.write(bs, 0, len);
-                    sum += len;
+                    synchronized (this) {
+                        os.write(bs, 0, len);
+                        sum += len;
 
-                    if (isCancel) {
-                        for (IDownLoadListener listener : mListeners
-                                ) {
-                            listener.fail(mFileUrl);
+                        if (isCancel) {
+                            throw new IOException();
+//                        for (IDownLoadListener listener : mListeners
+//                                ) {
+//                            listener.fail(mFileUrl);
+//                        }
+////                        mListener.fail(mFileUrl);
+//                        return;
                         }
-//                        mListener.fail(mFileUrl);
-                        return;
-                    }
 
-                    long l = System.currentTimeMillis();
+                        long l = System.currentTimeMillis();
 
-                    long l1 = l - oldTime;
-                    if (l1 > 100) {
-                        long speed = (sum - leng) * 1000 / l1;
-                        Log.e("speed", "" + speed);
+                        long l1 = l - oldTime;
+                        if (l1 > 100) {
+                            long speed = (sum - leng) * 1000 / l1;
+                            Log.e("speed", "" + speed);
 
 //                    mListener.speed(mFileUrl, speed);
 
 //                    mListener.downloadedSize(mFileUrl, sum);
 
 //                    Log.d("run",sum + "/" + length);
-                        point = (int) ((sum * 100) / length);
+                            point = (int) ((sum * 100) / length);
 //                    mListener.progress(mFileUrl, point);
-                        synchronized (mListeners) {
-                            for (IDownLoadListener listener : mListeners
-                                    ) {
+                            synchronized (mListeners) {
+                                for (IDownLoadListener listener : mListeners
+                                        ) {
 //                        Log.e("listener",""+listener);
-                                if (listener != null) {
-                                    listener.speed(mFileUrl, speed);
-                                    listener.downloadedSize(mFileUrl, sum);
-                                    listener.progress(mFileUrl, point);
+                                    if (listener != null) {
+                                        listener.speed(mFileUrl, speed);
+                                        listener.downloadedSize(mFileUrl, sum);
+                                        listener.progress(mFileUrl, point);
+                                    }
                                 }
                             }
+                            oldTime = l;
+                            leng = sum;
+                            Log.e("下载", mFileUrl + "  " + sum);
                         }
-                        oldTime = l;
-                        leng = sum;
-                        Log.e("下载", mFileUrl + "  " + sum);
+                        if (isPause) {
+                            try {
+                                this.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
 
                 }
@@ -333,6 +355,15 @@ public class MyDownLoadService extends Service {
             MyDownLoadService.this.addDownLoadTask(url);
         }
 
+        public Boolean isPauseTask(String url) {
+            DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
+            if (downLoadTask == null) {
+                return null;
+            } else {
+                return downLoadTask.isPause();
+            }
+        }
+
         public void pauseDownLoadTask(String url) {
             DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
             downLoadTask.threadPause();
@@ -345,7 +376,9 @@ public class MyDownLoadService extends Service {
 
         public void cancelDownLoadTask(String url) {
             DownLoadTask downLoadTask = mDawnLoadTaskMap.get(url);
-            downLoadTask.threadCancel();
+            if (downLoadTask != null) {
+                downLoadTask.threadCancel();
+            }
         }
 
         public int getDownLoadState(String url) {

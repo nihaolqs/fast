@@ -40,7 +40,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
     @Override
     protected void initItemUi(final MyViewHolder tag, final SaveGameInfoBean bean, int position) {
         int itemViewType = getItemViewType(position);
-        switch (itemViewType) {
+        switch (itemViewType) {    //获取行类型
             case 0: {
                 ImageUtils.LoadImage(tag.mIvGameIcon, bean.getGame_logo());
                 tag.mTvGameName.setText(bean.getGame_name());
@@ -49,29 +49,29 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                 tag.mTvGameDescribe.setText(bean.getOne_game_info());
                 tag.mIvState.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v) {    //展示更多菜单
                         tag.mLlMoreoption.setVisibility(View.VISIBLE);
                         tag.mIvState.setVisibility(View.INVISIBLE);
                         new Handler().postDelayed(new Runnable() {
                             @Override
-                            public void run() {
+                            public void run() {   //延时隐藏菜单
                                 tag.mLlMoreoption.setVisibility(View.INVISIBLE);
                                 tag.mIvState.setVisibility(View.VISIBLE);
                             }
-                        },3000);
+                        }, 3000);
                     }
                 });
 //                tag.mLlMoreoption
                 tag.mTvOpen.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v) {   //打开游戏监听
                         notifyDataSetChanged();
                         AppUtil.startAPk(mContext, bean.getPackage_name());
                     }
                 });
                 tag.mTvUnload.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View v) {   //卸载游戏监听
                         AppUtil.unInstallApk(mContext, bean.getPackage_name());
                         bean.delete();
                         notifyDataSetChanged();
@@ -93,12 +93,47 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
             case 1: {
                 ImageUtils.LoadImage(tag.mIvGameIcon, bean.getGame_logo());
                 tag.mTvGameName.setText(bean.getGame_name());
-                String download_url = bean.getDownload_url();
+                final String download_url = bean.getDownload_url();
                 int downLoadState = mDownloadPresenter.getDownLoadState(download_url);
 
 
-                switch (downLoadState) {
-                    case MyDownLoadService.WAIT: {
+                tag.mIvDelete.setOnClickListener(new View.OnClickListener() {   //删除任务监听
+                    @Override
+                    public void onClick(View v) {
+                        mDownloadPresenter.cancelDownLoadTask(download_url);
+                        mDataList.remove(bean);
+                        bean.delete();
+                        notifyDataSetChanged();
+                    }
+                });
+
+                tag.mIvBegin.setOnClickListener(new View.OnClickListener() {  //开始
+                    @Override
+                    public void onClick(View v) {
+                        Boolean downLoadTaskPause = mDownloadPresenter.isDownLoadTaskPause(download_url);
+                        if (downLoadTaskPause != null && downLoadTaskPause) {
+                            mDownloadPresenter.continueDownLoadTast(download_url);
+                            tag.mIvBegin.setVisibility(View.INVISIBLE);
+                            tag.mIvPause.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
+                tag.mIvPause.setOnClickListener(new View.OnClickListener() {  //暂停
+                    @Override
+                    public void onClick(View v) {
+                        Boolean downLoadTaskPause = mDownloadPresenter.isDownLoadTaskPause(download_url);
+                        if (downLoadTaskPause != null && !downLoadTaskPause) {
+                            mDownloadPresenter.pauseDownLoadTask(download_url);
+                            tag.mIvBegin.setVisibility(View.VISIBLE);
+                            tag.mIvPause.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
+
+
+                switch (downLoadState) {    //根据不同任务状态
+                    case MyDownLoadService.WAIT: {   //等待
                         tag.mTvDownloadState.setVisibility(View.VISIBLE);
                         tag.mTvSpeed.setVisibility(View.GONE);
                         tag.mTvDownloadState.setText("等待");
@@ -110,7 +145,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
 
                     }
                     break;
-                    case MyDownLoadService.PROGRESS: {
+                    case MyDownLoadService.PROGRESS: {  //运行
                         tag.mTvDownloadState.setVisibility(View.GONE);
                         tag.mTvSpeed.setVisibility(View.VISIBLE);
                         tag.mTvSpeed.setText("0KB/S");
@@ -119,13 +154,14 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                         tag.mTvDownloadding.setText("0M/" + bean.getGamesize() + "M");
                         tag.mTvState.setText("下载中");
                         tag.mTvState.setClickable(false);
+
                     }
                     break;
-                    case MyDownLoadService.COMPLETED: {
+                    case MyDownLoadService.COMPLETED: {  //成功
                         setCompletedState(tag, bean);
                     }
                     break;
-                    case MyDownLoadService.FAIL: {
+                    case MyDownLoadService.FAIL: {   //失败
                         setFailState(tag, bean);
                     }
                     break;
@@ -134,12 +170,23 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
                     mDownloadPresenter.checkFileExists(download_url, new ICheckListener() {
                         @Override
                         public void check(final boolean b) {
+
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (b) {
                                         setCompletedState(tag, bean);
+                                        tag.mIvDelete.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                String fileName = FileUtil.getFileName(download_url);
+                                                new File(Constants.getSavePath(mContext) + "/" + fileName).delete();
+                                                mDataList.remove(bean);
+                                                bean.delete();
+                                                notifyDataSetChanged();
+                                            }
+                                        });
                                     } else {
                                         setFailState(tag, bean);
                                     }
@@ -245,7 +292,7 @@ public class MyLvGameManagerAdatpter extends ABaseAdatpter<SaveGameInfoBean, MyL
         }
     }
 
-    protected class MyViewHolder {
+    protected class MyViewHolder {   //ViewHolder
         ImageView mIvGameIcon;
         TextView mTvGameName;
         TextView mTvGameSize;

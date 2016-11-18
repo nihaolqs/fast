@@ -23,6 +23,8 @@ public interface IDownloadPresenter {
 
     void cancelDownLoadTask(String url);
 
+    Boolean isDownLoadTaskPause(String url);
+
     int getDownLoadState(String url);
 
     void saveGameInfo(SaveGameInfoBean bean);
